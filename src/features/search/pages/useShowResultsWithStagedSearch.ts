@@ -7,6 +7,7 @@ export const useShowResultsWithStagedSearch = (): (() => void) => {
   const { searchState: stagedSearchState } = useStagedSearch()
 
   return useCallback(() => {
+    console.log({ stagedSearchState })
     dispatch({ type: 'SET_STATE', payload: stagedSearchState })
     dispatch({ type: 'SHOW_RESULTS', payload: true })
   }, [dispatch, stagedSearchState])

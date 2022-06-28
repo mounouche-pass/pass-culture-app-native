@@ -21,10 +21,12 @@ export function SearchRework() {
   const [isFocus, setIsFocus] = useState(false)
   const showResultsForCategory = useShowResultsForCategory()
 
+  // console.log({ showResults })
+
   useEffect(() => {
     if (params) {
       dispatch({ type: 'SET_STATE_FROM_NAVIGATE', payload: params })
-      dispatch({ type: 'SHOW_RESULTS', payload: true })
+      // dispatch({ type: 'SHOW_RESULTS', payload: true })
     }
   }, [dispatch, params])
 

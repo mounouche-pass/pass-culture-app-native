@@ -169,4 +169,13 @@ describe('SearchBox component', () => {
 
     expect(navigate).toHaveBeenNthCalledWith(1, 'LocationFilter')
   })
+
+  it('should reset staged search when pressing go back button', async () => {
+    const { getByTestId } = render(<SearchBoxRework searchInputID={searchInputID} isFocus={true} />)
+
+    const previousButton = getByTestId('previousButton')
+    await fireEvent.press(previousButton)
+
+    expect(navigate).toBeCalledWith(...getTabNavConfig('Search', {}))
+  })
 })
