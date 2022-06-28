@@ -32,17 +32,6 @@ describe('useShowResultsForCategory', () => {
     }
   })
 
-  it('should set category', () => {
-    const { result: resultCallback } = renderHook(useShowResultsForCategory)
-
-    resultCallback.current(SearchGroupNameEnum.SPECTACLE)
-
-    expect(mockDispatch).toHaveBeenCalledWith({
-      type: 'SET_CATEGORY',
-      payload: [SearchGroupNameEnum.SPECTACLE],
-    })
-  })
-
   it('should set category in staged search', () => {
     const { result: resultCallback } = renderHook(useShowResultsForCategory)
 
