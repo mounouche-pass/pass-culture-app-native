@@ -14,5 +14,6 @@ export const reactQueryProviderHOC = (
     warn: jest.fn(),
     error: jest.fn(),
   })
+
   return <QueryClientProvider client={queryClient}>{component}</QueryClientProvider>
 }

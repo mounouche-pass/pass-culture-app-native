@@ -18,6 +18,7 @@ export const reset = jest.fn()
 export const setOptions = jest.fn()
 export const setParams = jest.fn()
 export const useLinkProps = jest.fn()
+export const useIsFocused = jest.fn()
 
 export const navigation = {
   addListener,
@@ -37,6 +38,7 @@ export const navigation = {
   setOptions,
   setParams,
   useLinkProps,
+  useIsFocused,
 }
 export const useNavigation = () => navigation
 export const createNavigationContainerRef = () => ({

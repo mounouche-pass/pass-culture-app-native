@@ -24,12 +24,17 @@ export function SearchRework() {
   useEffect(() => {
     if (params) {
       dispatch({ type: 'SET_STATE_FROM_NAVIGATE', payload: params })
-      dispatch({ type: 'SHOW_RESULTS', payload: true })
-      // dispatch({ type: 'SHOW_RESULTS', payload: params?.showResults ?? true })
+      // dispatch({ type: 'SHOW_RESULTS', payload: true })
+      console.log('params', params)
+      dispatch({ type: 'SHOW_RESULTS', payload: params?.showResults ?? true })
     }
   }, [dispatch, params])
 
   const bodySearch = () => {
+    console.log({
+      showResults,
+      isFocus,
+    })
     // SearchDetails will integrate recent searches and suggestions
     if (showResults || isFocus) return <SearchDetails />
     const categoriesTitle = 'Explore les catégories'
