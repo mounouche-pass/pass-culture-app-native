@@ -20,6 +20,7 @@ jest.mock('features/search/pages/SearchWrapper', () => ({
     dispatch: mockStagedDispatch,
   }),
 }))
+
 describe('useShowResultsWithStagedSearch', () => {
   beforeEach(() => {
     mockStagedSearchState = {

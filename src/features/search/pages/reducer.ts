@@ -60,8 +60,6 @@ export type Action =
   | { type: 'SET_QUERY'; payload: string }
 
 export const searchReducer = (state: SearchState, action: Action): SearchState => {
-  console.log(state)
-  console.log(action.type)
   switch (action.type) {
     case 'INIT':
       return { ...initialSearchState, showResults: state.showResults }
