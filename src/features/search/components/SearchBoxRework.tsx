@@ -55,16 +55,16 @@ export const SearchBoxRework: React.FC<Props> = ({
   const onPressArrowBack = () => {
     setQuery('')
     if (onFocusState) onFocusState(false)
-    //stagedDispatch({ type: 'SET_QUERY', payload: '' })
-    // dispatch({ type: 'SET_QUERY', payload: '' })
-    // dispatch({ type: 'SHOW_RESULTS', payload: false })
-    // dispatch({ type: 'INIT' })
+    stagedDispatch({ type: 'SET_QUERY', payload: '' })
+    dispatch({ type: 'SET_QUERY', payload: '' })
+    dispatch({ type: 'SHOW_RESULTS', payload: false })
+    dispatch({ type: 'INIT' })
 
-    navigate(
-      ...getTabNavConfig('Search', {
-        showResults: false,
-      })
-    )
+    // navigate(
+    //   ...getTabNavConfig('Search', {
+    //     showResults: false,
+    //   })
+    // )
   }
 
   const onPressLocationButton = useCallback(() => {

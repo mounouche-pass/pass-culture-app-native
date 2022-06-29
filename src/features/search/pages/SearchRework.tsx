@@ -25,6 +25,7 @@ export function SearchRework() {
     if (params) {
       dispatch({ type: 'SET_STATE_FROM_NAVIGATE', payload: params })
       // dispatch({ type: 'SHOW_RESULTS', payload: true })
+      dispatch({ type: 'SHOW_RESULTS', payload: params?.showResults ?? true })
     }
   }, [dispatch, params])
 
