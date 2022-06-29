@@ -19,6 +19,16 @@ jest.mock('features/search/pages/useSearchResults', () => ({
   }),
 }))
 
+const mockNavigate = jest.fn()
+const mockUseRoute = jest.fn().mockReturnValue({ params: {} })
+jest.mock('@react-navigation/native', () => ({
+  ...jest.requireActual('@react-navigation/native'),
+  useNavigation: () => ({ navigate: mockNavigate }),
+  useFocusEffect: jest.fn(),
+  useIsFocused: jest.fn(),
+  useRoute: mockUseRoute,
+}))
+
 describe('SearchRework component', () => {
   describe('When search not executed', () => {
     it('should display categories buttons', () => {
@@ -40,6 +50,19 @@ describe('SearchRework component', () => {
       await fireEvent.press(categoryButton)
 
       expect(mockShowResultsForCategory).toHaveBeenCalledWith(SearchGroupNameEnum.SPECTACLE)
+    })
+
+    // mockUseRoute.mockImplementationOnce(() => ({
+    //   params: {
+    //     showResults: false,
+    //   },
+    // }))
+    it.only('should show results for a category when pressing a category button', async () => {
+      const { getByTestId } = render(<SearchRework />)
+
+      const categoriesButtons = getByTestId('categoriesButtons')
+
+      expect(categoriesButtons).toBeTruthy()
     })
   })
 })
