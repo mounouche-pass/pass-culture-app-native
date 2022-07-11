@@ -1,7 +1,7 @@
 import { t } from '@lingui/macro'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import React, { useCallback, useEffect, useState } from 'react'
-import { NativeSyntheticEvent, Platform, TextInputSubmitEditingEventData } from 'react-native'
+import { NativeSyntheticEvent, Platform, TextInputSubmitEditingEventData, View } from 'react-native'
 import styled from 'styled-components/native'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -23,15 +23,16 @@ import { SearchMainInput } from './SearchMainInput'
 type Props = {
   searchInputID: string
   showLocationButton?: boolean
-  onFocusState?: (focus: boolean) => void
-  isFocus?: boolean
+  isFocus: boolean
+  shouldAutocomplete: boolean
   accessibleHiddenTitle?: string
+  setShouldAutocomplete: (shouldAutocomplete: boolean) => void
+  setAutocompleteValue: (query: string) => void
 }
 
 export const SearchBox: React.FC<Props> = ({
   searchInputID,
   showLocationButton,
-  onFocusState,
   isFocus,
   accessibleHiddenTitle,
   ...props
@@ -54,13 +55,13 @@ export const SearchBox: React.FC<Props> = ({
   }, [params?.query])
 
   const resetQuery = useCallback(() => {
-    showResultsWithStagedSearch({
-      query: '',
-    })
-  }, [showResultsWithStagedSearch])
+    setAutocompleteValue('')
+    showResultsWithStagedSearch({ query: '' })
+    setQuery('')
+    setShouldAutocomplete(false)
+  }, [setAutocompleteValue, setShouldAutocomplete, showResultsWithStagedSearch])
 
   const onPressArrowBack = useCallback(() => {
-    if (onFocusState) onFocusState(false)
     stagedDispatch({
       type: 'SET_STATE',
       payload: { locationFilter },
@@ -75,7 +76,16 @@ export const SearchBox: React.FC<Props> = ({
         reset: true,
       }
     )
-  }, [locationFilter, onFocusState, showResultsWithStagedSearch, stagedDispatch])
+    setShouldAutocomplete(false)
+    setQuery('')
+    setAutocompleteValue('')
+  }, [
+    locationFilter,
+    setAutocompleteValue,
+    setShouldAutocomplete,
+    showResultsWithStagedSearch,
+    stagedDispatch,
+  ])
 
   const onPressLocationButton = useCallback(() => {
     navigate('LocationFilter')
@@ -84,6 +94,7 @@ export const SearchBox: React.FC<Props> = ({
   const onSubmitQuery = (event: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => {
     const queryText = event.nativeEvent.text
     if (queryText.length < 1 && Platform.OS !== 'android') return
+    setShouldAutocomplete(false)
     // When we hit enter, we may have selected a category or a venue on the search landing page
     // these are the two potentially 'staged' filters that we want to commit to the global search state.
     // We also want to commit the price filter, as beneficiary users may have access to different offer
@@ -100,12 +111,12 @@ export const SearchBox: React.FC<Props> = ({
   }
 
   return (
-    <RowContainer>
+    <RowContainer testID="searchBoxWithoutAutocomplete">
       {!!accessibleHiddenTitle && (
         <HiddenAccessibleText {...getHeadingAttrs(1)}>{accessibleHiddenTitle}</HiddenAccessibleText>
       )}
       <SearchInputContainer {...props}>
-        {showResults || isFocus ? (
+        {showResults || shouldAutocomplete ? (
           <StyledTouchableOpacity testID="previousButton" onPress={onPressArrowBack}>
             <ArrowPrevious />
           </StyledTouchableOpacity>
@@ -119,6 +130,7 @@ export const SearchBox: React.FC<Props> = ({
           resetQuery={resetQuery}
           onFocusState={onFocusState}
           showLocationButton={showLocationButton}
+          onChangeText={setQuery}
           locationLabel={locationLabel}
           onPressLocationButton={onPressLocationButton}
         />
