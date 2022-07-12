@@ -4,6 +4,7 @@ import { View } from 'react-native'
 import styled from 'styled-components/native'
 
 import { SearchBox } from 'features/search/components/SearchBox'
+import { SearchBoxAutocomplete } from 'features/search/components/SearchBoxAutocomplete'
 import { useShowResults } from 'features/search/pages/useShowResults'
 import { InputLabel } from 'ui/components/InputLabel/InputLabel'
 import { styledInputLabel } from 'ui/components/InputLabel/styledInputLabel'
@@ -14,15 +15,13 @@ import { useCustomSafeInsets } from 'ui/theme/useCustomSafeInsets'
 
 type Props = {
   searchInputID: string
-  onFocusState?: (focus: boolean) => void
-  isFocus?: boolean
+  appEnableAutocomplete: boolean
 }
 
 const SearchBoxWithLabel = ({
   searchInputID,
-  onFocusState,
-  isFocus,
-}: Omit<Props, 'paramsShowResults'>) => {
+  appEnableAutocomplete,
+}: Omit<Props, 'paramsShowResults' | 'autocompleteValue'>) => {
   const { top } = useCustomSafeInsets()
 
   return (
@@ -34,58 +33,65 @@ const SearchBoxWithLabel = ({
           <StyledInputLabel htmlFor={searchInputID}>{t`Recherche une offre`}</StyledInputLabel>
         </View>
         <Spacer.Column numberOfSpaces={2} />
-        <FloatingSearchBoxContainer>
-          <FloatingSearchBox
-            searchInputID={searchInputID}
-            onFocusState={onFocusState}
-            isFocus={isFocus}
-            showLocationButton={true}
-          />
-        </FloatingSearchBoxContainer>
-        <Spacer.Column numberOfSpaces={6} />
+        {appEnableAutocomplete ? (
+          <FloatingSearchBoxContainer>
+            <FloatingSearchBoxAutocomplete
+              searchInputID={searchInputID}
+              showLocationButton={true}
+            />
+          </FloatingSearchBoxContainer>
+        ) : (
+          <FloatingSearchBoxContainer>
+            <FloatingSearchBox searchInputID={searchInputID} showLocationButton={true} />
+          </FloatingSearchBoxContainer>
+        )}
       </SearchBoxContainer>
     </React.Fragment>
   )
 }
 
 const SearchBoxWithoutLabel = ({
-  isFocus,
-  onFocusState,
+  appEnableAutocomplete,
   searchInputID,
-}: Omit<Props, 'paramsShowResults'>) => {
+}: Omit<Props, 'paramsShowResults' | 'autocompleteValue'>) => {
   const { top } = useCustomSafeInsets()
+  const showResults = useShowResults()
 
   return (
     <React.Fragment>
-      {top ? <HeaderBackground height={top} /> : null}
-      <Spacer.TopScreen />
+      <HeaderBackgroundWrapperWithoutLabel maxHeight={top}>
+        <HeaderBackground />
+      </HeaderBackgroundWrapperWithoutLabel>
       <SearchBoxContainer testID="searchBoxWithoutLabel">
-        <SearchBox
-          searchInputID={searchInputID}
-          onFocusState={onFocusState}
-          isFocus={isFocus}
-          accessibleHiddenTitle={t`Recherche une offre, un titre, un lieu...`}
-        />
+        {appEnableAutocomplete ? (
+          <SearchBoxAutocomplete
+            searchInputID={searchInputID}
+            accessibleHiddenTitle={t`Recherche une offre, un titre, un lieu...`}
+          />
+        ) : (
+          <SearchBox
+            searchInputID={searchInputID}
+            accessibleHiddenTitle={t`Recherche une offre, un titre, un lieu...`}
+          />
+        )}
       </SearchBoxContainer>
       <Spacer.Column numberOfSpaces={1} />
     </React.Fragment>
   )
 }
 
-export const SearchHeader: React.FC<Props> = ({ searchInputID, onFocusState, isFocus }) => {
+export const SearchHeader: React.FC<Props> = ({ searchInputID, appEnableAutocomplete }) => {
   const showResults = useShowResults()
 
-  return !showResults && !isFocus ? (
+  return !params || params?.view === SearchView.Landing ? (
     <SearchBoxWithLabel
       searchInputID={searchInputID}
-      onFocusState={onFocusState}
-      isFocus={isFocus}
+      appEnableAutocomplete={appEnableAutocomplete}
     />
   ) : (
     <SearchBoxWithoutLabel
-      isFocus={isFocus}
-      onFocusState={onFocusState}
       searchInputID={searchInputID}
+      appEnableAutocomplete={appEnableAutocomplete}
     />
   )
 }
@@ -95,7 +101,11 @@ const SearchBoxContainer = styled.View({
   paddingHorizontal: getSpacing(6),
   zIndex: 1,
 })
-
+const HeaderBackgroundWrapperWithoutLabel = styled.View<{ maxHeight: number }>(({ maxHeight }) => ({
+  overflow: 'hidden',
+  position: 'relative',
+  maxHeight,
+}))
 const StyledInputLabel = styledInputLabel(InputLabel)(({ theme }) => ({
   ...theme.typography.title4,
   color: theme.colors.white,
@@ -107,6 +117,12 @@ const FloatingSearchBoxContainer = styled.View({
 })
 
 const FloatingSearchBox = styled(SearchBox)({
+  position: 'absolute',
+  left: 0,
+  right: 0,
+})
+
+const FloatingSearchBoxAutocomplete = styled(SearchBoxAutocomplete)({
   position: 'absolute',
   left: 0,
   right: 0,
