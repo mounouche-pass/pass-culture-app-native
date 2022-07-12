@@ -16,11 +16,18 @@ import { useCustomSafeInsets } from 'ui/theme/useCustomSafeInsets'
 type Props = {
   searchInputID: string
   appEnableAutocomplete: boolean
+  shouldAutocomplete: boolean
+  setShouldAutocomplete: (isShowAutocomplete: boolean) => void
+  setAutocompleteValue: (query: string) => void
+  autocompleteValue: string
 }
 
 const SearchBoxWithLabel = ({
   searchInputID,
   appEnableAutocomplete,
+  shouldAutocomplete,
+  setShouldAutocomplete,
+  setAutocompleteValue,
 }: Omit<Props, 'paramsShowResults' | 'autocompleteValue'>) => {
   const { top } = useCustomSafeInsets()
 
@@ -52,6 +59,9 @@ const SearchBoxWithLabel = ({
 
 const SearchBoxWithoutLabel = ({
   appEnableAutocomplete,
+  shouldAutocomplete,
+  setShouldAutocomplete,
+  setAutocompleteValue,
   searchInputID,
 }: Omit<Props, 'paramsShowResults' | 'autocompleteValue'>) => {
   const { top } = useCustomSafeInsets()
@@ -72,6 +82,7 @@ const SearchBoxWithoutLabel = ({
           <SearchBox
             searchInputID={searchInputID}
             accessibleHiddenTitle={t`Recherche une offre, un titre, un lieu...`}
+            setAutocompleteValue={setAutocompleteValue}
           />
         )}
       </SearchBoxContainer>
@@ -80,7 +91,14 @@ const SearchBoxWithoutLabel = ({
   )
 }
 
-export const SearchHeader: React.FC<Props> = ({ searchInputID, appEnableAutocomplete }) => {
+export const SearchHeader: React.FC<Props> = ({
+  searchInputID,
+  appEnableAutocomplete,
+  shouldAutocomplete,
+  setShouldAutocomplete,
+  setAutocompleteValue,
+  autocompleteValue,
+}) => {
   const showResults = useShowResults()
 
   return !params || params?.view === SearchView.Landing ? (
