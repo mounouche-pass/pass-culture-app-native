@@ -7,7 +7,6 @@ import styled from 'styled-components/native'
 import { useAvailableCredit } from 'features/home/services/useAvailableCredit'
 import { UseNavigationType } from 'features/navigation/RootNavigator'
 import { useUserProfileInfo } from 'features/profile/api'
-import { env } from 'libs/environment'
 import { formatToFrenchDecimal } from 'libs/parsers'
 import { TouchableOpacity } from 'ui/components/TouchableOpacity'
 import { BouncyHeaderBackground } from 'ui/svg/BouncyHeaderBackground'
@@ -42,13 +41,11 @@ export const HomeHeader: FunctionComponent = function () {
   return (
     <React.Fragment>
       <BouncyHeaderBackground />
-      {!!env.FEATURE_FLIPPING_ONLY_VISIBLE_ON_TESTING && (
-        <CheatCodeButtonContainer
-          onPress={() => navigation.navigate(Platform.OS === 'web' ? 'Navigation' : 'CheatMenu')}
-          style={{ top: getSpacing(3) + top }}>
-          <Text>{t`CheatMenu`}</Text>
-        </CheatCodeButtonContainer>
-      )}
+      <CheatCodeButtonContainer
+        onPress={() => navigation.navigate(Platform.OS === 'web' ? 'Navigation' : 'CheatMenu')}
+        style={{ top: getSpacing(3) + top }}>
+        <Text>{t`CheatMenu` + '@'}</Text>
+      </CheatCodeButtonContainer>
 
       <CenterContainer>
         <Spacer.Column numberOfSpaces={8} />
