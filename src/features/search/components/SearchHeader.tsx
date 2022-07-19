@@ -47,6 +47,7 @@ const SearchBoxWithLabel = ({
             <FloatingSearchBox searchInputID={searchInputID} showLocationButton={true} />
           </FloatingSearchBoxContainer>
         )}
+        <Spacer.Column numberOfSpaces={6} />
       </SearchBoxContainer>
     </React.Fragment>
   )

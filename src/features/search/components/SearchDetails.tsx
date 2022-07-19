@@ -19,11 +19,9 @@ export const SearchDetails: React.FC<Props> = ({ appEnableAutocomplete }) => {
 
   return params?.view === SearchView.Results ? (
     <SearchResults />
-  ) : (
-    <React.Fragment>
-      {!!appEnableAutocomplete && <SearchAutocomplete ref={listRef} hitComponent={Hit} />}
-    </React.Fragment>
-  )
+  ) : appEnableAutocomplete ? (
+    <SearchAutocomplete ref={listRef} hitComponent={Hit} />
+  ) : null
 }
 
 export type HitProps = {

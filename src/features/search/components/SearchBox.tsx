@@ -1,7 +1,7 @@
 import { t } from '@lingui/macro'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import React, { useCallback, useEffect, useState } from 'react'
-import { NativeSyntheticEvent, Platform, TextInputSubmitEditingEventData, View } from 'react-native'
+import { NativeSyntheticEvent, Platform, TextInputSubmitEditingEventData } from 'react-native'
 import styled from 'styled-components/native'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -95,9 +95,12 @@ export const SearchBox: React.FC<Props> = ({
   const onFocus = () => {
     if (params?.view === SearchView.Suggestions) return
     pushWithStagedSearch({
+      ...params,
       view: SearchView.Suggestions,
     })
   }
+
+  console.log({ params })
 
   return (
     <RowContainer testID="searchBoxWithoutAutocomplete">
@@ -114,6 +117,7 @@ export const SearchBox: React.FC<Props> = ({
           searchInputID={searchInputID}
           query={query}
           setQuery={setQuery}
+          isFocus={params?.view === SearchView.Suggestions}
           onSubmitQuery={onSubmitQuery}
           resetQuery={resetQuery}
           onFocus={onFocus}

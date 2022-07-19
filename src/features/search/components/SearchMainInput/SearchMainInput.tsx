@@ -48,33 +48,36 @@ export const SearchMainInput: FunctionComponent<Props> = ({
   onPressLocationButton,
   ref,
   ...props
-}) => (
-  <StyledSearchInput
-    placeholder="Offre, artiste..."
-    value={query}
-    onChangeText={setQuery}
-    onSubmitEditing={onSubmitQuery}
-    onPressRightIcon={resetQuery}
-    autoFocus={isFocus}
-    onFocus={onFocus}
-    nativeAutoFocus
-    LeftIcon={MagnifyingGlassIcon}
-    inputHeight="regular"
-    testID="searchInput"
-    ref={ref}
-    {...props}>
-    {!!showLocationButton && (
-      <LocationButton
-        testID="locationButton"
-        wording={locationLabel || ''}
-        onPress={onPressLocationButton}
-        icon={LocationPointer}
-        buttonHeight="extraSmall"
-        ellipsizeMode="tail"
-      />
-    )}
-  </StyledSearchInput>
-)
+}) => {
+  console.log({ isFocus })
+  return (
+    <StyledSearchInput
+      placeholder="Offre, artiste..."
+      value={query}
+      onChangeText={setQuery}
+      onSubmitEditing={onSubmitQuery}
+      onPressRightIcon={resetQuery}
+      autoFocus={isFocus}
+      onFocus={onFocus}
+      nativeAutoFocus
+      LeftIcon={MagnifyingGlassIcon}
+      inputHeight="regular"
+      testID="searchInput"
+      ref={ref}
+      {...props}>
+      {!!showLocationButton && (
+        <LocationButton
+          testID="locationButton"
+          wording={locationLabel || ''}
+          onPress={onPressLocationButton}
+          icon={LocationPointer}
+          buttonHeight="extraSmall"
+          ellipsizeMode="tail"
+        />
+      )}
+    </StyledSearchInput>
+  )
+}
 
 const StyledSearchInput = styled(SearchInput).attrs({
   inputContainerStyle: {

@@ -16,6 +16,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 import { UseNavigationType, UseRouteType } from 'features/navigation/RootNavigator'
 import { useLocationChoice } from 'features/search/components/locationChoice.utils'
+import { SearchMainInput } from 'features/search/components/SearchMainInput'
 import { LocationType } from 'features/search/enums'
 import { useStagedSearch } from 'features/search/pages/SearchWrapper'
 import { usePushWithStagedSearch } from 'features/search/pages/usePushWithStagedSearch'
@@ -26,7 +27,6 @@ import { TouchableOpacity } from 'ui/components/TouchableOpacity'
 import { ArrowPrevious as DefaultArrowPrevious } from 'ui/svg/icons/ArrowPrevious'
 import { getSpacing } from 'ui/theme'
 import { getHeadingAttrs } from 'ui/theme/typographyAttrs/getHeadingAttrs'
-import { SearchMainInput } from 'features/search/components/SearchMainInput'
 
 type Props = UseSearchBoxProps & {
   searchInputID: string
@@ -146,11 +146,11 @@ export const SearchBoxAutocomplete: React.FC<Props> = ({
   }
 
   return (
-    <View testID="searchBoxWithAutocomplete">
+    <RowContainer testID="searchBoxWithoutAutocomplete">
       {!!accessibleHiddenTitle && (
         <HiddenAccessibleText {...getHeadingAttrs(1)}>{accessibleHiddenTitle}</HiddenAccessibleText>
       )}
-      <SearchInputContainer marginHorizontal={showPreviousButton ? getSpacing(6) : 0}>
+      <SearchInputContainer {...props}>
         {showPreviousButton ? (
           <StyledTouchableOpacity testID="previousButton" onPress={onPressArrowBack}>
             <ArrowPrevious />
@@ -174,20 +174,24 @@ export const SearchBoxAutocomplete: React.FC<Props> = ({
         {t`Indique le nom d'une offre ou d'un lieu puis lance la recherche à l'aide de la touche
           "Entrée"`}
       </HiddenAccessibleText>
-    </View>
+    </RowContainer>
   )
 }
+
+const RowContainer = styled.View({
+  flexDirection: 'row',
+})
 
 const ArrowPrevious = styled(DefaultArrowPrevious).attrs(({ theme }) => ({
   size: theme.icons.sizes.small,
 }))``
 
-const SearchInputContainer = styled.View<{ marginHorizontal: number }>(({ marginHorizontal }) => ({
+const SearchInputContainer = styled.View({
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
-  marginHorizontal,
-}))
+  flex: 1,
+})
 
 const StyledTouchableOpacity = styled(TouchableOpacity)({
   marginRight: getSpacing(4),
