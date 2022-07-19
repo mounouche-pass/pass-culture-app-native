@@ -26,9 +26,9 @@ type CustomSearchInputProps = {
   onPressRightIcon?: () => void
   focusOutlineColor?: ColorsEnum
   searchInputID?: string
-  onFocusState?: (focus: boolean) => void
   inputContainerStyle?: ViewStyle
   children?: React.ReactNode
+  onFocus?: () => void
 }
 
 export type RNTextInputProps = Pick<
@@ -95,6 +95,7 @@ export function getCustomSearchInputProps(props: SearchInputProps): CustomSearch
     focusOutlineColor: props.focusOutlineColor,
     inputContainerStyle: props.inputContainerStyle,
     children: props.children,
+    onFocus: props.onFocus,
   }
 }
 

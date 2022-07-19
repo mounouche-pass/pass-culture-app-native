@@ -1,11 +1,13 @@
 import { t } from '@lingui/macro'
+import { useRoute } from '@react-navigation/native'
 import React from 'react'
 import { View } from 'react-native'
 import styled from 'styled-components/native'
 
+import { UseRouteType } from 'features/navigation/RootNavigator'
 import { SearchBox } from 'features/search/components/SearchBox'
 import { SearchBoxAutocomplete } from 'features/search/components/SearchBoxAutocomplete'
-import { useShowResults } from 'features/search/pages/useShowResults'
+import { SearchView } from 'features/search/types'
 import { InputLabel } from 'ui/components/InputLabel/InputLabel'
 import { styledInputLabel } from 'ui/components/InputLabel/styledInputLabel'
 import { HeaderBackground } from 'ui/svg/HeaderBackground'
@@ -16,19 +18,12 @@ import { useCustomSafeInsets } from 'ui/theme/useCustomSafeInsets'
 type Props = {
   searchInputID: string
   appEnableAutocomplete: boolean
-  shouldAutocomplete: boolean
-  setShouldAutocomplete: (isShowAutocomplete: boolean) => void
-  setAutocompleteValue: (query: string) => void
-  autocompleteValue: string
 }
 
 const SearchBoxWithLabel = ({
   searchInputID,
   appEnableAutocomplete,
-  shouldAutocomplete,
-  setShouldAutocomplete,
-  setAutocompleteValue,
-}: Omit<Props, 'paramsShowResults' | 'autocompleteValue'>) => {
+}: Omit<Props, 'paramsShowResults'>) => {
   const { top } = useCustomSafeInsets()
 
   return (
@@ -59,13 +54,9 @@ const SearchBoxWithLabel = ({
 
 const SearchBoxWithoutLabel = ({
   appEnableAutocomplete,
-  shouldAutocomplete,
-  setShouldAutocomplete,
-  setAutocompleteValue,
   searchInputID,
-}: Omit<Props, 'paramsShowResults' | 'autocompleteValue'>) => {
+}: Omit<Props, 'paramsShowResults'>) => {
   const { top } = useCustomSafeInsets()
-  const showResults = useShowResults()
 
   return (
     <React.Fragment>
@@ -81,7 +72,6 @@ const SearchBoxWithoutLabel = ({
           <SearchBox
             searchInputID={searchInputID}
             accessibleHiddenTitle={t`Recherche une offre, un titre, un lieu...`}
-            setAutocompleteValue={setAutocompleteValue}
           />
         )}
       </SearchBoxContainer>
@@ -90,15 +80,8 @@ const SearchBoxWithoutLabel = ({
   )
 }
 
-export const SearchHeader: React.FC<Props> = ({
-  searchInputID,
-  appEnableAutocomplete,
-  shouldAutocomplete,
-  setShouldAutocomplete,
-  setAutocompleteValue,
-  autocompleteValue,
-}) => {
-  const showResults = useShowResults()
+export const SearchHeader: React.FC<Props> = ({ searchInputID, appEnableAutocomplete }) => {
+  const { params } = useRoute<UseRouteType<'Search'>>()
 
   return !params || params?.view === SearchView.Landing ? (
     <SearchBoxWithLabel

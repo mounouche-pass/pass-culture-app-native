@@ -25,6 +25,35 @@ exports[`SearchBox component should render SearchBox 1`] = `
     }
   >
     <View
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "marginRight": 16,
+          "opacity": 1,
+          "userSelect": "auto",
+        }
+      }
+      testID="previousButton"
+    >
+      <View
+        height={24}
+        width={24}
+      >
+        <Text>
+          undefined-SVG-Mock
+        </Text>
+      </View>
+    </View>
+    <View
       height="regular"
       isDisabled={false}
       isError={false}

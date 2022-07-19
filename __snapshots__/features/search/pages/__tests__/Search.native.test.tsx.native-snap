@@ -3,13 +3,13 @@
 exports[`Search component should render Search 1`] = `
 Array [
   <View
-    height={96}
+    height={16}
     position="absolute"
     style={
       Array [
         Object {
           "backgroundColor": "#eb0055",
-          "height": 96,
+          "height": 16,
           "left": 0,
           "overflow": "hidden",
           "position": "absolute",
@@ -21,7 +21,7 @@ Array [
     }
   >
     <View
-      height={96}
+      height={16}
       width={964}
     >
       <Text>
@@ -50,23 +50,21 @@ Array [
         },
       ]
     }
-    testID="searchBoxWithLabel"
+    testID="searchBoxWithoutLabel"
   >
-    <View>
+    <View
+      testID="searchBoxWithAutocomplete"
+    >
       <Text
-        htmlFor="testUuidV4"
         style={
           Array [
             Object {
-              "color": "#ffffff",
-              "fontFamily": "Montserrat-Medium",
-              "fontSize": 18,
-              "lineHeight": 22,
+              "display": "none",
             },
           ]
         }
       >
-        Recherche une offre
+        Recherche une offre, un titre, un lieu...
       </Text>
     </View>
     <View
@@ -335,6 +333,25 @@ Array [
         },
       ]
     }
+    data={Array []}
+    getItem={[Function]}
+    getItemCount={[Function]}
+    keyExtractor={[Function]}
+    keyboardDismissMode="on-drag"
+    keyboardShouldPersistTaps="handled"
+    onContentSizeChange={[Function]}
+    onLayout={[Function]}
+    onMomentumScrollBegin={[Function]}
+    onMomentumScrollEnd={[Function]}
+    onScroll={[Function]}
+    onScrollBeginDrag={[Function]}
+    onScrollEndDrag={[Function]}
+    removeClippedSubviews={false}
+    renderItem={[Function]}
+    scrollEventThrottle={50}
+    stickyHeaderIndices={Array []}
+    testID="autocompleteList"
+    viewabilityConfigCallbackPairs={Array []}
   >
     <RCTScrollView
       ListHeaderComponent={
