@@ -51,7 +51,6 @@ export const SearchBox: React.FC<Props> = ({
 
   const resetQuery = useCallback(() => {
     pushWithStagedSearch({ query: '', view: SearchView.Landing })
-    setQuery('')
   }, [pushWithStagedSearch])
 
   const onPressArrowBack = useCallback(() => {
@@ -69,7 +68,6 @@ export const SearchBox: React.FC<Props> = ({
         reset: true,
       }
     )
-    setQuery('')
   }, [locationFilter, pushWithStagedSearch, stagedDispatch])
 
   const onPressLocationButton = useCallback(() => {
@@ -120,7 +118,6 @@ export const SearchBox: React.FC<Props> = ({
           resetQuery={resetQuery}
           onFocus={onFocus}
           showLocationButton={showLocationButton}
-          onChangeText={setQuery}
           locationLabel={locationLabel}
           onPressLocationButton={onPressLocationButton}
         />

@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from 'react'
 import { NativeSyntheticEvent, TextInputSubmitEditingEventData } from 'react-native'
+import { TextInput as RNTextInput } from 'react-native'
 import styled from 'styled-components/native'
 
 import { ButtonPrimary } from 'ui/components/buttons/ButtonPrimary'
@@ -18,7 +19,7 @@ type QueryProps = {
 
 type FocusProps = {
   isFocus?: boolean
-  onFocusState?: (focus: boolean) => void
+  onFocus?: () => void
 }
 
 type LocationProps = {
@@ -32,6 +33,7 @@ type Props = QueryProps &
   LocationProps & {
     searchInputID?: string
     children?: never
+    ref?: React.Ref<RNTextInput>
   }
 
 export const SearchMainInput: FunctionComponent<Props> = ({
@@ -40,10 +42,11 @@ export const SearchMainInput: FunctionComponent<Props> = ({
   onSubmitQuery,
   resetQuery,
   isFocus = false,
-  onFocusState,
+  onFocus,
   showLocationButton = false,
   locationLabel,
   onPressLocationButton,
+  ref,
   ...props
 }) => (
   <StyledSearchInput
@@ -53,11 +56,12 @@ export const SearchMainInput: FunctionComponent<Props> = ({
     onSubmitEditing={onSubmitQuery}
     onPressRightIcon={resetQuery}
     autoFocus={isFocus}
-    onFocusState={onFocusState}
+    onFocus={onFocus}
     nativeAutoFocus
     LeftIcon={MagnifyingGlassIcon}
     inputHeight="regular"
     testID="searchInput"
+    ref={ref}
     {...props}>
     {!!showLocationButton && (
       <LocationButton

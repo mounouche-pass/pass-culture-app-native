@@ -22,12 +22,11 @@ import { usePushWithStagedSearch } from 'features/search/pages/usePushWithStaged
 import { SearchView } from 'features/search/types'
 import { analytics } from 'libs/firebase/analytics'
 import { HiddenAccessibleText } from 'ui/components/HiddenAccessibleText'
-import { SearchInput } from 'ui/components/inputs/SearchInput'
 import { TouchableOpacity } from 'ui/components/TouchableOpacity'
 import { ArrowPrevious as DefaultArrowPrevious } from 'ui/svg/icons/ArrowPrevious'
-import { MagnifyingGlass as DefaultMagnifyingGlass } from 'ui/svg/icons/MagnifyingGlass'
 import { getSpacing } from 'ui/theme'
 import { getHeadingAttrs } from 'ui/theme/typographyAttrs/getHeadingAttrs'
+import { SearchMainInput } from 'features/search/components/SearchMainInput'
 
 type Props = UseSearchBoxProps & {
   searchInputID: string
@@ -157,20 +156,17 @@ export const SearchBoxAutocomplete: React.FC<Props> = ({
             <ArrowPrevious />
           </StyledTouchableOpacity>
         ) : null}
-        <StyledSearchInput
+        <SearchMainInput
           searchInputID={searchInputID}
-          value={value}
-          onChangeText={setValue}
-          placeholder={t`Offre, artiste...`}
-          autoFocus={params?.view === SearchView.Suggestions}
-          inputHeight="regular"
-          LeftIcon={() => <MagnifyingGlassIcon />}
-          onSubmitEditing={onSubmitQuery}
-          onPressRightIcon={resetQuery}
+          query={value}
+          setQuery={setValue}
+          isFocus={params?.view === SearchView.Suggestions}
+          onSubmitQuery={onSubmitQuery}
+          resetQuery={resetQuery}
           onFocus={onFocus}
-          testID="searchInput"
-          onPressLocationButton={showLocationButton ? onPressLocationButton : undefined}
+          showLocationButton={showLocationButton}
           locationLabel={locationLabel}
+          onPressLocationButton={onPressLocationButton}
           ref={inputRef}
         />
       </SearchInputContainer>
@@ -182,20 +178,8 @@ export const SearchBoxAutocomplete: React.FC<Props> = ({
   )
 }
 
-const StyledSearchInput = styled(SearchInput)({
-  outlineOffset: 0,
-})
-
 const ArrowPrevious = styled(DefaultArrowPrevious).attrs(({ theme }) => ({
   size: theme.icons.sizes.small,
-}))``
-
-const MagnifyingGlass = styled(DefaultMagnifyingGlass).attrs(({ theme }) => ({
-  size: theme.icons.sizes.smaller,
-}))``
-
-const MagnifyingGlassIcon = styled(MagnifyingGlass).attrs(({ theme }) => ({
-  size: theme.icons.sizes.smaller,
 }))``
 
 const SearchInputContainer = styled.View<{ marginHorizontal: number }>(({ marginHorizontal }) => ({
