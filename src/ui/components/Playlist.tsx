@@ -126,7 +126,7 @@ export const Playlist: FunctionComponent<Props> = ({
   const displayRightScrollButtonForNotTouchDevice = !isTouch && playlistStepIndex < nbOfSteps - 1
   return (
     <FlatListContainer>
-      {displayLeftScrollButtonForNotTouchDevice ? (
+      {/* {displayLeftScrollButtonForNotTouchDevice ? (
         <ScrollButtonForNotTouchDevice
           horizontalAlign="left"
           top={scrollButtonOffsetY}
@@ -141,24 +141,24 @@ export const Playlist: FunctionComponent<Props> = ({
           onPress={() => displayItems('next')}>
           <BicolorArrowRight />
         </ScrollButtonForNotTouchDevice>
-      ) : null}
+      ) : null} */}
       <FlatList
-        onLayout={({ nativeEvent }) => {
-          setPlaylistWidth(nativeEvent.layout.width)
-        }}
+        // onLayout={({ nativeEvent }) => {
+        //   setPlaylistWidth(nativeEvent.layout.width)
+        // }}
         testID={testID}
         ref={flatListRef}
-        scrollEnabled={isTouch}
+        // scrollEnabled={isTouch}
         data={dataWithHeaderAndFooter}
         renderItem={renderItemWithHeaderAndFooter}
-        keyExtractor={keyExtractorWithHeaderAndFooter}
+        // keyExtractor={keyExtractorWithHeaderAndFooter}
         getItemLayout={getItemLayout}
         showsHorizontalScrollIndicator={false}
-        scrollEventThrottle={200}
-        horizontal={true}
-        ItemSeparatorComponent={ItemSeparatorComponent}
-        ListHeaderComponent={HorizontalMargin}
-        ListFooterComponent={HorizontalMargin}
+        // scrollEventThrottle={200}
+        // horizontal={true}
+        // ItemSeparatorComponent={ItemSeparatorComponent}
+        // ListHeaderComponent={HorizontalMargin}
+        // ListFooterComponent={HorizontalMargin}
         onEndReached={onEndReached}
         onEndReachedThreshold={0.2}
       />

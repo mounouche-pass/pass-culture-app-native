@@ -19,7 +19,7 @@ import { ImageCaption } from 'ui/components/ImageCaption'
 import { ImageTile } from 'ui/components/ImageTile'
 import { OfferCaption } from 'ui/components/OfferCaption'
 import { TouchableLink } from 'ui/components/touchableLink/TouchableLink'
-import { getSpacing, MARGIN_DP } from 'ui/theme'
+import { getSpacing, MARGIN_DP, Typo } from 'ui/theme'
 import { customFocusOutline } from 'ui/theme/customFocusOutline/customFocusOutline'
 import { getHeadingAttrs } from 'ui/theme/typographyAttrs/getHeadingAttrs'
 
@@ -118,7 +118,8 @@ export function OfferTile(props: OfferTileProps) {
         isFocus={isFocus}
         testID={`offre ${name}`}
         accessibilityLabel={accessibilityLabel}>
-        <Container>
+        <Typo.Title1>{'toto'}</Typo.Title1>
+        {/* <Container>
           <OfferCaption
             imageWidth={width}
             name={name}
@@ -131,7 +132,8 @@ export function OfferTile(props: OfferTileProps) {
             <ImageTile
               width={width}
               height={height - IMAGE_CAPTION_HEIGHT}
-              uri={offer.thumbUrl}
+              // uri={'https://www.jardiner-malin.fr/wp-content/uploads/2015/02/tilleul-arbre.jpg'}
+              // uri={offer.thumbUrl}
               onlyTopBorderRadius
             />
             <ImageCaption
@@ -141,7 +143,7 @@ export function OfferTile(props: OfferTileProps) {
               distance={distance}
             />
           </View>
-        </Container>
+        </Container> */}
       </StyledTouchableLink>
     </View>
   )

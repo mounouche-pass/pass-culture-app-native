@@ -2,6 +2,7 @@ import { useLinkProps, useNavigation } from '@react-navigation/native'
 import debounce from 'lodash.debounce'
 import React, { createRef, ElementType, useEffect, useState } from 'react'
 import { GestureResponderEvent, NativeSyntheticEvent, Platform, TargetedEvent } from 'react-native'
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import styled from 'styled-components/native'
 
 import { openUrl } from 'features/navigation/helpers'
@@ -31,9 +32,7 @@ export function TouchableLink({
   hoverUnderlineColor,
   ...rest
 }: TouchableLinkProps) {
-  const TouchableComponent = (
-    highlight ? StyledTouchableHighlight : StyledTouchableOpacity
-  ) as ElementType
+  const TouchableComponent = TouchableWithoutFeedback
   const TouchableLinkComponent = Tag ? Tag : TouchableComponent
   const linkRef = createRef<HTMLAnchorElement>()
   const [isFocus, setIsFocus] = useState(false)
@@ -123,7 +122,7 @@ export function TouchableLink({
   )
 }
 
-const StyledTouchableOpacity = styled(TouchableOpacity)<{
+const StyledTouchableOpacity = styled(TouchableWithoutFeedback)<{
   isFocus?: boolean
   isHover?: boolean
   hoverUnderlineColor?: TouchableLinkProps['hoverUnderlineColor']

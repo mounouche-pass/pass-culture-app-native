@@ -58,44 +58,44 @@ const renderModule = (
       />
     )
 
-  if (isVenuesModuleTypeguard(item))
-    return (
-      <VenuesModule
-        moduleId={item.moduleId}
-        display={item.display}
-        search={item.search}
-        homeEntryId={homeEntryId}
-        index={index}
-      />
-    )
+  // if (isVenuesModuleTypeguard(item))
+  //   return (
+  //     <VenuesModule
+  //       moduleId={item.moduleId}
+  //       display={item.display}
+  //       search={item.search}
+  //       homeEntryId={homeEntryId}
+  //       index={index}
+  //     />
+  //   )
 
-  if (item instanceof RecommendationPane)
-    return (
-      <RecommendationModule
-        moduleId={item.moduleId}
-        index={index}
-        displayParameters={item.displayParameters}
-        recommendationParameters={item.recommendationParameters}
-        homeEntryId={homeEntryId}
-      />
-    )
+  // if (item instanceof RecommendationPane)
+  //   return (
+  //     <RecommendationModule
+  //       moduleId={item.moduleId}
+  //       index={index}
+  //       displayParameters={item.displayParameters}
+  //       recommendationParameters={item.recommendationParameters}
+  //       homeEntryId={homeEntryId}
+  //     />
+  //   )
 
-  if (item instanceof ExclusivityPane)
-    return (
-      <ExclusivityModule
-        moduleId={item.moduleId}
-        title={item.title}
-        alt={item.alt}
-        image={item.image}
-        id={item.id}
-        display={item.display}
-        homeEntryId={homeEntryId}
-        index={index}
-      />
-    )
+  // if (item instanceof ExclusivityPane)
+  //   return (
+  //     <ExclusivityModule
+  //       moduleId={item.moduleId}
+  //       title={item.title}
+  //       alt={item.alt}
+  //       image={item.image}
+  //       id={item.id}
+  //       display={item.display}
+  //       homeEntryId={homeEntryId}
+  //       index={index}
+  //     />
+  //   )
 
-  if (item instanceof BusinessPane)
-    return <BusinessModule {...item} homeEntryId={homeEntryId} index={index} />
+  // if (item instanceof BusinessPane)
+  //   return <BusinessModule {...item} homeEntryId={homeEntryId} index={index} />
 
   return <React.Fragment></React.Fragment>
 }
@@ -123,7 +123,8 @@ export const OnlineHome: FunctionComponent = () => {
   const maxToRenderPerBatch = 5
   const [maxIndex, setMaxIndex] = useState(initialNumToRender)
   const [isLoading, setIsLoading] = useState(false)
-  const modulesToDisplay = Platform.OS === 'web' ? modules : modules.slice(0, maxIndex)
+  // const modulesToDisplay = Platform.OS === 'web' ? modules : modules.slice(0, maxIndex)
+  const modulesToDisplay = modules.slice(0, maxIndex)
 
   const onScroll = useCallback(
     ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {

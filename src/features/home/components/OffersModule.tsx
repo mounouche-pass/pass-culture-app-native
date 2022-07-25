@@ -57,9 +57,9 @@ export const OffersModule = (props: OffersModuleProps) => {
     analytics.logAllTilesSeen(moduleName, hits.length)
   )
 
-  const showSeeMore =
-    hits.length < nbHits &&
-    !(parameters.tags || parameters.beginningDatetime || parameters.endingDatetime)
+  const showSeeMore = false
+  // hits.length < nbHits &&
+  // !(parameters.tags || parameters.beginningDatetime || parameters.endingDatetime)
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const onPressSeeMore = showSeeMore
@@ -130,6 +130,7 @@ export const OffersModule = (props: OffersModuleProps) => {
       title={display.title}
       subtitle={index === 0 ? undefined : display.subtitle}
       onDarkBackground={index === 0}
+      // data={hits.filter((value, index) => index < 2)}
       data={hits}
       itemHeight={itemHeight}
       itemWidth={itemWidth}
