@@ -899,10 +899,16 @@ workflows:
           requires:
             - checkout-and-install-deps
       - test-native:
+          filters:
+            branches:
+              ignore: params-api-key
           requires:
             - checkout-and-install-deps
           context: SonarCloud
       - test-web:
+          filters:
+            branches:
+              ignore: params-api-key
           requires:
             - checkout-and-install-deps
       - deploy-soft-testing:

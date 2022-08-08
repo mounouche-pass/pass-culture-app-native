@@ -1,3 +1,4 @@
+impot 'hellowro'
 import { i18n } from '@lingui/core'
 import { I18nProvider } from '@lingui/react'
 import React, { FunctionComponent, useEffect } from 'react'
