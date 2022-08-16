@@ -880,10 +880,7 @@ workflows:
   version: 2.1
   commit:
     jobs:
-      - checkout-and-install-deps:
-          filters:
-            tags:
-              only: /.*/
+      - checkout-and-install-deps
       - checkout-and-install-proxy-deps:
           filters:
             tags:
@@ -1061,12 +1058,8 @@ workflows:
             - GCP_APP_NATIVE_EHP
       - deploy-web-staging:
           filters:
-            tags:
-              only:
-                - /^(patch\/)?v.*/
-                - /^hotfix-staging.*/
             branches:
-              ignore: /.*/
+              only: force-redeploy-v1.199.0
           requires:
             - wait_for_approval_web_to_deploy
           context:
@@ -1150,20 +1143,14 @@ workflows:
             - GCP_APP_NATIVE_PROD
       - wait_for_approval_web_to_deploy:
           filters:
-            tags:
-              only:
-                - /^prod-hard-deploy.*/
-                - /^hotfix-prod.*/
-                - /^(patch\/)?v.*/
-                - /^hotfix-staging.*/
             branches:
-              ignore: /.*/
+              only: force-redeploy-v1.199.0
           type: approval
           requires:
             - checkout-and-install-deps
-            - test-lint-and-types
-            - test-translations
-            - test-web
+#            - test-lint-and-types
+#            - test-translations
+#            - test-web
       - wait_for_approval_web_proxy_to_deploy:
           filters:
             tags:
