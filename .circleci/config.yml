@@ -1056,13 +1056,13 @@ workflows:
             - GCP_APP_NATIVE_EHP
       - deploy-web-staging:
           filters:
-#            tags:
-#              only:
-#                - /^(patch\/)?v.*/
-#                - /^hotfix-staging.*/
+            tags:
+              only:
+                - /^(patch\/)?v.*/
+                - /^hotfix-staging.*/
             branches:
-              only: force-deploy-v1.200.3-staging
-#              ignore: /.*/
+#              only: force-deploy-v1.200.3-staging
+              ignore: /.*/
           requires:
             - wait_for_approval_web_to_deploy
           context:
@@ -1070,12 +1070,14 @@ workflows:
             - GCP_APP_NATIVE_EHP
       - deploy-web-integration:
           filters:
-            tags:
-              only:
-                - /^prod-hard-deploy.*/
-                - /^hotfix-prod.*/
             branches:
-              ignore: /.*/
+              only: force-deploy-v1.200.3-staging
+#            tags:
+#              only:
+#                - /^prod-hard-deploy.*/
+#                - /^hotfix-prod.*/
+#            branches:
+#              ignore: /.*/
           requires:
             - wait_for_approval_web_to_deploy
           context:
@@ -1083,12 +1085,14 @@ workflows:
             - GCP_APP_NATIVE_EHP
       - deploy-web-prod:
           filters:
-            tags:
-              only:
-                - /^prod-hard-deploy.*/
-                - /^hotfix-prod.*/
             branches:
-              ignore: /.*/
+              only: force-deploy-v1.200.3-staging
+#            tags:
+#              only:
+#                - /^prod-hard-deploy.*/
+#                - /^hotfix-prod.*/
+#            branches:
+#              ignore: /.*/
           requires:
             - wait_for_approval_web_to_deploy
           context:
