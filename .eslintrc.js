@@ -96,6 +96,7 @@ module.exports = {
       },
       { name: '@react-native-firebase/perf', message: 'use libs/firebase/perf instead' },
       { name: '@react-native-firebase/remote-config', message: 'use libs/firebase-config instead' },
+      { name: 'react-instantsearch-hooks', message: 'use libs/react-instantsearch-hooks instead' },
     ],
     'no-restricted-properties': [
       2,

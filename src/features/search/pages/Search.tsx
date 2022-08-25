@@ -1,7 +1,6 @@
 import { useRoute } from '@react-navigation/native'
 import { SearchClient } from 'algoliasearch'
 import React, { memo, useEffect } from 'react'
-import { Configure, InstantSearch } from 'react-instantsearch-hooks'
 import styled from 'styled-components/native'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -19,6 +18,7 @@ import { client } from 'libs/algolia/fetchAlgolia/clients'
 import { env } from 'libs/environment'
 import { useNetInfoContext } from 'libs/network/NetInfoWrapper'
 import { OfflinePage } from 'libs/network/OfflinePage'
+import { Configure, InstantSearch } from 'libs/react-instantsearch-hooks'
 import { Form } from 'ui/components/Form'
 import { Spacer } from 'ui/theme'
 
@@ -54,7 +54,9 @@ const BodySearch = memo(function BodySearch({ view }: BodySearchProps) {
   const showResultsForCategory = useShowResultsForCategory()
 
   if (view === SearchView.Suggestions) {
-    return (
+    return env.ENV === 'integration' ? (
+      <React.Fragment />
+    ) : (
       <React.Fragment>
         <SearchAutocomplete hitComponent={Hit} />
       </React.Fragment>

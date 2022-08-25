@@ -1,9 +1,9 @@
 import React from 'react'
-import { useInfiniteHits, UseInfiniteHitsProps } from 'react-instantsearch-hooks'
 import { FlatList } from 'react-native'
 
 import { HitProps } from 'features/search/pages/Search'
 import { AlgoliaSuggestionHit } from 'libs/algolia'
+import { useInfiniteHits, UseInfiniteHitsProps } from 'libs/react-instantsearch-hooks'
 import { getSpacing } from 'ui/theme'
 
 type Props = UseInfiniteHitsProps & {
