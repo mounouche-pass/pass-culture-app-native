@@ -1164,9 +1164,9 @@ workflows:
           type: approval
           requires:
             - checkout-and-install-deps
-            - test-lint-and-types
-            - test-translations
-            - test-web
+#            - test-lint-and-types
+#            - test-translations
+#            - test-web
       - wait_for_approval_web_proxy_to_deploy:
           filters:
             tags:
