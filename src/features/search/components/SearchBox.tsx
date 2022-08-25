@@ -3,7 +3,6 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import debounce from 'lodash/debounce'
 import omit from 'lodash/omit'
 import React, { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useSearchBox, UseSearchBoxProps } from 'react-instantsearch-hooks'
 import {
   Insets,
   NativeSyntheticEvent,
@@ -25,6 +24,7 @@ import { SearchView } from 'features/search/types'
 import { useFilterCount } from 'features/search/utils/useFilterCount'
 import { env } from 'libs/environment'
 import { analytics } from 'libs/firebase/analytics'
+import { useSearchBox, UseSearchBoxProps } from 'libs/react-instantsearch-hooks'
 import { HiddenAccessibleText } from 'ui/components/HiddenAccessibleText'
 import { TouchableOpacity } from 'ui/components/TouchableOpacity'
 import { ArrowPrevious as DefaultArrowPrevious } from 'ui/svg/icons/ArrowPrevious'
