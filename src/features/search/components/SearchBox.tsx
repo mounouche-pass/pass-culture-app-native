@@ -23,6 +23,7 @@ import { useLocationType } from 'features/search/pages/useLocationType'
 import { usePushWithStagedSearch } from 'features/search/pages/usePushWithStagedSearch'
 import { SearchView } from 'features/search/types'
 import { useFilterCount } from 'features/search/utils/useFilterCount'
+import { env } from 'libs/environment'
 import { analytics } from 'libs/firebase/analytics'
 import { HiddenAccessibleText } from 'ui/components/HiddenAccessibleText'
 import { TouchableOpacity } from 'ui/components/TouchableOpacity'
@@ -72,7 +73,7 @@ export const SearchBox: React.FunctionComponent<Props> = ({
   // Track when the value coming from the React state changes to synchronize
   // it with InstantSearch.
   useEffect(() => {
-    if (autocompleteQuery !== query && appEnableAutocomplete) {
+    if (autocompleteQuery !== query && appEnableAutocomplete && env.ENV !== 'integration') {
       debounceSetAutocompleteQuery(query)
     }
     // avoid conflicts when local autocomplete query state is updating

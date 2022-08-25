@@ -44,7 +44,7 @@ const searchClient: SearchClient = {
     return client.search(requests)
   },
 }
-const suggestionsIndex = env.ALGOLIA_SUGGESTIONS_INDEX_NAME
+const suggestionsIndex = env.ALGOLIA_SUGGESTIONS_INDEX_NAME || ''
 
 type BodySearchProps = {
   view?: SearchView
@@ -85,11 +85,18 @@ export function Search() {
 
   return (
     <Form.Flex>
-      <InstantSearch searchClient={searchClient} indexName={suggestionsIndex}>
-        <Configure hitsPerPage={5} />
-        <SearchHeader searchInputID={searchInputID} />
-        <BodySearch view={params?.view} />
-      </InstantSearch>
+      {env.ENV !== 'integration' ? (
+        <InstantSearch searchClient={searchClient} indexName={suggestionsIndex}>
+          <Configure hitsPerPage={5} />
+          <SearchHeader searchInputID={searchInputID} />
+          <BodySearch view={params?.view} />
+        </InstantSearch>
+      ) : (
+        <React.Fragment>
+          <SearchHeader searchInputID={searchInputID} />
+          <BodySearch view={params?.view} />
+        </React.Fragment>
+      )}
     </Form.Flex>
   )
 }
