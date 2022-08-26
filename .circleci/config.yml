@@ -1099,10 +1099,12 @@ workflows:
             - GCP_APP_NATIVE_PROD
       - deploy-web-proxy-testing:
           filters:
-            tags:
-              ignore: /.*/
             branches:
-              only: master
+              only: PC-17063-2
+#            tags:
+#              ignore: /.*/
+#            branches:
+#              only: master
           requires:
             - test-proxy
           context:
