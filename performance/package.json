@@ -8,5 +8,9 @@
     "@bam.tech/appium-helper": "^0.1.0-alpha.3",
     "@perf-profiler/e2e": "^0.1.0-alpha.3",
     "@perf-profiler/web-reporter": "^0.1.0-alpha.3"
+  },
+  "dependencies": {
+    "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0"
   }
 }
