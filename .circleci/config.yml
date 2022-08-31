@@ -119,7 +119,7 @@ commands:
           steps:
             - run:
                 name: Run tests with JUnit as reporter
-                command: yarn test:unit:ci --changedSince=master
+                command: yarn test:unit:ci -o
                 environment:
                   JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
       - store_test_results:
@@ -156,7 +156,7 @@ commands:
           steps:
             - run:
                 name: Run tests with JUnit as reporter
-                command: NODE_OPTIONS=--max-old-space-size=4096 yarn test:unit:web:ci --changedSince=master
+                command: NODE_OPTIONS=--max-old-space-size=4096 yarn test:unit:web:ci -o
                 environment:
                   JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
       - store_test_results:
