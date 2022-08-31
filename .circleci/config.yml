@@ -1069,12 +1069,14 @@ workflows:
             - GCP_APP_NATIVE_EHP
       - deploy-web-integration:
           filters:
-            tags:
-              only:
-                - /^prod-hard-deploy.*/
-                - /^hotfix-prod.*/
             branches:
-              ignore: /.*/
+              only: mei-integration-1.201.1
+#            tags:
+#              only:
+#                - /^prod-hard-deploy.*/
+#                - /^hotfix-prod.*/
+#            branches:
+#              ignore: /.*/
           requires:
             - wait_for_approval_web_to_deploy
           context:
@@ -1160,9 +1162,9 @@ workflows:
           type: approval
           requires:
             - checkout-and-install-deps
-            - test-lint-and-types
-            - test-translations
-            - test-web
+#            - test-lint-and-types
+#            - test-translations
+#            - test-web
       - wait_for_approval_web_proxy_to_deploy:
           filters:
             tags:
