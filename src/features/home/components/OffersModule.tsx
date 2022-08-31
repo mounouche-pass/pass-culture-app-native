@@ -40,7 +40,7 @@ export const OffersModule = (props: OffersModuleProps) => {
   const labelMapping = useCategoryHomeLabelMapping()
   const { data: profile } = useUserProfileInfo()
 
-  const { hits = [], nbHits = 0 } = data || {}
+  const { hits = [], nbHits = 1 } = data || {}
 
   const [parameters] = search
   // When we navigate to the search page, we want to show 20 results per page,
