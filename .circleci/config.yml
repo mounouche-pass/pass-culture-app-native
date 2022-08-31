@@ -421,7 +421,7 @@ jobs:
       - install_node_modules_proxy
       - run:
           name: Linter
-          command: exit 1 && yarn --cwd server test:lint
+          command: yarn --cwd server test:lint
       - run:
           name: Typescript Type Check
           command: yarn --cwd server test:types
