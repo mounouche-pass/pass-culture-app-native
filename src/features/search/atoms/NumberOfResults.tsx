@@ -36,7 +36,7 @@ export const NumberOfResults: React.FC<Props> = ({ nbHits }) => {
       : { locationType: LocationType.EVERYWHERE }
 
     // this reset staged in case of new search
-    dispatchStagedSearch({ type: 'SET_STATE_FROM_NAVIGATE', payload: { locationFilter } })
+    dispatchStagedSearch({ type: 'SET_STATE', payload: { locationFilter } })
 
     // this reset current search results
     navigate(...getTabNavConfig('Search', { locationFilter }))

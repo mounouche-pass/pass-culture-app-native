@@ -59,7 +59,7 @@ describe('NumberOfResults component', () => {
 
       const params = { locationFilter: { locationType: LocationType.EVERYWHERE } }
       expect(mockStagedSearchDispatch).toBeCalledWith({
-        type: 'SET_STATE_FROM_NAVIGATE',
+        type: 'SET_STATE',
         payload: params,
       })
 

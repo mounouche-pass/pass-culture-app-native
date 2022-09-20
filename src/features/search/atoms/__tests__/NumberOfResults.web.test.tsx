@@ -71,7 +71,7 @@ describe('NumberOfResults component', () => {
 
       const params = { locationFilter: { locationType: LocationType.AROUND_ME, aroundRadius: 100 } }
       expect(mockStagedSearchDispatch).toBeCalledWith({
-        type: 'SET_STATE_FROM_NAVIGATE',
+        type: 'SET_STATE',
         payload: params,
       })
 
