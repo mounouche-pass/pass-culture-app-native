@@ -1,8 +1,11 @@
 import { useCallback, useEffect, useState } from 'react'
+import { Platform } from 'react-native'
 
+import { useIdentityCheckNavigation } from 'features/identityCheck/useIdentityCheckNavigation'
 import { eduConnectClient } from 'libs/eduConnectClient'
 
 export function useEduConnectLogin() {
+  const { navigateToNextScreen } = useIdentityCheckNavigation()
   const [loginUrl, setLoginUrl] = useState<string>()
   const [error, setError] = useState<Error | null>(null)
 
@@ -35,10 +38,14 @@ export function useEduConnectLogin() {
     getLoginUrl().catch(setError)
   }, [getLoginUrl])
 
-  const openEduConnect = useCallback(async () => {
-    globalThis.window.open(loginUrl, '_blank')
-    await getLoginUrl()
-  }, [getLoginUrl, loginUrl])
+  const openEduConnectForm = useCallback(async () => {
+    if (Platform.OS === 'web') {
+      globalThis.window.open(loginUrl, '_blank')
+      await getLoginUrl()
+    } else {
+      navigateToNextScreen()
+    }
+  }, [getLoginUrl, loginUrl, navigateToNextScreen])
 
-  return { openEduConnect, loginUrl, error }
+  return { openEduConnectForm, loginUrl, error }
 }

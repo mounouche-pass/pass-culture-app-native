@@ -5,7 +5,6 @@ import { useEduConnectLogin } from 'features/identityCheck/api/useEduConnectLogi
 import { CenteredTitle } from 'features/identityCheck/atoms/CenteredTitle'
 import { PageWithHeader } from 'features/identityCheck/components/layout/PageWithHeader'
 import { useIdentityCheckContext } from 'features/identityCheck/context/IdentityCheckContextProvider'
-import { useIdentityCheckNavigation } from 'features/identityCheck/useIdentityCheckNavigation'
 import { homeNavConfig } from 'features/navigation/TabBar/helpers'
 import { useGoBack } from 'features/navigation/useGoBack'
 import { ButtonPrimary } from 'ui/components/buttons/ButtonPrimary'
@@ -15,23 +14,17 @@ import { ExternalSite } from 'ui/svg/icons/ExternalSite'
 import { Spacer, Typo } from 'ui/theme'
 
 export const IdentityCheckEduConnect = () => {
-  const { navigateToNextScreen } = useIdentityCheckNavigation()
   const { dispatch } = useIdentityCheckContext()
   const { goBack } = useGoBack(...homeNavConfig)
 
-  const { error, openEduConnect } = useEduConnectLogin()
+  const { error, openEduConnectForm } = useEduConnectLogin()
 
   const onGoBack = () => {
     dispatch({ type: 'SET_METHOD', payload: null })
     goBack()
   }
 
-  const onSubmit = () => {
-    navigateToNextScreen()
-    openEduConnect()
-  }
-
-  useEnterKeyAction(onSubmit)
+  useEnterKeyAction(openEduConnectForm)
 
   if (error) {
     throw error
@@ -62,7 +55,11 @@ export const IdentityCheckEduConnect = () => {
         </Container>
       }
       fixedBottomChildren={
-        <ButtonPrimary wording="Connexion avec ÉduConnect" onPress={onSubmit} icon={ExternalSite} />
+        <ButtonPrimary
+          wording="Connexion avec ÉduConnect"
+          onPress={openEduConnectForm}
+          icon={ExternalSite}
+        />
       }
     />
   )
