@@ -1038,24 +1038,26 @@ workflows:
             - deploy-android-testing-hard
       - deploy-android-staging-hard:
           filters:
-            tags:
-              only: /^(patch\/)?v.*/
+            # tags:
+            #   only: /^(patch\/)?v.*/
             branches:
-              ignore: /.*/
+              # ignore: /.*/
+              only: no-progressive-loading
           requires:
             - checkout-and-install-deps
             - test-lint-and-types
-            - test-native
+            # - test-native
       - deploy-ios-staging-hard:
           filters:
-            tags:
-              only: /^(patch\/)?v.*/
+            # tags:
+            #   only: /^(patch\/)?v.*/
             branches:
-              ignore: /.*/
+              # ignore: /.*/
+              only: no-progressive-loading
           requires:
             - checkout-and-install-deps
             - test-lint-and-types
-            - test-native
+            # - test-native
       - notify-hard-staging-release:
           filters:
             tags:
