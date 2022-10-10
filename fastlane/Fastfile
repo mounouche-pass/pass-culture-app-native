@@ -26,7 +26,21 @@ platform :ios do
   release_notes = %x[#{release_notes_command}]
   escaped_release_notes = release_notes.gsub("\"", "\\\"")
 
+  lane :resign_ipa do
+    match(
+      shallow_clone: true,
+      clone_branch_directly: true,
+      readonly: true
+    )
+    resign(
+      ipa: "#{ENV['IOS_IPA_DIRECTORY']}/#{ENV['IOS_IPA_NAME']}",
+      display_name: "pass Culture Skwadak",
+      signing_identity: "pass Culture",
+    )
+  end
+
   lane :deploy_appCenter do |options|
+    
     appcenter_upload(
       api_token: ENV['IOS_APPCENTER_API_TOKEN'],
       owner_name: ENV['APPCENTER_ORGANISATION'],
