@@ -41,6 +41,8 @@ export function useEduConnectLogin() {
   const openEduConnectForm = useCallback(async () => {
     if (Platform.OS === 'web') {
       globalThis.window.open(loginUrl, '_blank')
+      // we need to refetch educonnect login url every time we open educonnect form on web platform
+      // to get a new login url otherwise if we try to refresh or update credentials, the login url is invalid
       await getLoginUrl()
     } else {
       navigateToNextScreen()
