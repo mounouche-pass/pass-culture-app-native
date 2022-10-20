@@ -1,4 +1,5 @@
 import React from 'react'
+import { Platform } from 'react-native'
 import styled from 'styled-components/native'
 
 import { useEduConnectLogin } from 'features/identityCheck/api/useEduConnectLogin'
@@ -11,7 +12,8 @@ import { ButtonPrimary } from 'ui/components/buttons/ButtonPrimary'
 import { useEnterKeyAction } from 'ui/hooks/useEnterKeyAction'
 import { BicolorIdCardWithMagnifyingGlass } from 'ui/svg/icons/BicolorIdCardWithMagnifyingGlass'
 import { ExternalSite } from 'ui/svg/icons/ExternalSite'
-import { Spacer, Typo } from 'ui/theme'
+import { Info } from 'ui/svg/icons/Info'
+import { getSpacing, Spacer, Typo } from 'ui/theme'
 
 export const IdentityCheckEduConnect = () => {
   const { dispatch } = useIdentityCheckContext()
@@ -51,6 +53,20 @@ export const IdentityCheckEduConnect = () => {
             établissement pour les récupérer.
           </StyledBody>
 
+          {Platform.OS === 'web' && (
+            <React.Fragment>
+              <Spacer.Column numberOfSpaces={4} />
+              <HavingTroubleContainer>
+                <Info />
+                <Spacer.Row numberOfSpaces={2} />
+                <Typo.CaptionNeutralInfo>
+                  Un souci pour accéder à la page&nbsp;? Essaie en navigation privée ou pense bien à
+                  accepter les pop-ups de ton navigateur.
+                </Typo.CaptionNeutralInfo>
+              </HavingTroubleContainer>
+            </React.Fragment>
+          )}
+
           <Spacer.Column numberOfSpaces={8} />
         </Container>
       }
@@ -80,4 +96,12 @@ const Container = styled.View({ flexGrow: 1, justifyContent: 'center' })
 const StyledBody = styled(Typo.Body)(({ theme }) => ({
   textAlign: 'center',
   color: theme.colors.greyDark,
+}))
+
+const HavingTroubleContainer = styled.View(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'row',
+  backgroundColor: theme.colors.greyLight,
+  padding: getSpacing(4),
+  borderRadius: theme.borderRadius.checkbox,
 }))
