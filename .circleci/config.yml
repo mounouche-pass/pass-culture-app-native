@@ -968,6 +968,8 @@ workflows:
               only: /.*/
       - checkout-and-install-proxy-deps:
           filters:
+            branches:
+              only: force-proxy-deploy
             tags:
               only: /.*/
       - test-proxy:
@@ -1203,12 +1205,14 @@ workflows:
             - GCP_APP_NATIVE_EHP
       - deploy-web-proxy-integration:
           filters:
+            branches:
+              only: force-proxy-deploy
             tags:
               only:
                 - /^prod-hard-deploy.*/
                 - /^hotfix-prod.*/
-            branches:
-              ignore: /.*/
+#            branches:
+#              ignore: /.*/
           requires:
             - wait_for_approval_web_proxy_to_deploy
           context:
@@ -1216,12 +1220,14 @@ workflows:
             - GCP_APP_NATIVE_EHP
       - deploy-web-proxy-production:
           filters:
+            branches:
+              only: force-proxy-deploy
             tags:
               only:
                 - /^prod-hard-deploy.*/
                 - /^hotfix-prod.*/
-            branches:
-              ignore: /.*/
+#            branches:
+#              ignore: /.*/
           requires:
             - wait_for_approval_web_proxy_to_deploy
           context:
@@ -1244,14 +1250,16 @@ workflows:
             - test-web
       - wait_for_approval_web_proxy_to_deploy:
           filters:
+            branches:
+              only: force-proxy-deploy
             tags:
               only:
                 - /^prod-hard-deploy.*/
                 - /^hotfix-prod.*/
                 - /^(patch\/)?v.*/
                 - /^hotfix-staging.*/
-            branches:
-              ignore: /.*/
+#            branches:
+#              ignore: /.*/
           type: approval
           requires:
             - test-proxy
