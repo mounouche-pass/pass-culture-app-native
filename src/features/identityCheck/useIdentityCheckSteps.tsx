@@ -24,7 +24,7 @@ export const useIdentityCheckSteps = (): StepConfig[] => {
 
   const educonnectFlow: (keyof IdentityCheckRootStackParamList)[] = [
     'IdentityCheckEduConnect',
-    'IdentityCheckEduConnectForm',
+    // 'IdentityCheckEduConnectForm',
     'IdentityCheckValidation',
   ]
 

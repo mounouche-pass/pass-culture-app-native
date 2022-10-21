@@ -1,6 +1,7 @@
 import { useFocusEffect } from '@react-navigation/native'
 import React, { useCallback, useRef, useState } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
+import { Platform } from 'react-native'
 import { URL } from 'react-native-url-polyfill'
 import WebView, { WebViewNavigation } from 'react-native-webview'
 import { WebViewSource } from 'react-native-webview/lib/WebViewTypes'

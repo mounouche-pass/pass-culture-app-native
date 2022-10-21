@@ -154,12 +154,12 @@ export const identityCheckRoutes: GenericRoute<IdentityCheckRootStackParamList>[
     options: { title: 'Identification' },
     secure: false,
   },
-  {
-    name: 'IdentityCheckEduConnectForm',
-    component: IdentityCheckEduConnectForm,
-    path: 'educonnect-formulaire',
-    options: { title: 'Identification avec EduConnect' },
-  },
+  // {
+  //   name: 'IdentityCheckEduConnectForm',
+  //   component: IdentityCheckEduConnectForm,
+  //   path: 'educonnect-formulaire',
+  //   options: { title: 'Identification avec EduConnect' },
+  // },
   {
     name: 'IdentityCheckValidation',
     component: IdentityCheckValidation,
