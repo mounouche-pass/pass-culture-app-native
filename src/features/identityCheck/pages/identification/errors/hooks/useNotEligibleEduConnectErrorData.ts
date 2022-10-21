@@ -1,10 +1,8 @@
-import { useNavigation } from '@react-navigation/native'
 import { FunctionComponent } from 'react'
-import { TextStyle } from 'react-native'
+import { Platform, TextStyle } from 'react-native'
 
 import { useBeneficiaryValidationNavigation } from 'features/auth/signup/useBeneficiaryValidationNavigation'
 import { contactSupport } from 'features/auth/support.services'
-import { UseNavigationType } from 'features/navigation/RootNavigator'
 import { ExternalNavigationProps, TouchableLinkProps } from 'ui/components/touchableLink/types'
 import { Email } from 'ui/svg/icons/Email'
 import { MaintenanceCone } from 'ui/svg/icons/MaintenanceCone'
@@ -68,7 +66,6 @@ const getInvalidInformationErrorData = (
 })
 
 const getUserTypeNotStudentErrorData = (
-  onPrimaryButtonPress: () => void,
   navigateTo: TouchableLinkProps['navigateTo']
 ): NotEligibleEduConnectErrorData => ({
   Illustration: UserError,
@@ -80,7 +77,6 @@ const getUserTypeNotStudentErrorData = (
   descriptionAlignment: 'center',
   primaryButton: {
     text: 'Réessayer de m’identifier',
-    onPress: onPrimaryButtonPress,
     navigateTo,
   },
   isGoHomeTertiaryButtonVisible: true,
@@ -113,7 +109,6 @@ export function useNotEligibleEduConnectErrorData(
   setError: (error: Error | undefined) => void
 ) {
   const { nextBeneficiaryValidationStepNavConfig } = useBeneficiaryValidationNavigation(setError)
-  const { goBack } = useNavigation<UseNavigationType>()
   switch (message) {
     case EduConnectErrorMessageEnum.UserAgeNotValid18YearsOld:
       return getInvalidInformationErrorData(nextBeneficiaryValidationStepNavConfig)
@@ -122,12 +117,9 @@ export function useNotEligibleEduConnectErrorData(
       return UserAgeNotValidErrorData
 
     case EduConnectErrorMessageEnum.UserTypeNotStudent:
-      return getUserTypeNotStudentErrorData(
-        () => {
-          goBack()
-        },
-        { screen: 'IdentityCheckEduConnectForm' }
-      )
+      return getUserTypeNotStudentErrorData({
+        screen: Platform.OS === 'web' ? 'IdentityCheckEduConnect' : 'IdentityCheckEduConnectForm',
+      })
 
     case EduConnectErrorMessageEnum.DuplicateUser:
       return DuplicateUserErrorData
