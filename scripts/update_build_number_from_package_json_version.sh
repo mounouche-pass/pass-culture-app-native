@@ -25,8 +25,10 @@ update_build_number_from_package_json_version() {
   SEMVER=(${VERSION//./ })
   MAJOR=${SEMVER[0]}
   MINOR=${SEMVER[1]}
-  PATCH=${SEMVER[2]}
-  BUILD_NUMBER="$((10000000 * MAJOR + 1000 * MINOR + PATCH))"
+  PATCH_WITH_PREFIX=${SEMVER[2]}
+  PATCH=(${PATCH_WITH_PREFIX//-/ })[0]
+  SUFFIX=(${PATCH_WITH_PREFIX//-/ })[1]
+  BUILD_NUMBER="$((10000000000 * MAJOR + 1000000 * MINOR + PATCH * 1000 + SUFFIX))"
   yarn json --in-place -f package.json -e "this.build=$BUILD_NUMBER"
 }
 
