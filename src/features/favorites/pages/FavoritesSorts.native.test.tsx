@@ -42,7 +42,7 @@ describe('FavoritesSorts component', () => {
     mockPosition = DEFAULT_POSITION
     mockPositionError = null
   })
-  afterEach(jest.resetAllMocks)
+  afterEach(jest.restoreAllMocks)
 
   it('should render correctly', async () => {
     const renderAPI = await renderFavoritesSort()

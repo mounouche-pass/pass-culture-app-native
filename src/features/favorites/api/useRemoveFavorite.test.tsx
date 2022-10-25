@@ -24,7 +24,6 @@ allowConsole({ error: true })
 
 jest.mock('features/auth/AuthContext')
 const mockUseAuthContext = useAuthContext as jest.MockedFunction<typeof useAuthContext>
-jest.mock('libs/network/useNetInfo', () => jest.requireMock('@react-native-community/netinfo'))
 
 jest.unmock('react-query')
 const offerId = 116656

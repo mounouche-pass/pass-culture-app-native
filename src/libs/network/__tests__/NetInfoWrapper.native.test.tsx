@@ -4,7 +4,6 @@ import { NetInfoWrapper, useNetInfoContext } from 'libs/network/NetInfoWrapper'
 import { useNetInfo } from 'libs/network/useNetInfo'
 import { render } from 'tests/utils'
 
-jest.unmock('libs/network/NetInfoWrapper')
 const mockedUseNetInfo = useNetInfo as unknown as jest.Mock<{
   isConnected: boolean
   isInternetReachable: boolean

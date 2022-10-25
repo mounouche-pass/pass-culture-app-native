@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-restricted-imports
-import { render, waitFor as defaultWaitFor } from '@testing-library/react-native'
+import { render, renderHook, waitFor as defaultWaitFor } from '@testing-library/react-native'
 import deepmerge from 'deepmerge'
 import flushPromises from 'flush-promises'
 import React, { ReactNode } from 'react'
@@ -91,6 +91,13 @@ type RenderOptions = {
   createNodeMock?: (element: React.ReactElement) => any
 }
 
+type RenderHookOptions = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  wrapper?: React.ComponentType<any>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  initialProps?: any
+}
+
 export type CustomRenderOptions = {
   theme?: Partial<DefaultTheme>
 } & RenderOptions
@@ -110,6 +117,21 @@ function customRender(ui: React.ReactElement<any>, options?: CustomRenderOptions
   })
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function customRenderHook(renderCallback: (props: any) => any, options?: RenderHookOptions) {
+  const { wrapper: Wrapper, ...restOfOptions } = options || {}
+  return renderHook(renderCallback, {
+    wrapper: Wrapper
+      ? ({ children }) => (
+          <NetInfoWrapper>
+            <Wrapper>{children}</Wrapper>
+          </NetInfoWrapper>
+        )
+      : ({ children }) => <NetInfoWrapper>{children}</NetInfoWrapper>,
+    ...restOfOptions,
+  })
+}
+
 export function waitFor(cb: () => void, opts = {}): Promise<void> {
   // Default timeout was changed in the new version of @testing-library/react-native,
   // but we need the old value for our tests (especially for navigation)
@@ -119,7 +141,7 @@ export function waitFor(cb: () => void, opts = {}): Promise<void> {
 // eslint-disable-next-line no-restricted-imports
 export * from '@testing-library/react-native'
 
-export { customRender as render }
+export { customRender as render, customRenderHook as renderHook }
 
 export const middleScrollEvent = {
   nativeEvent: {

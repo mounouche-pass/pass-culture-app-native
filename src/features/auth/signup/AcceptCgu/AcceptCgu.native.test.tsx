@@ -8,7 +8,7 @@ import { contactSupport } from 'features/auth/support.services'
 import * as NavigationHelpers from 'features/navigation/helpers/openUrl'
 import { env } from 'libs/environment'
 import { captureMonitoringError } from 'libs/monitoring'
-import { useNetInfoContext as useNetInfoContextDefault } from 'libs/network/NetInfoWrapper'
+import { useNetInfo } from 'libs/network/useNetInfo'
 import { reactQueryProviderHOC } from 'tests/reactQueryProviderHOC'
 import { simulateWebviewMessage, fireEvent, render, superFlushWithAct, waitFor } from 'tests/utils'
 
@@ -18,15 +18,15 @@ jest.mock('features/auth/settings')
 jest.mock('libs/monitoring')
 const openUrl = jest.spyOn(NavigationHelpers, 'openUrl')
 
-const mockUseNetInfoContext = useNetInfoContextDefault as jest.Mock
+const mockUseNetInfo = useNetInfo as jest.Mock
 function simulateNoNetwork() {
-  mockUseNetInfoContext.mockReturnValue({
+  mockUseNetInfo.mockReturnValue({
     isConnected: false,
   })
 }
 
 function simulateConnectedNetwork() {
-  mockUseNetInfoContext.mockReturnValue({
+  mockUseNetInfo.mockReturnValue({
     isConnected: true,
   })
 }

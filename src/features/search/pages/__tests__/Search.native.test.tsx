@@ -9,7 +9,7 @@ import { SearchWrapper } from 'features/search/pages/SearchWrapper'
 import * as useShowResultsForCategory from 'features/search/pages/useShowResultsForCategory'
 import { SearchState, SearchView } from 'features/search/types'
 import * as useFilterCountAPI from 'features/search/utils/useFilterCount'
-import { useNetInfoContext as useNetInfoContextDefault } from 'libs/network/NetInfoWrapper'
+import { useNetInfo } from 'libs/network/useNetInfo'
 import { SuggestedVenue } from 'libs/venue'
 import { mockedSuggestedVenues } from 'libs/venue/fixtures/mockedSuggestedVenues'
 import { render, fireEvent, superFlushWithAct } from 'tests/utils'
@@ -61,8 +61,7 @@ jest.mock('features/search/pages/useSearchResults', () => ({
   }),
 }))
 
-jest.mock('libs/network/useNetInfo', () => jest.requireMock('@react-native-community/netinfo'))
-const mockUseNetInfoContext = useNetInfoContextDefault as jest.Mock
+const mockUseNetInfo = useNetInfo as jest.Mock
 
 const mockSettings = jest.fn().mockReturnValue({ data: {} })
 jest.mock('features/auth/settings', () => ({
@@ -98,7 +97,7 @@ jest.mock('libs/algolia/analytics/InsightsMiddleware', () => ({
 }))
 
 describe('Search component', () => {
-  mockUseNetInfoContext.mockReturnValue({ isConnected: true })
+  mockUseNetInfo.mockReturnValue({ isConnected: true })
 
   it('should render Search', () => {
     expect(render(<Search />)).toMatchSnapshot()
@@ -114,7 +113,7 @@ describe('Search component', () => {
 
   describe('When offline', () => {
     it('should display offline page', () => {
-      mockUseNetInfoContext.mockReturnValueOnce({ isConnected: false })
+      mockUseNetInfo.mockReturnValueOnce({ isConnected: false })
       const renderAPI = render(<Search />)
       expect(renderAPI.queryByText('Pas de réseau internet')).toBeTruthy()
     })

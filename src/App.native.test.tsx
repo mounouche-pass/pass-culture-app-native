@@ -8,7 +8,6 @@ import { App } from './App'
 jest.mock('features/navigation/NavigationContainer/NavigationContainer', () => ({
   AppNavigationContainer: () => 'Placeholder for NavigationContainer',
 }))
-jest.unmock('libs/network/NetInfoWrapper')
 
 describe('<App /> with mocked RootNavigator', () => {
   it("should override font for Batch's in-app messages", async () => {

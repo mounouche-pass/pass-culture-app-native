@@ -12,7 +12,7 @@ import {
 import { offerResponseSnap } from 'features/offer/api/snaps/offerResponseSnap'
 import { env } from 'libs/environment'
 import { EmptyResponse } from 'libs/fetch'
-import { useNetInfoContext as useNetInfoContextDefault } from 'libs/network/NetInfoWrapper'
+import { useNetInfo } from 'libs/network/useNetInfo'
 import { reactQueryProviderHOC } from 'tests/reactQueryProviderHOC'
 import { server } from 'tests/server'
 import { renderHook, waitFor } from 'tests/utils'
@@ -24,8 +24,8 @@ allowConsole({ error: true })
 
 jest.mock('features/auth/AuthContext')
 const mockUseAuthContext = useAuthContext as jest.MockedFunction<typeof useAuthContext>
-jest.mock('libs/network/useNetInfo', () => jest.requireMock('@react-native-community/netinfo'))
-const mockUseNetInfoContext = useNetInfoContextDefault as jest.Mock
+
+const mockUseNetInfo = useNetInfo as jest.Mock
 
 jest.unmock('react-query')
 const offerId = 116656
@@ -68,7 +68,7 @@ function simulateBackend(options: Options = defaultOptions) {
 }
 
 describe('useFavorites hook', () => {
-  mockUseNetInfoContext.mockReturnValue({ isConnected: true, isInternetReachable: true })
+  mockUseNetInfo.mockReturnValue({ isConnected: true, isInternetReachable: true })
 
   it('should retrieve favorite data when logged in', async () => {
     simulateBackend()
@@ -115,7 +115,7 @@ describe('useFavorites hook', () => {
   })
 
   it('should fail to fetch when logged in but offline', async () => {
-    mockUseNetInfoContext.mockReturnValueOnce({ isConnected: false, isInternetReachable: false })
+    mockUseNetInfo.mockReturnValueOnce({ isConnected: false, isInternetReachable: false })
     mockUseAuthContext.mockReturnValueOnce({
       isLoggedIn: true,
       setIsLoggedIn: jest.fn(),

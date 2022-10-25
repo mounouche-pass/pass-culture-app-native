@@ -7,7 +7,7 @@ import { CancelBookingModal } from 'features/bookings/components/CancelBookingMo
 import { bookingsSnap } from 'features/bookings/fixtures/bookingsSnap'
 import { getTabNavConfig } from 'features/navigation/TabBar/helpers'
 import { analytics } from 'libs/firebase/analytics'
-import { useNetInfoContext as useNetInfoContextDefault } from 'libs/network/NetInfoWrapper'
+import { useNetInfo } from 'libs/network/useNetInfo'
 import { fireEvent, render, useMutationFactory } from 'tests/utils'
 import { SNACK_BAR_TIME_OUT } from 'ui/components/snackBar/SnackBarContext'
 import { SnackBarHelperSettings } from 'ui/components/snackBar/types'
@@ -36,11 +36,10 @@ jest.mock('ui/components/snackBar/SnackBarContext', () => ({
   SNACK_BAR_TIME_OUT: 5000,
 }))
 
-jest.mock('libs/network/useNetInfo', () => jest.requireMock('@react-native-community/netinfo'))
-const mockUseNetInfoContext = useNetInfoContextDefault as jest.Mock
+const mockUseNetInfo = useNetInfo as jest.Mock
 
 describe('<CancelBookingModal />', () => {
-  mockUseNetInfoContext.mockReturnValue({ isConnected: true })
+  mockUseNetInfo.mockReturnValue({ isConnected: true })
 
   it('should dismiss modal on press rightIconButton', () => {
     const booking = bookingsSnap.ongoing_bookings[0]
@@ -77,7 +76,7 @@ describe('<CancelBookingModal />', () => {
   })
 
   it('should showErrorSnackBar and close modal on press "Annuler ma réservation"', () => {
-    mockUseNetInfoContext.mockReturnValueOnce({ isConnected: false })
+    mockUseNetInfo.mockReturnValueOnce({ isConnected: false })
     const booking = bookingsSnap.ongoing_bookings[0]
     const { getByText } = render(
       <CancelBookingModal visible dismissModal={mockDismissModal} booking={booking} />
