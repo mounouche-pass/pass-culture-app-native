@@ -4,7 +4,7 @@ import waitForExpect from 'wait-for-expect'
 import { navigate, replace } from '__mocks__/@react-navigation/native'
 import { ForgottenPassword } from 'features/auth/forgottenPassword/ForgottenPassword/ForgottenPassword'
 import { captureMonitoringError } from 'libs/monitoring'
-import { useNetInfoContext as useNetInfoContextDefault } from 'libs/network/NetInfoWrapper'
+import { useNetInfo } from 'libs/network/useNetInfo'
 import { reactQueryProviderHOC } from 'tests/reactQueryProviderHOC'
 import { requestPasswordResetFail, requestPasswordResetSuccess, server } from 'tests/server'
 import { simulateWebviewMessage, superFlushWithAct, fireEvent, render } from 'tests/utils'
@@ -16,7 +16,7 @@ jest.mock('features/auth/settings')
 
 jest.mock('libs/monitoring')
 
-const mockUseNetInfoContext = useNetInfoContextDefault as jest.Mock
+const mockUseNetInfo = useNetInfo as jest.Mock
 
 beforeEach(() => {
   simulateConnectedNetwork()
@@ -188,14 +188,14 @@ describe('<ForgottenPassword />', () => {
 })
 
 function simulateNoNetwork() {
-  mockUseNetInfoContext.mockReturnValue({
+  mockUseNetInfo.mockReturnValue({
     isConnected: false,
     isInternetReachable: false,
   })
 }
 
 function simulateConnectedNetwork() {
-  mockUseNetInfoContext.mockReturnValue({
+  mockUseNetInfo.mockReturnValue({
     isConnected: true,
     isInternetReachable: true,
   })

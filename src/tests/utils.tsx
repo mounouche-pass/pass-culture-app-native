@@ -7,6 +7,8 @@ import { act, ReactTestInstance } from 'react-test-renderer'
 import { ThemeProvider as ThemeProviderWeb, DefaultTheme } from 'styled-components'
 import { ThemeProvider } from 'styled-components/native'
 
+import { NetInfoWrapper } from 'libs/network/NetInfoWrapper'
+
 import { computedTheme } from './computedTheme'
 
 export async function flushAllPromises() {
@@ -74,9 +76,11 @@ type PropsWithTheme = {
 const DefaultWrapper = ({ theme, children }: PropsWithTheme) => {
   return (
     // ThemeProviderWeb is useful to recycle .test.tsx for both native and web
-    <ThemeProviderWeb theme={deepmerge(computedTheme, theme || {})}>
-      <ThemeProvider theme={deepmerge(computedTheme, theme || {})}>{children}</ThemeProvider>
-    </ThemeProviderWeb>
+    <NetInfoWrapper>
+      <ThemeProviderWeb theme={deepmerge(computedTheme, theme || {})}>
+        <ThemeProvider theme={deepmerge(computedTheme, theme || {})}>{children}</ThemeProvider>
+      </ThemeProviderWeb>
+    </NetInfoWrapper>
   )
 }
 

@@ -7,6 +7,7 @@ import { ReactTestInstance } from 'react-test-renderer'
 import { ThemeProvider as ThemeProviderWeb, DefaultTheme } from 'styled-components'
 import { ThemeProvider } from 'styled-components/native'
 
+import { NetInfoWrapper } from 'libs/network/NetInfoWrapper'
 import { computedTheme } from 'tests/computedTheme'
 
 export async function flushAllPromises() {
@@ -73,9 +74,11 @@ type PropsWithTheme = {
 
 const DefaultWrapper = ({ children, theme }: PropsWithTheme) => {
   return (
-    <ThemeProviderWeb theme={deepmerge(computedTheme, theme || {})}>
-      <ThemeProvider theme={deepmerge(computedTheme, theme || {})}>{children}</ThemeProvider>
-    </ThemeProviderWeb>
+    <NetInfoWrapper>
+      <ThemeProviderWeb theme={deepmerge(computedTheme, theme || {})}>
+        <ThemeProvider theme={deepmerge(computedTheme, theme || {})}>{children}</ThemeProvider>
+      </ThemeProviderWeb>
+    </NetInfoWrapper>
   )
 }
 

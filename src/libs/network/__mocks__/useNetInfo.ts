@@ -1,3 +1,3 @@
-export const useNetInfo = () => {
-  return { isConnected: true, isInternetReachable: true }
-}
+export const useNetInfo = jest
+  .fn()
+  .mockReturnValue({ isConnected: true, isInternetReachable: true })
