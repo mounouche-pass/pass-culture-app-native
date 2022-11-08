@@ -64,8 +64,8 @@ check_environment() {
   if [[ "$APP_ENV" == "testing" && "$CURRENT_BRANCH" != "master" ]]; then
     if [[ $CURRENT_TAG =~ $HARD_DEPLOY_TESTING_TAG_REGEX ]]; then
       success "Not on master but tag found. Deploying to $APP_ENV."
-    else
-      warn "Wrong branch, checkout master or create tag to deploy to $APP_ENV."
+    # else
+    #   warn "Wrong branch, checkout master or create tag to deploy to $APP_ENV."
     fi
   else
     success "Deploying to $APP_ENV."
