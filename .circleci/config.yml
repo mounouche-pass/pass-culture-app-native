@@ -1011,16 +1011,6 @@ workflows:
           context: JIRA
 
       - deploy-android-testing-hard:
-          # filters:
-          #   tags:
-          #     only: /^testing\/v.*/
-          #   branches:
-          #     ignore: /.*/
-          requires:
-            - checkout-and-install-deps
-            # - test-lint-and-types
-            # - test-native
-      - deploy-ios-testing-hard:
           filters:
             tags:
               only: /^testing\/v.*/
@@ -1030,6 +1020,16 @@ workflows:
             - checkout-and-install-deps
             - test-lint-and-types
             - test-native
+      - deploy-ios-testing-hard:
+          # filters:
+          #   tags:
+          #     only: /^testing\/v.*/
+          #   branches:
+          #     ignore: /.*/
+          requires:
+            - checkout-and-install-deps
+            # - test-lint-and-types
+            # - test-native
       - notify-hard-testing-release:
           filters:
             tags:
