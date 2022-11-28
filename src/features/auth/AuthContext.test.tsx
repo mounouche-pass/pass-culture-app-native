@@ -11,7 +11,7 @@ import { analytics } from 'libs/firebase/analytics'
 import * as Keychain from 'libs/keychain'
 import { storage } from 'libs/storage'
 import { reactQueryProviderHOC } from 'tests/reactQueryProviderHOC'
-import { act, renderHook, superFlushWithAct } from 'tests/utils'
+import { act, renderHook } from 'tests/utils'
 
 jest.mock('features/profile/api')
 
@@ -168,5 +168,4 @@ const renderUseLoginRoutine = async () => {
       method
     )
   })
-  await superFlushWithAct()
 }
