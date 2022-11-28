@@ -23,6 +23,7 @@ export interface RecommendedIdsRequest {
   categories?: string[]
   price_max?: number
   subcategories?: string[]
+  is_offer_duo?: boolean
 }
 
 export const useHomeRecommendedIdsMutation = (recommendationUrl: string) => {
