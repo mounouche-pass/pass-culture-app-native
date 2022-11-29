@@ -1,7 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { rest } from 'msw'
 import React from 'react'
-import waitForExpect from 'wait-for-expect'
 
 import { OfferResponse } from 'api/gen'
 import { RootStack } from 'features/navigation/RootNavigator/Stack'
@@ -10,7 +9,7 @@ import { env } from 'libs/environment'
 import { ParsedDescription } from 'libs/parsers/highlightLinks'
 import { reactQueryProviderHOC } from 'tests/reactQueryProviderHOC'
 import { server } from 'tests/server'
-import { superFlushWithAct, render } from 'tests/utils'
+import { render, waitFor } from 'tests/utils'
 
 import {
   OfferDescription,
@@ -23,23 +22,23 @@ jest.mock('@react-navigation/native', () => jest.requireActual('@react-navigatio
 jest.mock('@react-navigation/stack', () => jest.requireActual('@react-navigation/stack'))
 
 describe('<OfferDescription />', () => {
-  it('should render', async () => {
-    const { toJSON, queryByText, getByText } = await renderOfferDescription()
+  it('should render correctly', async () => {
+    const { toJSON, queryByText, getByText } = renderOfferDescription()
     expect(toJSON()).toMatchSnapshot()
 
-    await waitForExpect(() => {
+    await waitFor(() => {
       expect(getByText('En détails')).toBeTruthy()
       expect(queryByText('Durée')).toBeNull()
     })
   })
 
   it('should render without description', async () => {
-    const { queryByText, getByText } = await renderOfferDescription({
+    const { queryByText, getByText } = renderOfferDescription({
       extraData: { durationMinutes: 20 },
       description: '',
     })
 
-    await waitForExpect(() => {
+    await waitFor(() => {
       expect(getByText('Durée')).toBeTruthy()
       expect(getByText('Author: photo credit author')).toBeTruthy()
       expect(queryByText('En détails')).toBeNull()
@@ -88,9 +87,7 @@ describe('formatValue()', () => {
   })
 })
 
-async function renderOfferDescription(
-  extraOffer?: Pick<OfferResponse, 'extraData' | 'description'>
-) {
+function renderOfferDescription(extraOffer?: Pick<OfferResponse, 'extraData' | 'description'>) {
   const offerId = 116656
 
   server.use(
@@ -113,9 +110,6 @@ async function renderOfferDescription(
       </NavigationContainer>
     )
   )
-  await superFlushWithAct()
-  await waitForExpect(() => {
-    expect(wrapper.queryByTestId('offer-description-list')).toBeTruthy()
-  })
+
   return wrapper
 }
