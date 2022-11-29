@@ -23,12 +23,11 @@ jest.mock('@react-navigation/stack', () => jest.requireActual('@react-navigation
 
 describe('<OfferDescription />', () => {
   it('should render correctly', async () => {
-    const { toJSON, queryByText, getByText } = renderOfferDescription()
-    expect(toJSON()).toMatchSnapshot()
+    const offerDescription = renderOfferDescription()
 
     await waitFor(() => {
-      expect(getByText('En détails')).toBeTruthy()
-      expect(queryByText('Durée')).toBeNull()
+      expect(offerDescription.getByText('En détails')).toBeTruthy()
+      expect(offerDescription.queryByText('Durée')).toBeNull()
     })
   })
 
