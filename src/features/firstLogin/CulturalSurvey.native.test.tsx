@@ -1,6 +1,5 @@
 import React from 'react'
 import { UseQueryResult } from 'react-query'
-import waitForExpect from 'wait-for-expect'
 
 import { navigate } from '__mocks__/@react-navigation/native'
 import { SettingsResponse, UserProfileResponse } from 'api/gen'
@@ -8,7 +7,7 @@ import { useAppSettings } from 'features/auth/settings'
 import { useCurrentRoute, navigateToHome } from 'features/navigation/helpers'
 import { homeNavConfig } from 'features/navigation/TabBar/helpers'
 import { useUserProfileInfo } from 'features/profile/api'
-import { superFlushWithAct, act, render } from 'tests/utils'
+import { act, render, waitFor } from 'tests/utils'
 
 import { CulturalSurvey } from './CulturalSurvey'
 
@@ -51,7 +50,7 @@ beforeEach(() => {
 
 describe('<CulturalSurvey />', () => {
   it('should render correctly', async () => {
-    const renderAPI = await renderCulturalSurveyWithNavigation()
+    const renderAPI = renderCulturalSurveyWithNavigation()
     expect(renderAPI).toMatchSnapshot()
   })
 
@@ -59,26 +58,26 @@ describe('<CulturalSurvey />', () => {
     mockedUseAppSettings.mockReturnValueOnce({
       data: { enableNativeCulturalSurvey: true },
     } as UseQueryResult<SettingsResponse, unknown>)
-    await renderCulturalSurveyWithNavigation()
+    renderCulturalSurveyWithNavigation()
     expect(navigate).toHaveBeenCalledWith('CulturalSurveyIntro')
   })
 
   it('should not display webview when another screen is displayed', async () => {
     mockUseCurrentRoute('Home')
-    const renderAPI = await renderCulturalSurveyWithNavigation()
+    const renderAPI = renderCulturalSurveyWithNavigation()
     expect(renderAPI.queryByTestId('cultural-survey-webview')).toBeNull()
   })
 
   it('should display loading screen while user info is undefined and isLoading is true', async () => {
     mockUserProfileInfo({ user: undefined, isLoading: true })
-    const renderAPI = await renderCulturalSurveyWithNavigation()
+    const renderAPI = renderCulturalSurveyWithNavigation()
     expect(renderAPI.queryByTestId('cultural-survey-webview')).toBeNull()
     expect(renderAPI.queryByTestId('Loading-Animation')).toBeTruthy()
   })
 
   it('should navigate to Home when user is undefined and isLoading is false', async () => {
     mockUserProfileInfo({ user: undefined, isLoading: false })
-    await renderCulturalSurveyWithNavigation()
+    renderCulturalSurveyWithNavigation()
     expect(navigate).toHaveBeenNthCalledWith(1, ...homeNavConfig)
   })
 
@@ -87,12 +86,12 @@ describe('<CulturalSurvey />', () => {
       user: { ...DEFAULT_USER, needsToFillCulturalSurvey: false },
       isLoading: false,
     })
-    await renderCulturalSurveyWithNavigation()
+    renderCulturalSurveyWithNavigation()
     expect(navigate).toHaveBeenNthCalledWith(1, ...homeNavConfig)
   })
 
   it('should NOT close webview when navigation state has url containing "typeform.com"', async () => {
-    const renderAPI = await renderCulturalSurveyWithNavigation()
+    const renderAPI = renderCulturalSurveyWithNavigation()
     act(() => {
       const webview = renderAPI.getByTestId('cultural-survey-webview')
       // onNavigationStateChange is triggered when the WebView loading starts or ends
@@ -100,13 +99,12 @@ describe('<CulturalSurvey />', () => {
         nativeEvent: { url: 'passculture.typeform.com' },
       })
     })
-    await superFlushWithAct()
     expect(renderAPI.queryByTestId('cultural-survey-webview')).toBeTruthy()
     expect(navigate).not.toBeCalled()
   })
 
   it('should close webview when navigation state has url not containing "typeform.com"', async () => {
-    const renderAPI = await renderCulturalSurveyWithNavigation()
+    const renderAPI = renderCulturalSurveyWithNavigation()
     act(() => {
       const webview = renderAPI.getByTestId('cultural-survey-webview')
       // onNavigationStateChange is triggered when the WebView loading starts or ends
@@ -114,15 +112,13 @@ describe('<CulturalSurvey />', () => {
         nativeEvent: { url: 'app.passculture' },
       })
     })
-    await superFlushWithAct()
-    await waitForExpect(() => {
+    await waitFor(() => {
       expect(navigateToHome).toHaveBeenCalledTimes(1)
     })
   })
 })
 
-async function renderCulturalSurveyWithNavigation() {
+function renderCulturalSurveyWithNavigation() {
   const renderAPI = render(<CulturalSurvey />)
-  await superFlushWithAct()
   return renderAPI
 }
