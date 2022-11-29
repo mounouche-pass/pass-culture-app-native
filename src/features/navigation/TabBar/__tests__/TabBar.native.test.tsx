@@ -8,7 +8,7 @@ import {
   useTabNavigationContext,
 } from 'features/navigation/TabBar/TabNavigationStateContext'
 import { reactQueryProviderHOC } from 'tests/reactQueryProviderHOC'
-import { fireEvent, render, superFlushWithAct } from 'tests/utils'
+import { fireEvent, render } from 'tests/utils'
 
 import { TabBar } from '../TabBar'
 
@@ -41,13 +41,13 @@ describe('TabBar', () => {
     })
   })
 
-  it('renders correctly', async () => {
-    const renderAPI = await renderTabBar()
+  it('renders correctly', () => {
+    const renderAPI = renderTabBar()
     expect(renderAPI).toMatchSnapshot()
   })
 
-  it('should display the 5 following tabs with Home selected', async () => {
-    const renderAPI = await renderTabBar()
+  it('should display the 5 following tabs with Home selected', () => {
+    const renderAPI = renderTabBar()
     const tabs = renderAPI.getAllByTestId(/tab/)
     const tabsTestIds = tabs.map((tab) => tab.props.testID).sort()
     const expectedTabsTestIds = [
@@ -61,7 +61,7 @@ describe('TabBar', () => {
     expect(tabsTestIds).toEqual(expectedTabsTestIds)
   })
 
-  it('should display the 5 following tabs with Bookings selected', async () => {
+  it('should display the 5 following tabs with Bookings selected', () => {
     mockedUseTabNavigationContext.mockReturnValueOnce({
       setTabNavigationState: jest.fn(),
       tabRoutes: DEFAULT_TAB_ROUTES.map((route) => ({
@@ -69,7 +69,7 @@ describe('TabBar', () => {
         isSelected: route.name === 'Bookings',
       })),
     })
-    const renderAPI = await renderTabBar()
+    const renderAPI = renderTabBar()
     const tabs = renderAPI.getAllByTestId(/tab/)
     const tabsTestIds = tabs.map((tab) => tab.props.testID).sort()
     const expectedTabsTestIds = [
@@ -83,12 +83,12 @@ describe('TabBar', () => {
     expect(tabsTestIds).toEqual(expectedTabsTestIds)
   })
 
-  it('displays only one selected at a time', async () => {
-    const renderAPI = await renderTabBar()
+  it('displays only one selected at a time', () => {
+    const renderAPI = renderTabBar()
     expect(renderAPI.queryAllByTestId(/selected/)).toHaveLength(1)
   })
 
-  it('does not reset navigation when clicked on selected tab', async () => {
+  it('does not reset navigation when clicked on selected tab', () => {
     mockedUseTabNavigationContext.mockReturnValueOnce({
       setTabNavigationState: jest.fn(),
       tabRoutes: DEFAULT_TAB_ROUTES.map((route) => ({
@@ -96,7 +96,7 @@ describe('TabBar', () => {
         isSelected: route.name === 'Profile',
       })),
     })
-    const renderAPI = await renderTabBar()
+    const renderAPI = renderTabBar()
     expect(renderAPI.queryByTestId('Profile tab selected')).toBeTruthy()
 
     const profileTab = renderAPI.getByTestId('Profile tab')
@@ -106,8 +106,8 @@ describe('TabBar', () => {
     expect(navigation.navigate).not.toHaveBeenCalled()
   })
 
-  it('should reset navigation when clicked on selected home tab', async () => {
-    const renderAPI = await renderTabBar()
+  it('should reset navigation when clicked on selected home tab', () => {
+    const renderAPI = renderTabBar()
     expect(renderAPI.queryByTestId('Home tab selected')).toBeTruthy()
 
     const homeTab = renderAPI.getByTestId('Home tab')
@@ -117,8 +117,8 @@ describe('TabBar', () => {
     expect(navigation.navigate).toHaveBeenCalledTimes(1)
   })
 
-  it('navigates to Profile on Profile tab click', async () => {
-    const renderAPI = await renderTabBar()
+  it('navigates to Profile on Profile tab click', () => {
+    const renderAPI = renderTabBar()
     const profileTab = renderAPI.getByTestId('Profile tab')
 
     fireEvent.press(profileTab)
@@ -130,11 +130,10 @@ describe('TabBar', () => {
   })
 })
 
-async function renderTabBar() {
+function renderTabBar() {
   const renderAPI = render(
     // eslint-disable-next-line local-rules/no-react-query-provider-hoc
     reactQueryProviderHOC(<TabBar navigation={navigation} />)
   )
-  await superFlushWithAct()
   return renderAPI
 }
