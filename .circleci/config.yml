@@ -988,8 +988,10 @@ workflows:
     jobs:
       - checkout-and-install-deps:
           filters:
-            tags:
-              only: /.*/
+            branches:
+              only: branche-de-test-staging
+            # tags:
+            #   only: /.*/
       - checkout-and-install-proxy-deps:
           filters:
             tags:
@@ -1075,14 +1077,12 @@ workflows:
             - test-native
       - deploy-ios-staging-hard:
           filters:
-            tags:
-              only: /^(patch\/)?v.*/
             branches:
-              ignore: /.*/
+              only: branche-de-test-staging
           requires:
             - checkout-and-install-deps
-            - test-lint-and-types
-            - test-native
+            # - test-lint-and-types
+            # - test-native
       - notify-hard-staging-release:
           filters:
             tags:
