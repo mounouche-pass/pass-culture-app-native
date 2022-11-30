@@ -27,7 +27,7 @@ export const HomeHeader: FunctionComponent = function () {
   const shouldDisplayGeolocationBloc = permissionState !== GeolocPermissionState.GRANTED
 
   const welcomeTitle =
-    user?.firstName && isLoggedIn ? `Bonjour ${user.firstName}` : 'Bienvenue\u00a0!'
+    user?.firstName && isLoggedIn ? `Bonjour ${user.firstName}` : 'Welcome\u00a0!'
 
   // we distinguish three different cases:
   // - not connected OR eligible-to-credit users
