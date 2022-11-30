@@ -281,4 +281,5 @@ we have found an active community on Gitter.im:
 
 - https://gitter.im/webdriverio/webdriverio
 - https://gitter.im/appium/appium
-
+ 
+You can also follow the class here: https://learn.webdriver.io/
