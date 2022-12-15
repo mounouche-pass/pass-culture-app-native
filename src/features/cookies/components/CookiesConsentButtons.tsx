@@ -1,4 +1,5 @@
 import React from 'react'
+import { Button, Alert } from 'react-native'
 import styled from 'styled-components/native'
 
 import { ButtonPrimary } from 'ui/components/buttons/ButtonPrimary'
@@ -11,6 +12,17 @@ interface Props {
   onPressChooseCookies: () => void
 }
 
+const TestButton = () => (
+  <Button
+    title="title"
+    onPress={() => Alert.alert('hi')}
+    testID="NOBUG"
+    // data-testid="accessibilityID"
+    // accessibilityLabel="BUG"
+    // accesssible={true}
+  />
+)
+
 export const CookiesConsentButtons = ({
   onPressAcceptAll,
   onPressDeclineAll,
@@ -18,6 +30,9 @@ export const CookiesConsentButtons = ({
 }: Props) => (
   <React.Fragment>
     <Container>
+      <Row>
+        <TestButton />
+      </Row>
       <Row>
         <ButtonPrimary wording="Tout refuser" onPress={onPressDeclineAll} />
       </Row>
