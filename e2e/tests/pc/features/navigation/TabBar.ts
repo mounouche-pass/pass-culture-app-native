@@ -32,7 +32,7 @@ export class TabBar extends AppScreen {
       }
     } else {
       homeTabSelector = '~Accueil'
-      searchTabSelector = '~Rechercher des offres'
+      searchTabSelector = '~Rechercher des'
       bookingsTabSelector = '~Mes réservations'
       favoritesTabSelector = '~Mes favoris'
       profilTabSelector = '~Mon profil'

@@ -20,19 +20,19 @@ describe('TabBar', () => {
     didFirstLaunch(ok)
     await tabBar.search.click()
   })
-
-  it('should click on profile', async () => {
-    didFirstLaunch(ok)
-    await tabBar.profil.click()
-  })
-
-  it('should click on favorite', async () => {
-    didFirstLaunch(ok)
-    await tabBar.favorite.click()
-  })
-
-  it('should click on home', async () => {
-    didFirstLaunch(ok)
-    await tabBar.home.click()
-  })
+  //
+  // it('should click on profile', async () => {
+  //   didFirstLaunch(ok)
+  //   await tabBar.profil.click()
+  // })
+  //
+  // it('should click on favorite', async () => {
+  //   didFirstLaunch(ok)
+  //   await tabBar.favorite.click()
+  // })
+  //
+  // it('should click on home', async () => {
+  //   didFirstLaunch(ok)
+  //   await tabBar.home.click()
+  // })
 })
