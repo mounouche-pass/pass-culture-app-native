@@ -2,7 +2,7 @@
 import { AppiumDriver } from '@bam.tech/appium-helper'
 import { TestCase, PerformanceTester } from '@perf-profiler/e2e'
 
-const BUILD_VERSION = '10217003'
+const BUILD_VERSION = '10222006'
 const ENV = 'staging' // For prod, use the value 'webapp'
 const LOGGED_IN = false
 
@@ -24,7 +24,7 @@ const getTestCase = async () => {
       driver.startApp()
 
       // Works with Appium/UIAutomator only if we disable animations
-      await driver.findElementByText('Playlist de livres')
+      await driver.findElementByText('Offres gratuites')
       await driver.clickElementById('Rechercher des offres')
       await driver.findElementByText('Explore')
     },
