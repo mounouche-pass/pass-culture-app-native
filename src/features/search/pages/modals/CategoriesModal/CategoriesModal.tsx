@@ -1,263 +1,134 @@
 import { useNavigation } from '@react-navigation/native'
-import React, { useCallback, useMemo } from 'react'
-import { Controller, ControllerRenderProps, useForm } from 'react-hook-form'
-import { useTheme } from 'styled-components/native'
+import React, { FunctionComponent, useCallback, useEffect } from 'react'
+import { useForm, Controller } from 'react-hook-form'
+import { useTheme } from 'styled-components'
 import { v4 as uuidv4 } from 'uuid'
 
-import {
-  NativeCategoryResponseModelv2,
-  SearchGroupNameEnumv2,
-  SearchGroupResponseModelv2,
-} from 'api/gen'
+import { SearchGroupNameEnumv2 } from 'api/gen'
 import { UseNavigationType } from 'features/navigation/RootNavigator/types'
 import { getTabNavConfig } from 'features/navigation/TabBar/helpers'
 import { SearchCustomModalHeader } from 'features/search/components/SearchCustomModalHeader'
 import { SearchFixedModalBottom } from 'features/search/components/SearchFixedModalBottom'
 import { useSearch } from 'features/search/context/SearchWrapper'
-import { CategoriesModalView } from 'features/search/enums'
-import {
-  buildSearchPayloadValues,
-  categoryAllValue,
-  getCategoriesModalTitle,
-  getDefaultFormValues,
-  getGenreTypes,
-  getIcon,
-  getNativeCategories,
-} from 'features/search/helpers/categoriesHelpers'
-import { CategoriesModalFormProps, SearchState } from 'features/search/types'
+import { CATEGORY_CRITERIA } from 'features/search/enums'
+import { SearchState } from 'features/search/types'
 import { analytics } from 'libs/firebase/analytics'
-import { useSubcategories } from 'libs/subcategories/useSubcategories'
+import { useSearchGroupLabelMapping } from 'libs/subcategories/mappings'
 import { Form } from 'ui/components/Form'
+import { Li } from 'ui/components/Li'
 import { AppModal } from 'ui/components/modals/AppModal'
-import { ArrowPrevious } from 'ui/svg/icons/ArrowPrevious'
+import { RadioButton } from 'ui/components/radioButtons/RadioButton'
+import { VerticalUl } from 'ui/components/Ul'
 import { Close } from 'ui/svg/icons/Close'
-import { Spacer } from 'ui/theme'
+import { getSpacing, Spacer } from 'ui/theme'
 
-import { CategoriesSection } from './CategoriesSection'
-
-export interface CategoriesModalProps {
+interface Props {
+  title: string
   accessibilityLabel: string
-  isVisible?: boolean
-  hideModal: VoidFunction
+  isVisible: boolean
+  hideModal: () => void
+}
+
+interface SearchCategoriesFormData {
+  offerCategories: SearchGroupNameEnumv2
 }
 
 const titleId = uuidv4()
 
-export const CategoriesModal = ({
-  isVisible = false,
-  hideModal,
+export const CategoriesModal: FunctionComponent<Props> = ({
+  title,
   accessibilityLabel,
-}: CategoriesModalProps) => {
-  const { data } = useSubcategories()
+  isVisible,
+  hideModal,
+}) => {
   const { navigate } = useNavigation<UseNavigationType>()
   const { searchState } = useSearch()
   const { isDesktopViewport, modal } = useTheme()
 
   const {
-    control,
-    formState: { isSubmitting },
     handleSubmit,
-    setValue,
-    watch,
+    control,
     reset,
-  } = useForm<CategoriesModalFormProps>({
-    defaultValues: getDefaultFormValues(data, searchState, CategoriesModalView.CATEGORIES),
+    getValues,
+    setValue,
+    formState: { isSubmitting },
+  } = useForm<SearchCategoriesFormData>({
+    mode: 'onChange',
+    defaultValues: {
+      offerCategories: searchState?.offerCategories?.[0] || SearchGroupNameEnumv2.NONE,
+    },
   })
 
-  const { nativeCategory, category, genreType, currentView } = watch()
+  useEffect(() => {
+    if (!isVisible) return
+    setValue('offerCategories', searchState?.offerCategories?.[0] || SearchGroupNameEnumv2.NONE)
+    // Update the category only when display the modal
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isVisible])
 
-  const categories = useMemo(
-    () =>
-      data?.searchGroups.filter((searchGroup) => searchGroup.name !== SearchGroupNameEnumv2.NONE) ||
-      [],
-    [data?.searchGroups]
-  )
-  const nativeCategories = useMemo(() => getNativeCategories(data, category), [category, data])
-  const genreTypes = useMemo(() => getGenreTypes(data, nativeCategory), [data, nativeCategory])
-
-  const handleModalClose = useCallback(() => {
-    reset()
-    hideModal()
-  }, [hideModal, reset])
-
-  const modalTitle = useMemo(() => {
-    return getCategoriesModalTitle(currentView, category, nativeCategory)
-  }, [category, currentView, nativeCategory])
-
-  const handleCategorySelect = useCallback(
-    (selectedCategory: SearchGroupResponseModelv2) => {
-      setValue('category', selectedCategory)
-      if (selectedCategory.name !== category?.name) {
-        setValue('nativeCategory', null)
-      }
-      if (selectedCategory !== categoryAllValue)
-        setValue('currentView', CategoriesModalView.NATIVE_CATEGORIES)
-    },
-    [category, setValue]
-  )
-
-  const handleNativeCategorySelect = useCallback(
-    (selectedNativeCategory: NativeCategoryResponseModelv2 | null) => {
-      setValue('nativeCategory', selectedNativeCategory)
-      if (nativeCategory?.name !== selectedNativeCategory?.name) {
-        setValue('genreType', null)
-      }
-
-      if (!selectedNativeCategory) return
-      if (!selectedNativeCategory.genreType) return
-      setValue('currentView', CategoriesModalView.GENRES)
-    },
-    [nativeCategory?.name, setValue]
-  )
-
-  const handleGoBack = useCallback(() => {
-    switch (currentView) {
-      case CategoriesModalView.CATEGORIES:
-        handleModalClose()
-        break
-      case CategoriesModalView.NATIVE_CATEGORIES:
-        setValue('currentView', CategoriesModalView.CATEGORIES)
-        break
-      case CategoriesModalView.GENRES:
-        setValue('currentView', CategoriesModalView.NATIVE_CATEGORIES)
-        break
-      default:
-        throw new Error('Unknown current view')
-    }
-  }, [currentView, handleModalClose, setValue])
-
-  const descriptionContext = useMemo(
-    () => ({
-      selectedCategory: category,
-      selectedNativeCategory: nativeCategory,
-      selectedGenreType: genreType,
-    }),
-    [category, genreType, nativeCategory]
-  )
-
-  const handleReset = useCallback(() => {
+  const onResetPress = useCallback(() => {
     reset({
-      category: categoryAllValue,
-      nativeCategory: null,
-      genreType: null,
-      currentView: CategoriesModalView.CATEGORIES,
+      offerCategories: SearchGroupNameEnumv2.NONE,
     })
   }, [reset])
 
-  const handleSearch = useCallback(
-    (form: CategoriesModalFormProps) => {
-      setValue('currentView', CategoriesModalView.CATEGORIES)
+  const onSearchPress = useCallback(() => {
+    const offerCategories = getValues('offerCategories')
+    const payload = offerCategories === SearchGroupNameEnumv2.NONE ? [] : [offerCategories]
+    const additionalSearchState: SearchState = { ...searchState, offerCategories: payload }
 
-      const payload = buildSearchPayloadValues(form)
-      const additionalSearchState: SearchState = { ...searchState, ...payload }
+    analytics.logPerformSearch(additionalSearchState)
+    navigate(...getTabNavConfig('Search', additionalSearchState))
+    hideModal()
+  }, [hideModal, getValues, navigate, searchState])
 
-      analytics.logPerformSearch(additionalSearchState)
-      navigate(...getTabNavConfig('Search', additionalSearchState))
-
-      hideModal()
-    },
-    [hideModal, navigate, searchState, setValue]
-  )
-
-  const onSubmit = handleSubmit(handleSearch)
-
-  const CategoriesController = useCallback(
-    ({
-      field: { value },
-    }: {
-      field: ControllerRenderProps<CategoriesModalFormProps, 'category'>
-    }) => (
-      <CategoriesSection
-        items={categories}
-        value={value}
-        onChange={handleCategorySelect}
-        context={descriptionContext}
-        allValue={categoryAllValue}
-        allLabel="Toutes les catégories"
-        view={CategoriesModalView.CATEGORIES}
-        getIcon={getIcon}
-      />
-    ),
-    [categories, descriptionContext, handleCategorySelect]
-  )
-
-  const NativeCategoriesController = useCallback(
-    ({
-      field: { value },
-    }: {
-      field: ControllerRenderProps<CategoriesModalFormProps, 'nativeCategory'>
-    }) => (
-      <CategoriesSection
-        items={nativeCategories}
-        value={value}
-        onChange={handleNativeCategorySelect}
-        context={descriptionContext}
-        allValue={null}
-        allLabel="Tout"
-        view={CategoriesModalView.NATIVE_CATEGORIES}
-      />
-    ),
-    [descriptionContext, handleNativeCategorySelect, nativeCategories]
-  )
-
-  const GenresController = useCallback(
-    ({
-      field: { value, onChange },
-    }: {
-      field: ControllerRenderProps<CategoriesModalFormProps, 'genreType'>
-    }) => (
-      <CategoriesSection
-        items={genreTypes}
-        value={value}
-        onChange={onChange}
-        context={descriptionContext}
-        allValue={null}
-        allLabel="Tout"
-        view={CategoriesModalView.GENRES}
-      />
-    ),
-    [descriptionContext, genreTypes]
-  )
+  const searchGroupLabelMapping = useSearchGroupLabelMapping()
+  const onSubmit = handleSubmit(onSearchPress)
 
   return (
     <AppModal
+      visible={isVisible}
       customModalHeader={
         isDesktopViewport ? undefined : (
-          <SearchCustomModalHeader titleId={titleId} title={modalTitle} onGoBack={handleGoBack} />
+          <SearchCustomModalHeader titleId={titleId} title={title} onGoBack={hideModal} />
         )
       }
-      title={modalTitle}
-      visible={isVisible}
+      title={title}
       isFullscreen
       noPadding
       modalSpacing={modal.spacing.MD}
       rightIconAccessibilityLabel={accessibilityLabel}
       rightIcon={Close}
-      onLeftIconPress={handleGoBack}
-      leftIcon={ArrowPrevious}
-      leftIconAccessibilityLabel="Revenir en arrière"
-      onRightIconPress={handleModalClose}
+      onRightIconPress={hideModal}
       fixedModalBottom={
         <SearchFixedModalBottom
-          onResetPress={handleReset}
+          onResetPress={onResetPress}
           onSearchPress={onSubmit}
           isSearchDisabled={isSubmitting}
         />
       }>
       <Form.MaxWidth>
-        <Spacer.Column numberOfSpaces={3} />
-
-        {currentView === CategoriesModalView.CATEGORIES && (
-          <Controller name="category" control={control} render={CategoriesController} />
-        )}
-
-        {currentView === CategoriesModalView.NATIVE_CATEGORIES && (
-          <Controller name="nativeCategory" control={control} render={NativeCategoriesController} />
-        )}
-
-        {currentView === CategoriesModalView.GENRES && (
-          <Controller name="genreType" control={control} render={GenresController} />
-        )}
+        <Controller
+          control={control}
+          name="offerCategories"
+          render={({ field: { onChange, value } }) => (
+            <VerticalUl>
+              {!isDesktopViewport && <Spacer.Column numberOfSpaces={3} />}
+              {Object.entries(CATEGORY_CRITERIA).map(([category, { icon: Icon }]) => (
+                <Li key={category}>
+                  <RadioButton
+                    label={searchGroupLabelMapping[category as SearchGroupNameEnumv2]}
+                    isSelected={value === category}
+                    onSelect={() => onChange(category)}
+                    testID={category}
+                    marginVertical={getSpacing(3)}
+                    icon={Icon}
+                  />
+                </Li>
+              ))}
+            </VerticalUl>
+          )}
+        />
       </Form.MaxWidth>
     </AppModal>
   )

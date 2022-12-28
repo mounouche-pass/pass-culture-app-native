@@ -27,6 +27,9 @@ const mockDispatch = jest.fn()
 
 jest.mock('features/search/context/SearchWrapper', () => ({
   useSearch: () => ({ searchState: mockSearchState, dispatch: mockDispatch }),
+  useCommit: () => ({
+    commit: jest.fn(),
+  }),
 }))
 
 jest.mock('react-query')

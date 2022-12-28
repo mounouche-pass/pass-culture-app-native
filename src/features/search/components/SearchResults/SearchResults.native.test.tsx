@@ -13,7 +13,6 @@ import { analytics } from 'libs/firebase/analytics'
 import { GeoCoordinates } from 'libs/geolocation'
 import { SuggestedPlace } from 'libs/place'
 import { SearchHit } from 'libs/search'
-import { placeholderData as mockSubcategoriesData } from 'libs/subcategories/placeholderData'
 import { SuggestedVenue } from 'libs/venue'
 import { mockedSuggestedVenues } from 'libs/venue/fixtures/mockedSuggestedVenues'
 import { fireEvent, render, act, waitFor } from 'tests/utils'
@@ -64,12 +63,6 @@ jest.mock('libs/geolocation/GeolocationWrapper', () => ({
   useGeolocation: () => ({
     position: mockPosition,
     showGeolocPermissionModal: mockShowGeolocPermissionModal,
-  }),
-}))
-
-jest.mock('libs/subcategories/useSubcategories', () => ({
-  useSubcategories: () => ({
-    data: mockSubcategoriesData,
   }),
 }))
 

@@ -21,9 +21,6 @@ export const useShowResultsForCategory = (): OnPressCategory => {
         ...getTabNavConfig('Search', {
           ...searchState,
           offerCategories: [pressedCategory],
-          offerSubcategories: [],
-          offerNativeCategories: undefined,
-          offerGenreTypes: undefined,
           view: SearchView.Results,
           searchId,
         })

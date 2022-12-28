@@ -19,6 +19,8 @@ Array [
         "alignItems": "center",
         "flexDirection": "row",
         "justifyContent": "space-between",
+        "marginLeft": 24,
+        "marginRight": 24,
         "opacity": 1,
         "userSelect": "auto",
       }
@@ -82,7 +84,6 @@ Array [
       }
     />
     <View
-      accessibilityLabel="Affiner la recherche"
       height={20}
       width={20}
     >
