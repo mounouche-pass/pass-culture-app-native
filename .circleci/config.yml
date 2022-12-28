@@ -988,8 +988,10 @@ workflows:
     jobs:
       - checkout-and-install-deps:
           filters:
-            tags:
-              only: /.*/
+            branches:
+              only: bisect-dka
+#            tags:
+#              only: /.*/
       - checkout-and-install-proxy-deps:
           filters:
             tags:
@@ -1036,24 +1038,28 @@ workflows:
 
       - deploy-android-testing-hard:
           filters:
-            tags:
-              only: /^testing\/v.*/
             branches:
-              ignore: /.*/
+              only: bisect-dka
+#            tags:
+#              only: /^testing\/v.*/
+#            branches:
+#              ignore: /.*/
           requires:
             - checkout-and-install-deps
             - test-lint-and-types
-            - test-native
+#            - test-native
       - deploy-ios-testing-hard:
           filters:
-            tags:
-              only: /^testing\/v.*/
             branches:
-              ignore: /.*/
+              only: bisect-dka
+#            tags:
+#              only: /^testing\/v.*/
+#            branches:
+#              ignore: /.*/
           requires:
             - checkout-and-install-deps
             - test-lint-and-types
-            - test-native
+#            - test-native
       - notify-hard-testing-release:
           filters:
             tags:
