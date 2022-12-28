@@ -20,7 +20,8 @@ describe('CodePushButton', () => {
     expect(testRenderer.root.instance.state.info).toEqual('V4 (New Release !)')
     expect.assertions(2)
   })
-  it('gets the partial metadata when CodePush update metdata with partial information', async () => {
+  it('gets the partial metadata', async () => {
+    // We fake CodePush update metdata with partial information
     CodePush.getUpdateMetadata = jest.fn(() => Promise.resolve({ label: 'V5' } as LocalPackage))
     const testRenderer = TestRenderer.create(<CodePushButton />)
     expect(CodePush.getUpdateMetadata).toHaveBeenCalledTimes(1)
@@ -29,7 +30,8 @@ describe('CodePushButton', () => {
     expect(testRenderer.root.instance.state.info).toEqual('V5')
     expect.assertions(2)
   })
-  it('gets the partial metadata when CodePush update metdata with null information', async () => {
+  it('gets the partial metadata', async () => {
+    // We fake CodePush update metdata with null information
     CodePush.getUpdateMetadata = jest.fn(() => Promise.resolve(null))
     const testRenderer = TestRenderer.create(<CodePushButton />)
     expect(CodePush.getUpdateMetadata).toHaveBeenCalledTimes(1)

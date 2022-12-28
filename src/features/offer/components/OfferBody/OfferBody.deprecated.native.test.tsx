@@ -116,8 +116,7 @@ describe('<OfferBody />', () => {
     expect(api.getnativev1offersreports).toHaveBeenCalledTimes(1)
   })
 
-  // eslint-disable-next-line jest/no-disabled-tests
-  it.skip('should not request /native/v1/offers/reports if user is logged in and not connected', async () => {
+  xit('should not request /native/v1/offers/reports if user is logged in and not connected', async () => {
     mockUseNetInfoContext.mockReturnValueOnce({ isConnected: false, isInternetReachable: false })
     await renderOfferBodyPage()
     expect(api.getnativev1offersreports).not.toHaveBeenCalled()
