@@ -11,7 +11,6 @@ import { getSpacing } from 'ui/theme'
 type AgeButtonProps = {
   accessibilityLabel: string
   dense?: boolean
-  enableNavigate?: boolean
   icon?: FunctionComponent<IconInterface>
   navigateTo: InternalNavigationProps['navigateTo']
   onBeforeNavigate?: () => void
@@ -22,13 +21,11 @@ export const AgeButton: FunctionComponent<AgeButtonProps> = ({
   icon,
   navigateTo,
   accessibilityLabel,
-  enableNavigate,
   onBeforeNavigate,
   children,
 }) => {
   return (
     <InternalTouchableLink
-      enableNavigate={enableNavigate}
       onBeforeNavigate={onBeforeNavigate}
       navigateTo={navigateTo}
       {...accessibilityAndTestId(accessibilityLabel)}>

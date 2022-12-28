@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { reset } from '__mocks__/@react-navigation/native'
+import { navigate } from '__mocks__/@react-navigation/native'
 import * as NavigationHelpers from 'features/navigation/helpers/openUrl'
 import { homeNavConfig } from 'features/navigation/TabBar/helpers'
 import { OnboardingWrapper } from 'features/onboarding/context/OnboardingWrapper'
@@ -71,7 +71,7 @@ describe('AgeSelectionOther', () => {
 
     fireEvent.press(button)
     await waitFor(() => {
-      expect(reset).toHaveBeenCalledWith({ index: 0, routes: [{ name: homeNavConfig[0] }] })
+      expect(navigate).toHaveBeenCalledWith(...homeNavConfig)
     })
   })
 
@@ -81,7 +81,7 @@ describe('AgeSelectionOther', () => {
 
     fireEvent.press(button)
     await waitFor(() => {
-      expect(reset).toHaveBeenCalledWith({ index: 0, routes: [{ name: homeNavConfig[0] }] })
+      expect(navigate).toHaveBeenCalledWith(...homeNavConfig)
     })
   })
 
