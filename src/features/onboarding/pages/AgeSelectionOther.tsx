@@ -18,7 +18,6 @@ import { InfoPlain } from 'ui/svg/icons/InfoPlain'
 import { Spacer, Typo } from 'ui/theme'
 import { getNoHeadingAttrs } from 'ui/theme/typographyAttrs/getNoHeadingAttrs'
 
-const externalUrl = { url: env.FAQ_LINK_LEGAL_GUARDIAN }
 const logGoToParentsFAQ = () => analytics.logGoToParentsFAQ('ageselectionother')
 
 export const AgeSelectionOther: FunctionComponent = () => {
@@ -71,7 +70,7 @@ export const AgeSelectionOther: FunctionComponent = () => {
         wording="Je suis un parent"
         icon={InfoPlain}
         onBeforeNavigate={logGoToParentsFAQ}
-        externalNav={externalUrl}
+        externalNav={{ url: env.FAQ_LINK_LEGAL_GUARDIAN }}
       />
     </OnboardingPage>
   )
