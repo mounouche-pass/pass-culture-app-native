@@ -7,6 +7,7 @@ import AgeInformation from '../features/onboarding/AgeInformation'
 import OnboardingWelcome from '../features/onboarding/OnboardingWelcome'
 import OnboardingGeolocation from '../features/onboarding/OnboardingGeolocation'
 import Browser from './Browser'
+import {timeout} from "./utils/time";
 
 class FirstLaunch {
   retries = 2
@@ -30,6 +31,7 @@ class FirstLaunch {
         }
       }
     }
+    await timeout(5000)
     await CookiesConsent.randomChoice()
     if (!flags.isWeb) {
       await OnboardingWelcome.proceed()
