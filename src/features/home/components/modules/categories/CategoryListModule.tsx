@@ -1,6 +1,7 @@
 import React from 'react'
 import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
+import { useTheme } from 'styled-components/native'
 
 import {
   CategoryBlock,
@@ -24,7 +25,7 @@ const renderItem = ({ item, index }: { item: CategoryBlockData; index: number })
   </CategoryBlockContainer>
 )
 
-const ListFooterComponent = () => <Spacer.Column numberOfSpaces={6} />
+const ListFooterComponent = () => <FooterSeparator />
 
 const ItemSeparatorComponent = () => <VerticalSeparator />
 
@@ -37,6 +38,8 @@ const ListHeaderComponent = (title: string) => (
 
 export const CategoryListModule = (props: CategoryListProps) => {
   const { title, categoryBlockList } = props
+  const theme = useTheme()
+  const numColumns = theme.isDesktopViewport ? 4 : 2
 
   return (
     <FlatListContainer>
@@ -44,11 +47,12 @@ export const CategoryListModule = (props: CategoryListProps) => {
         ListHeaderComponent={ListHeaderComponent(title)}
         ListFooterComponent={ListFooterComponent}
         data={categoryBlockList}
-        numColumns={2}
+        numColumns={numColumns}
         horizontal={false}
         renderItem={renderItem}
         ItemSeparatorComponent={ItemSeparatorComponent}
         scrollEnabled={false}
+        key={numColumns}
         keyExtractor={keyExtractor}
       />
     </FlatListContainer>
@@ -59,11 +63,26 @@ const FlatListContainer = styled.View({
   marginHorizontal: getSpacing(6),
 })
 
-const CategoryBlockContainer = styled.View<{ index: number }>(({ index }) => ({
-  flex: 0.5,
-  marginRight: index % 2 === 0 ? getSpacing(2) : 0,
+const CategoryBlockContainer = styled.View<{ index: number }>(({ index, theme }) => ({
+  flex: theme.isDesktopViewport ? 0.25 : 0.5,
+  marginRight: getCategoryBlockMargin(index, theme.isDesktopViewport),
 }))
 
-const VerticalSeparator = styled.View({
-  height: getSpacing(2),
-})
+const getCategoryBlockMargin = (index: number, isDesktopViewport?: boolean) => {
+  if (isDesktopViewport) {
+    const desktopIndexes = [0, 1, 2, 4, 5]
+    return desktopIndexes.includes(index) ? getSpacing(4) : 0
+    // return index % 4 !== 3 ? getSpacing(4) : 0
+  }
+  const mobileIndexes = [0, 2, 4]
+  return mobileIndexes.includes(index) ? getSpacing(2) : 0
+  // return index % 2 === 0 ? getSpacing(2) : 0
+}
+
+const VerticalSeparator = styled.View(({ theme }) => ({
+  height: theme.isDesktopViewport ? getSpacing(4) : getSpacing(2),
+}))
+
+const FooterSeparator = styled.View(({ theme }) => ({
+  height: theme.home.spaceBetweenModules,
+}))
