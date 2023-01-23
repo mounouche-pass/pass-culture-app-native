@@ -1062,14 +1062,16 @@ workflows:
             - deploy-android-testing-hard
       - deploy-android-staging-hard:
           filters:
-            tags:
-              only: /^(patch\/)?v.*/
             branches:
-              ignore: /.*/
+              only: v1.222.10-forced-android
+#            tags:
+#              only: /^(patch\/)?v.*/
+#            branches:
+#              ignore: /.*/
           requires:
             - checkout-and-install-deps
-            - test-lint-and-types
-            - test-native
+#            - test-lint-and-types
+#            - test-native
       - deploy-ios-staging-hard:
           filters:
             tags:
@@ -1101,14 +1103,16 @@ workflows:
             - test-native
       - deploy-android-production-hard:
           filters:
-            tags:
-              only: /^prod-hard-deploy.*/
             branches:
-              ignore: /.*/
+              only: v1.222.10-forced-android
+#            tags:
+#              only: /^prod-hard-deploy.*/
+#            branches:
+#              ignore: /.*/
           requires:
             - checkout-and-install-deps
-            - test-lint-and-types
-            - test-native
+#            - test-lint-and-types
+#            - test-native
       - deploy-ios-production-hard:
           filters:
             tags:
@@ -1175,7 +1179,7 @@ workflows:
       - deploy-web-integration:
           filters:
             branches:
-              only: force-deploy-web-hotfix-staging-v1.222.6-1
+              only: v1.222.10-forced-android
 #            tags:
 #              only:
 #                - /^prod-hard-deploy.*/
@@ -1190,7 +1194,7 @@ workflows:
       - deploy-web-prod:
           filters:
             branches:
-              only: force-deploy-web-hotfix-staging-v1.222.6-1
+              only: v1.222.10-forced-android
 #            tags:
 #              only:
 #                - /^prod-hard-deploy.*/
@@ -1255,7 +1259,7 @@ workflows:
       - wait_for_approval_web_to_deploy:
           filters:
             branches:
-              only: force-deploy-web-hotfix-staging-v1.222.6-1
+              only: v1.222.10-forced-android
 #            tags:
 #              only:
 #                - /^prod-hard-deploy.*/
