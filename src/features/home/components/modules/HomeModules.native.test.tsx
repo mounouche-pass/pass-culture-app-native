@@ -1,10 +1,14 @@
 import React from 'react'
 
-import { SubcategoryIdEnum } from 'api/gen'
+import { SubcategoryIdEnum, VenueTypeCodeKey } from 'api/gen'
 import { useOfferModule } from 'features/home/api/useOfferModule'
+import { useVenueModule } from 'features/home/api/useVenueModule'
 import { HomeModule } from 'features/home/components/modules/HomeModule'
-import { formattedOffersModule } from 'features/home/fixtures/homepage.fixture'
-import { SearchHit } from 'libs/search'
+import {
+  formattedOffersModule,
+  formattedVenuesModule,
+} from 'features/home/fixtures/homepage.fixture'
+import { SearchHit, VenueHit } from 'libs/search'
 import { reactQueryProviderHOC } from 'tests/reactQueryProviderHOC'
 import { render, screen } from 'tests/utils'
 
@@ -15,8 +19,10 @@ jest.mock('features/home/types', () => {
 })
 
 jest.mock('features/home/api/useOfferModule')
-
 const mockUseOfferModule = useOfferModule as jest.MockedFunction<typeof useOfferModule>
+
+jest.mock('features/home/api/useVenueModule')
+const mockUseVenuesModule = useVenueModule as jest.MockedFunction<typeof useVenueModule>
 
 const SearchHitFixture: { hits: SearchHit[]; nbHits: number } = {
   hits: [
@@ -38,6 +44,43 @@ const SearchHitFixture: { hits: SearchHit[]; nbHits: number } = {
   ],
   nbHits: 1,
 }
+
+const VenueHitFixture: VenueHit[] = [
+  {
+    accessibility: {
+      audioDisability: true,
+      mentalDisability: false,
+      motorDisability: false,
+      visualDisability: false,
+    },
+    bannerUrl: undefined,
+    contact: { email: undefined, phoneNumber: undefined, socialMedias: {}, website: undefined },
+    description: '',
+    id: 1,
+    latitude: 48.59848,
+    longitude: 7.76616,
+    name: 'ADIDAS FRANCE',
+    publicName: 'ADIDAS FRANCE',
+    venueTypeCode: VenueTypeCodeKey.ARTISTIC_COURSE,
+  },
+  {
+    accessibility: {
+      audioDisability: true,
+      mentalDisability: false,
+      motorDisability: false,
+      visualDisability: false,
+    },
+    contact: { email: undefined, phoneNumber: undefined, socialMedias: {}, website: undefined },
+    description: '',
+    id: 2,
+    latitude: 48.59848,
+    longitude: 7.76616,
+    name: 'ADIDAS FRANCE',
+    publicName: 'ADIDAS FRANCE',
+    venueTypeCode: VenueTypeCodeKey.ARTISTIC_COURSE,
+  },
+]
+
 describe('HomeModules', () => {
   it('should return an Offer Module', () => {
     mockedHomeTypes = {
@@ -50,6 +93,19 @@ describe('HomeModules', () => {
     })
 
     const testID = screen.getByTestId('offersModuleList')
+    expect(testID).toBeTruthy()
+  })
+  it('should return an Venues Module', () => {
+    mockedHomeTypes = {
+      isVenuesModule: () => true,
+    }
+    mockUseVenuesModule.mockReturnValueOnce(VenueHitFixture)
+    render(<HomeModule item={formattedVenuesModule} homeEntryId="fake-id" index={2} />, {
+      // eslint-disable-next-line local-rules/no-react-query-provider-hoc
+      wrapper: ({ children }) => reactQueryProviderHOC(children),
+    })
+
+    const testID = screen.getAllByTestId('venue-type-tile')
     expect(testID).toBeTruthy()
   })
 })
