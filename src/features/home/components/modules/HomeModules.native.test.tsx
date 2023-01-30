@@ -5,6 +5,7 @@ import { useOfferModule } from 'features/home/api/useOfferModule'
 import { useVenueModule } from 'features/home/api/useVenueModule'
 import { HomeModule } from 'features/home/components/modules/HomeModule'
 import {
+  formattedExclusivityModule,
   formattedOffersModule,
   formattedVenuesModule,
 } from 'features/home/fixtures/homepage.fixture'
@@ -106,6 +107,19 @@ describe('HomeModules', () => {
     })
 
     const testID = screen.getAllByTestId('venue-type-tile')
+    expect(testID).toBeTruthy()
+  })
+  it('should return an Exclusivity Module', () => {
+    mockedHomeTypes = {
+      isExclusivityModule: () => true,
+    }
+    mockUseVenuesModule.mockReturnValueOnce(VenueHitFixture)
+    render(<HomeModule item={formattedExclusivityModule} homeEntryId="fake-id" index={1} />, {
+      // eslint-disable-next-line local-rules/no-react-query-provider-hoc
+      wrapper: ({ children }) => reactQueryProviderHOC(children),
+    })
+
+    const testID = screen.getByTestId('exclusivity-module')
     expect(testID).toBeTruthy()
   })
 })

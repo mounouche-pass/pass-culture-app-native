@@ -40,7 +40,7 @@ const UnmemoizedExclusivityModule = ({ offerId, url, ...props }: ExclusivityModu
   }))
 
   return (
-    <Row>
+    <Row testID="exclusivity-module">
       <Spacer.Row numberOfSpaces={6} />
       <StyledExclusivityComponent />
       <Spacer.Row numberOfSpaces={6} />
