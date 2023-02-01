@@ -2,6 +2,7 @@ import React, { FunctionComponent, ReactNode } from 'react'
 import { ScrollView } from 'react-native'
 import styled from 'styled-components/native'
 
+import { AnimatedView } from 'libs/react-native-animatable'
 import { BackButton } from 'ui/components/headers/BackButton'
 import { getSpacing, Spacer, Typo } from 'ui/theme'
 import { getHeadingAttrs } from 'ui/theme/typographyAttrs/getHeadingAttrs'
@@ -12,6 +13,17 @@ export interface OnboardingPageProps {
   subtitle?: string
   buttons?: Array<ReactNode>
   onGoBack?: () => void
+}
+
+const buttonsContainerAnimation = {
+  0: {
+    opacity: 0,
+    scale: 0.95,
+  },
+  1: {
+    opacity: 1,
+    scale: 1,
+  },
 }
 
 const HEADER_HEIGHT = getSpacing(12)
@@ -55,7 +67,11 @@ export const OnboardingPage: FunctionComponent<OnboardingPageProps> = ({
         {!buttons && <Spacer.Column numberOfSpaces={6} />}
       </ScrollView>
       {!!buttons && (
-        <ButtonsContainer>
+        <ButtonsContainer
+          animation={buttonsContainerAnimation}
+          duration={240}
+          delay={300}
+          easing="ease-in-out-quad">
           {buttons?.map((button, index) => (
             <React.Fragment key={index}>
               {index !== 0 && <Spacer.Column numberOfSpaces={4} />}
@@ -90,7 +106,7 @@ const Container = styled.View(({ theme }) => ({
   marginHorizontal: theme.contentPage.marginHorizontal,
 }))
 
-const ButtonsContainer = styled.View(({ theme }) => ({
+const ButtonsContainer = styled(AnimatedView)(({ theme }) => ({
   marginHorizontal: theme.contentPage.marginHorizontal,
   paddingVertical: getSpacing(6),
   backgroundColor: theme.colors.white,

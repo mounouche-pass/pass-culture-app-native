@@ -40,13 +40,13 @@ export const AppComponents: FunctionComponent = () => {
       <PageHeaderSecondary title="App components" />
       <StyledScrollView>
         <Divider />
-        <AccordionItem title="Animatable - Declarative 101" defaultOpen>
+        <AccordionItem title="Animatable - Declarative 101">
           <AnimatedText animation="slideInLeft" duration={1500} delay={500}>
             Slide in left, with a 500ms delay and 1500ms duration
           </AnimatedText>
           <Spacer.Column numberOfSpaces={4} />
         </AccordionItem>
-        <AccordionItem title="Animatable - Declarative 102">
+        <AccordionItem title="Animatable - Declarative 102" defaultOpen>
           <AnimatedView
             style={styles.box}
             animation={toto}
@@ -56,7 +56,7 @@ export const AppComponents: FunctionComponent = () => {
           />
           <Spacer.Column numberOfSpaces={4} />
         </AccordionItem>
-        <AccordionItem title="Test d'animation - Imperative">
+        <AccordionItem title="Test d'animation - Imperative" defaultOpen>
           <AnimatedView
             onLayout={bounce}
             ref={viewRef}
@@ -66,13 +66,13 @@ export const AppComponents: FunctionComponent = () => {
           />
           <Spacer.Column numberOfSpaces={4} />
         </AccordionItem>
-        <AccordionItem title="Test d'animation - Styled component">
+        <AccordionItem title="Test d'animation - Styled component" defaultOpen>
           <StyledAnimatedText animation="slideInLeft" duration={1500} delay={500}>
             Slide in left, with a 500ms delay and 1500ms duration
           </StyledAnimatedText>
           <Spacer.Column numberOfSpaces={4} />
         </AccordionItem>
-        <AccordionItem title="Test d'animation - Animation existing component">
+        <AccordionItem title="Test d'animation - Animation existing component" defaultOpen>
           <AnimatedBodyText animation="slideInLeft" duration={1500} delay={500}>
             Slide in left, with a 500ms delay and 1500ms duration
           </AnimatedBodyText>

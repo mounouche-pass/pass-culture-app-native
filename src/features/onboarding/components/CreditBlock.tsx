@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react'
-import { TouchableWithoutFeedback, View } from 'react-native'
+import { View, TouchableWithoutFeedback } from 'react-native'
 import styled from 'styled-components/native'
 
 import { CreditBlockIcon } from 'features/onboarding/components/CreditBlockIcon'
@@ -8,6 +8,7 @@ import { getBackgroundColor } from 'features/onboarding/helpers/getBackgroundCol
 import { getBorderStyle } from 'features/onboarding/helpers/getBorderStyle'
 import { getTitleComponent, getAgeComponent } from 'features/onboarding/helpers/getTextComponent'
 import { CreditStatus } from 'features/onboarding/types'
+import { AnimatedView } from 'libs/react-native-animatable'
 import { getSpacing, getSpacingString, Spacer, Typo } from 'ui/theme'
 
 type Props = {
@@ -18,6 +19,17 @@ type Props = {
   roundedBorders?: 'top' | 'bottom' // To determine if top or bottom corners should be rounded more
   creditStatus: CreditStatus
   onPress: () => void
+}
+
+const containerAnimation = {
+  0: {
+    scaleX: 0.95,
+    scaleY: 0.95,
+  },
+  1: {
+    scaleX: 1,
+    scaleY: 1,
+  },
 }
 
 export const CreditBlock: FunctionComponent<Props> = ({
@@ -34,7 +46,13 @@ export const CreditBlock: FunctionComponent<Props> = ({
 
   return (
     <TouchableWithoutFeedback onPress={onPress}>
-      <Container roundedBorders={roundedBorders} status={creditStatus}>
+      <Container
+        roundedBorders={roundedBorders}
+        status={creditStatus}
+        duration={240}
+        animation={creditStatus === CreditStatus.ONGOING ? containerAnimation : undefined}
+        delay={200}
+        easing="ease-in-out-quad">
         <IconContainer>
           <CreditBlockIcon status={creditStatus} />
         </IconContainer>
@@ -63,17 +81,18 @@ const DescriptionText = styled(Typo.Caption)(({ theme }) => ({
   color: theme.colors.greyDark,
 }))
 
-const Container = styled.View<{ status: CreditStatus; roundedBorders?: Props['roundedBorders'] }>(
-  ({ theme, status, roundedBorders }) => ({
-    ...getBorderStyle(theme, status, roundedBorders),
-    backgroundColor: getBackgroundColor(theme, status),
-    padding: getSpacing(4),
-    flexDirection: 'row',
-    alignItems: 'center',
-    overflow: 'hidden',
-    marginHorizontal: status !== CreditStatus.ONGOING ? getSpacing(1) : 0,
-  })
-)
+const Container = styled(AnimatedView)<{
+  status: CreditStatus
+  roundedBorders?: Props['roundedBorders']
+}>(({ theme, status, roundedBorders }) => ({
+  ...getBorderStyle(theme, status, roundedBorders),
+  backgroundColor: getBackgroundColor(theme, status),
+  padding: getSpacing(4),
+  flexDirection: 'row',
+  alignItems: 'center',
+  overflow: 'hidden',
+  marginHorizontal: status !== CreditStatus.ONGOING ? getSpacing(1) : 0,
+}))
 
 const IconContainer = styled.View({
   marginRight: getSpacing(4),
