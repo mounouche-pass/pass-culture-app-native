@@ -80,7 +80,17 @@ export const AgeInformation = ({ route }: AgeInformationProps): JSX.Element => {
       <Spacer.Column numberOfSpaces={2} />
       <Container reverse={isEighteen}>
         <View>
-          {underageInfo.map(({ age, deposit, position }, index) => (
+          <CreditBlock
+            underage
+            creditStatus={getCreditStatusFromAge(userAge, underageInfo[0].age)}
+            title={underageInfo[0].deposit}
+            subtitle={`à ${underageInfo[0].age} ans`}
+            roundedBorders={underageInfo[0].position}
+            onPress={() => logTrySelectDeposit(underageInfo[0].age)}
+          />
+          <Spacer.Column numberOfSpaces={0.5} />
+
+          {underageInfo.slice(1).map(({ age, deposit, position }, index) => (
             <React.Fragment key={index}>
               <CreditBlock
                 underage
