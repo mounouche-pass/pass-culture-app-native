@@ -98,9 +98,9 @@ jobs:
           END_TO_END_TESTS_EMAIL_ADDRESS_TOKEN: ${{ secrets.END_TO_END_TESTS_EMAIL_ADDRESS_TOKEN }}
         run: echo $END_TO_END_TESTS_EMAIL_ADDRESS_TOKEN | base64 -di > token.json
 
-      - name: "Install and start Docker engine"
-        uses: docker-practice/actions-setup-docker@master
-        timeout-minutes: 12
+#      - name: "Install and start Docker engine"
+#        uses: docker-practice/actions-setup-docker@master
+#        timeout-minutes: 12
 
       - id: openid-auth
         name: "OpenID Connect Authentication"
