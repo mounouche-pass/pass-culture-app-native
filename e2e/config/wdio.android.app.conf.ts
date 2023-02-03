@@ -5,9 +5,9 @@ const specs = env.SPECS ? env.SPECS.split(',') : ['./e2e/tests/**/specs/**/*.spe
 const appiumApp = env.APPIUM_APP
 
 const ciCapability = {
-  'appium:androidInstallTimeout': '90000',
-  'appium:adbExecTimeout': '50000',
-  'appium:androidDeviceReadyTimeout': '30',
+  'appium:androidInstallTimeout': '120000',
+  'appium:adbExecTimeout': '80000',
+  'appium:androidDeviceReadyTimeout': '120',
 }
 
 const capabilityPackage = {
