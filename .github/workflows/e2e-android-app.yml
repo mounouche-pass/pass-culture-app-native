@@ -285,5 +285,3 @@ jobs:
           name: fail-screenshots-videos-${{ matrix.apiLevel }}
           path: e2e/output
           if-no-files-found: ignore
-https://github:
-  com/marketplace/actions/setup-docker:
