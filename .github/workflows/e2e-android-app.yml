@@ -99,12 +99,8 @@ jobs:
         run: echo $END_TO_END_TESTS_EMAIL_ADDRESS_TOKEN | base64 -di > token.json
 
       - name: "Install and start Docker engine"
-        run: |
-          brew install colima
-          brew install docker docker-compose
-          mkdir -p ~/.docker/cli-plugins
-          ln -sfn $(brew --prefix)/opt/docker-compose/bin/docker-compose ~/.docker/cli-plugins/docker-compose
-          colima start
+        uses: docker-practice/actions-setup-docker@master
+        timeout-minutes: 12
 
       - id: openid-auth
         name: "OpenID Connect Authentication"
@@ -289,3 +285,5 @@ jobs:
           name: fail-screenshots-videos-${{ matrix.apiLevel }}
           path: e2e/output
           if-no-files-found: ignore
+https://github:
+  com/marketplace/actions/setup-docker:
