@@ -79,7 +79,7 @@ jobs:
       GITHUB_RUN_ID: ${{ github.run_id }}
     # No hardware acceleration is available for emulators on Ubuntu:
     # https://github.com/marketplace/actions/android-emulator-runner#can-i-use-this-action-on-linux-vms
-    runs-on: macos-latest
+    runs-on: [self-hosted, linux, x64]
     environment: ${{ inputs.environment || 'staging' }}
     permissions:
       id-token: write
