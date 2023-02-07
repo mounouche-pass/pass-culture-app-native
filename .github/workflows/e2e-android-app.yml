@@ -182,6 +182,7 @@ jobs:
             --address=$APPIUM_TEST_SERVER_HOST \
             --relaxed-security \
             --allow-cors \
+            --session-override \
             2>&1 > "$cwd/appium.log" &
           popd
 
