@@ -250,7 +250,7 @@ jobs:
           ANDROID_PLATFORM_VERSION: "${{ matrix.platformVersion }}"
           APPIUM_APP: ${{ env.ANDROID_APK_PATH }}
         with:
-          script: yarn e2e:android.app
+          script: adb uninstall io.appium.uiautomator2.server && adb uninstall io.appium.uiautomator2.server.test && yarn e2e:android.app
           avd-name: ${{ env.ANDROID_DEVICE_NAME }}
           sdcard-path-or-size: 1500M
           api-level: ${{ matrix.apiLevel }}
