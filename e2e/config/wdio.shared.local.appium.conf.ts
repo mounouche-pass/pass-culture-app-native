@@ -13,10 +13,12 @@ config.services = (config.services || []).concat([
       // This will use the globally installed version of Appium
       command: 'appium',
       args: {
+        allowCors: true,
         // This is needed to tell Appium that we can execute local ADB commands
         // and to automatically download the latest version of ChromeDriver
         relaxedSecurity: true,
-        address: 'localhost',
+        address: env.APPIUM_TEST_SERVER_HOST,
+        port: env.APPIUM_TEST_SERVER_PORT,
         // Write the Appium logs to a file in the root of the directory
         log: './appium.log',
       },
