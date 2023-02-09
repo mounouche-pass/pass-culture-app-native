@@ -224,19 +224,6 @@ jobs:
           npm install --no-save mjpeg-consumer
           appium driver install uiautomator2
 
-#      - name: Start Appium server
-#        run: |
-#          cwd=$(pwd)
-#          pushd "$cwd"
-#          cd ~
-#          nohup appium server \
-#            --port=$APPIUM_TEST_SERVER_PORT \
-#            --address=$APPIUM_TEST_SERVER_HOST \
-#            --relaxed-security \
-#            --allow-cors \
-#            2>&1 > "$cwd/appium.log" &
-#          popd
-
       - run: nohup adb logcat > logcat.log &
         name: Capture logcat
 
@@ -250,7 +237,7 @@ jobs:
           ANDROID_PLATFORM_VERSION: "${{ matrix.platformVersion }}"
           APPIUM_APP: ${{ env.ANDROID_APK_PATH }}
         with:
-          script: adb uninstall io.appium.uiautomator2.server && adb uninstall io.appium.uiautomator2.server.test && yarn e2e:android.app
+          script: yarn e2e:android.app
           avd-name: ${{ env.ANDROID_DEVICE_NAME }}
           sdcard-path-or-size: 1500M
           api-level: ${{ matrix.apiLevel }}
