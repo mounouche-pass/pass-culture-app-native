@@ -6,7 +6,7 @@ env:
   JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
 jobs:
   yarn_tester_web:
-    runs-on: [self-hosted, linux, x64]
+    runs-on: ubuntu-latest
 #    strategy:
 #      matrix:
 #        shard: [1/3, 2/3, 3/3]
