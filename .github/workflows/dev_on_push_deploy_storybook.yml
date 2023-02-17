@@ -13,5 +13,15 @@ jobs:
         with:
           node-version: 16
           cache: yarn
-      - name: Yarn install
-        run: yarn install
+      - uses: actions/cache@v3
+        id: yarn-modules-cache
+        with:
+          path: |
+            node_modules
+            ~/.cache/yarn
+          key: v1-yarn-dependency-cache-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            v1-yarn-dependency-cache-${{ hashFiles('**/yarn.lock') }}
+            v1-yarn-dependency-cache-
+      - run: yarn install
+
