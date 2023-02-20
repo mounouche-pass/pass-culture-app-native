@@ -29,7 +29,7 @@ jobs:
         if: steps.yarn-modules-cache.outputs.cache-hit != 'true'
   yarn-linter:
     needs: yarn-install
-    uses:  ./.github/workflows/dev_on_workflow_linter_ts.yaml
+    uses:  ./.github/workflows/dev_on_workflow_linter_ts.yml
   yarn-tester:
     needs: yarn-linter
     uses: ./.github/workflows/dev_on_workflow_tester.yml
