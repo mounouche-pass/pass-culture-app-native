@@ -28,7 +28,7 @@ jobs:
           key: v1-yarn-test-web-cache-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             v1-yarn-test-web-cache-${{ hashFiles('**/yarn.lock') }}
-      - run: yarn test:unit:web:ci --changedSince=master
+      - run: yarn test:unit:web:ci --changedSince={{ GITHUB_REF }}
 
   yarn_test_native:
     runs-on: [self-hosted, linux, X64]
