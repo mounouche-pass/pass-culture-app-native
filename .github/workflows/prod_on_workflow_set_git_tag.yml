@@ -24,7 +24,9 @@ jobs:
       - name: 'Increase yarn version'
         run: yarn version --patch --no-git-tag-version
       - name: 'Get current version'
-        run: yarn --silent json -f package.json version >> "$GITHUB_OUTPUT"
+        run: |
+          TEST=yarn --silent json -f package.json version 
+          echo "$TEST" >> "$GITHUB_OUTPUT"
         id: current_version
       - name: 'Split the current version and build build number'
         run: |
