@@ -22,12 +22,13 @@ jobs:
           key: v1-yarn-dependency-cache-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             v1-yarn-dependency-cache-${{ hashFiles('**/yarn.lock') }}
-      - name: 'Authenticate to Google Cloud'
-        uses: 'google-github-actions/auth@v1'
-        with:
-          token_format: 'access_token'
-          workload_identity_provider: ${{ secrets.METIER_GCP_WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ secrets.SERVICE_ACCOUNT }}
+        run: yarn install
+            #      - name: 'Authenticate to Google Cloud'
+            #        uses: 'google-github-actions/auth@v1'
+            #        with:
+            #          token_format: 'access_token'
+            #          workload_identity_provider: ${{ secrets.METIER_GCP_WORKLOAD_IDENTITY_PROVIDER }}
+            #          service_account: ${{ secrets.SERVICE_ACCOUNT }}
       - name: 'Increase yarn version'
         run: yarn version --patch --no-git-tag-version
       - name: 'Get current version'
