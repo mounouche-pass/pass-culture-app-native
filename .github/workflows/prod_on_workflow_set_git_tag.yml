@@ -3,7 +3,7 @@ name: Increase Yarn version and set a git tag
 on:
   push:
 jobs:
-  yarn_proxy_install:
+  yarn_version_set:
     runs-on: [self-hosted, linux, X64]
     steps:
       - uses: actions/checkout@v3
@@ -28,10 +28,10 @@ jobs:
         id: current_version
       - name: 'Split the current version and build build number'
         run: |
-          IFS=. read -r MAJOR MINOR PATCH <<< ${{ steps.current_version.outputs }}
+          IFS=. read -r MAJOR MINOR PATCH <<< ${{ steps.current_version.outputs.* }}
           BUILD_NUMBER=$((10000000 * MAJOR + 1000 * MINOR + PATCH))
           echo "$BUILD_NUMBER"
         id: build_number
       - name: 'Push build number in package.json'
-        run: yarn json --in-place -f package.json -e "this.build=${{ steps.build_number.outputs }}"
+        run: yarn json --in-place -f package.json -e "this.build=${{ steps.build_number.outputs.* }}"
 
