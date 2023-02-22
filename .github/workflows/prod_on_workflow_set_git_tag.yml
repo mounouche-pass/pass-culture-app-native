@@ -5,6 +5,7 @@ on:
     inputs:
       TAG_PREFIX:
         required: true
+        type: string
 jobs:
   yarn_version_set:
     runs-on: [self-hosted, linux, X64]
