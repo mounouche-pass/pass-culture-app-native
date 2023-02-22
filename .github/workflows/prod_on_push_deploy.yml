@@ -32,5 +32,5 @@ jobs:
     #    if: github.ref != 'refs/heads/master'
     uses: ./.github/workflows/prod_on_workflow_set_git_tag.yml
     with: 
-      TAG_PREFIX: soft
+      TAG_PREFIX: v
 
