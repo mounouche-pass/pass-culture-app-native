@@ -33,4 +33,7 @@ jobs:
     if: github.ref != 'refs/heads/master'
     with: 
       TAG_PREFIX: v
+    if: github.ref != 'refs/heads/PC-20512-deploy-web-proxy-testing'
+    with:
+      TAG_PREFIX: toto
 
