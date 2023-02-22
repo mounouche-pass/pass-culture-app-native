@@ -25,7 +25,7 @@ jobs:
         run: yarn version --patch --no-git-tag-version
       - name: 'Get current version'
         run: |
-          TEST=yarn --silent json -f package.json version 
+          TEST=$(yarn --silent json -f package.json version )
           echo "$TEST" >> "$GITHUB_OUTPUT"
         id: current_version
       - name: 'Split the current version and build build number'
