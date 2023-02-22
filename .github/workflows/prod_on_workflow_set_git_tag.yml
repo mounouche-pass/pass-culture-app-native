@@ -28,10 +28,10 @@ jobs:
         id: current_version
       - name: 'Split the current version and build build number'
         run: |
-          IFS=. read -r MAJOR MINOR PATCH <<< ${{ steps.current_version.outputs.* }}
+          IFS=. read -r MAJOR MINOR PATCH <<< ${{ steps.current_version.outputs.stdout }}
           BUILD_NUMBER=$((10000000 * MAJOR + 1000 * MINOR + PATCH))
           echo "$BUILD_NUMBER"
         id: build_number
       - name: 'Push build number in package.json'
-        run: yarn json --in-place -f package.json -e "this.build=${{ steps.build_number.outputs.* }}"
+        run: yarn json --in-place -f package.json -e "this.build=${{ steps.build_number.outputs.stdout }}"
 
