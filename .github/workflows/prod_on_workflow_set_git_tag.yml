@@ -26,7 +26,7 @@ jobs:
       - name: 'Get current version'
         run: |
           TEST=$(yarn --silent json -f package.json version )
-          echo "$TEST | tr '\n' ' '" >> $GITHUB_OUTPUT 
+          echo "TEST=$TEST" >> $GITHUB_OUTPUT 
         id: current_version
       - name: 'Split the current version and build build number'
         run: |
