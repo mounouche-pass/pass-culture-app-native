@@ -2,7 +2,6 @@ name: Increase Yarn version and set a git tag
 
 on:
   push:
-env:
 jobs:
   yarn_proxy_install:
     runs-on: [self-hosted, linux, X64]
