@@ -28,10 +28,9 @@ jobs:
         if: steps.yarn-modules-cache.outputs.cache-hit != 'true'
 
   get_input_for_given_branch:
-    runs-on: [self-hosted, linux, X64]
     needs: yarn-install
     #    if: github.ref != 'refs/heads/master'
     uses: ./.github/workflows/prod_on_workflow_set_git_tag.yml
-    with:
-      TAG_PREFIX: soft
+    #    with:
+    # TAG_PREFIX: soft
 
