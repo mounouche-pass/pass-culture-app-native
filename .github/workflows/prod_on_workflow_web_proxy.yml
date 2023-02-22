@@ -1,0 +1,44 @@
+name: Deploy web proxy
+
+on:
+  push:
+env:
+  JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
+jobs:
+  yarn_proxy_install:
+    runs-on: [self-hosted, linux, X64]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: Setup yarn
+        run: npm install -g yarn
+      - uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            ~/.cache/yarn
+          key: v1-yarn-dependency-cache-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            v1-yarn-dependency-cache-${{ hashFiles('**/yarn.lock') }}
+      - name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          token_format: 'access_token'
+          workload_identity_provider: ${{ secrets.METIER_GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.SERVICE_ACCOUNT }}
+      - name: 'Increase yarn version'
+        run: yarn version --patch --no-git-tag-version
+      - name: 'Get current version'
+        run: yarn --silent json -f package.json version
+        id: current_version
+      - name: 'Split the current version and build build number'
+        run: |
+          IFS=. read -r MAJOR MINOR PATCH <<< {{ current_version }}
+          BUILD_NUMBER=$((10000000 * MAJOR + 1000 * MINOR + PATCH))
+          echo "::set-env name=BUILD_NUMBER::$BUILD_NUMBER"
+      - name: 'Push build number in package.json'
+        run: yarn json --in-place -f package.json -e "this.build=$BUILD_NUMBER"
+        # - name: 'Deploy web-proxy service to the given environment'
+        #run:  yarn --cwd server deploy:${{ inputs.environment }}
