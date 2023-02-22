@@ -30,10 +30,10 @@ jobs:
   get_input_for_setting_tag:
     needs: yarn-install
     uses: ./.github/workflows/prod_on_workflow_set_git_tag.yml
-    if: github.ref != 'refs/heads/master'
+    if: github.ref == 'refs/heads/master'
     with: 
       TAG_PREFIX: v
-    if: github.ref != 'refs/heads/PC-20512-deploy-web-proxy-testing'
+    if: github.ref == 'refs/heads/PC-20512-deploy-web-proxy-testing'
     with:
       TAG_PREFIX: toto
 
