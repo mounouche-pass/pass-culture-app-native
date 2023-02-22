@@ -28,7 +28,6 @@ jobs:
         if: steps.yarn-modules-cache.outputs.cache-hit != 'true'
 
   get_input_for_given_branch:
-    names: Git tag sift
     #    runs-on: [self-hosted, linux, X64]
     needs: yarn-install
     if: github.ref != 'refs/heads/master'
