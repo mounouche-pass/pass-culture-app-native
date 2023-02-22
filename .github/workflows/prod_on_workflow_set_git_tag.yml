@@ -1,9 +1,8 @@
-name: Deploy web proxy
+name: Increase Yarn version and set a git tag
 
 on:
   push:
 env:
-  JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
 jobs:
   yarn_proxy_install:
     runs-on: [self-hosted, linux, X64]
@@ -23,12 +22,6 @@ jobs:
           restore-keys: |
             v1-yarn-dependency-cache-${{ hashFiles('**/yarn.lock') }}
       - run: yarn install
-            #      - name: 'Authenticate to Google Cloud'
-            #        uses: 'google-github-actions/auth@v1'
-            #        with:
-            #          token_format: 'access_token'
-            #          workload_identity_provider: ${{ secrets.METIER_GCP_WORKLOAD_IDENTITY_PROVIDER }}
-            #          service_account: ${{ secrets.SERVICE_ACCOUNT }}
       - name: 'Increase yarn version'
         run: yarn version --patch --no-git-tag-version
       - name: 'Get current version'
@@ -38,8 +31,8 @@ jobs:
         run: |
           IFS=. read -r MAJOR MINOR PATCH <<< ${{ steps.current_version.outputs }}
           BUILD_NUMBER=$((10000000 * MAJOR + 1000 * MINOR + PATCH))
-          echo "::set-env name=BUILD_NUMBER::$BUILD_NUMBER"
+          echo "$BUILD_NUMBER"
+        id: build_number
       - name: 'Push build number in package.json'
-        run: yarn json --in-place -f package.json -e "this.build=$BUILD_NUMBER"
-        # - name: 'Deploy web-proxy service to the given environment'
-        #run:  yarn --cwd server deploy:${{ inputs.environment }}
+        run: yarn json --in-place -f package.json -e "this.build=${{ steps.build_number.outputs }}"
+
