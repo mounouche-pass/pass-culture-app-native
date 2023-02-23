@@ -50,9 +50,9 @@ jobs:
         #    with:
         #      TAG_PREFIX: toto
   deploy_for_given_environment:
-    needs: |
-      yarn-install
-      bundle-install
+    needs:
+      - yarn-install
+      - bundle-install
     uses: ./.github/workflows/prod_on_workflow_deploy_on_plateform.yml
     if: github.ref == 'refs/heads/PC-20512-deploy-web-proxy-testing' && startsWith(github.event.ref, 'refs/tags/v') != true
     with:
