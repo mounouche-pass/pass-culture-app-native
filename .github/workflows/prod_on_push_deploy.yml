@@ -26,18 +26,35 @@ jobs:
             v1-yarn-dependency-cache-${{ hashFiles('**/yarn.lock') }}
       - run: yarn install --immutable
         if: steps.yarn-modules-cache.outputs.cache-hit != 'true'
-
-  get_input_for_setting_tag_soft:
-    needs: yarn-install
-    if: github.ref == 'refs/heads/master'
-    uses: ./.github/workflows/prod_on_workflow_set_git_tag.yml
-    with: 
-      TAG_PREFIX: v
-
-  get_input_for_setting_tag_hard:
-    needs: yarn-install
-    if: github.ref == 'refs/heads/PC-20512-deploy-web-proxy-testing'
-    uses: ./.github/workflows/prod_on_workflow_set_git_tag.yml
+  bundle-install:
+    runs-on: [self-hosted, linux, X64]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ruby/setup-ruby@v1
+        with: bundler-cache: true
+      - name: Install Gem dependencies
+        run: bundle install --path=vendor/bundle
+  
+        #  get_input_for_setting_tag_soft:
+        #    needs: yarn-install
+        #    if: github.ref == 'refs/heads/master'
+        #    uses: ./.github/workflows/prod_on_workflow_set_git_tag.yml
+        #    with: 
+        #      TAG_PREFIX: v
+        #
+        #  get_input_for_setting_tag_hard:
+        #    needs: yarn-install
+        #    if: github.ref == 'refs/heads/PC-20512-deploy-web-proxy-testing'
+        #    uses: ./.github/workflows/prod_on_workflow_set_git_tag.yml
+        #    with:
+        #      TAG_PREFIX: toto
+  deploy_for_given_environment:
+    needs: |
+      yarn-install
+      bundle-install
+    uses: ./.github/workflows/prod_on_workflow_deploy_on_plateform.yml
+    if: github.ref == 'refs/heads/PC-20512-deploy-web-proxy-testing' && startsWith(github.event.ref, 'refs/tags/v') != true
     with:
-      TAG_PREFIX: toto
+      ENV: testing
+  
 

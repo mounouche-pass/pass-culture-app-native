@@ -46,5 +46,5 @@ jobs:
       - name: "Add a git tag base on Prefix and Version"
         run: git tag --annotate "${{ inputs.TAG_PREFIX}}${{ steps.current_version.outputs.YARN_VERSION }}" --message "v${{ steps.current_version.outputs.YARN_VERSION }}"
         #      - name: "Push the new tag created"
-        #run: echo "git push origin '${{ inputs.TAG_PREFIX }}${{ steps.current_version.outputs.YARN_VERSION }}'"
+        #run: git push origin "${{ inputs.TAG_PREFIX }}${{ steps.current_version.outputs.YARN_VERSION }}"
 
