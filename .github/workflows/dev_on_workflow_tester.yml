@@ -4,6 +4,7 @@ on:
   workflow_call:
 env:
   JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
+  SONAR_TOKEN: ${{ SONAR_TOKEN }}
 jobs:
     #  yarn_tester_web:
     #    runs-on: [self-hosted, linux, X64]
