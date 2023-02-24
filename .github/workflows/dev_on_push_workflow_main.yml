@@ -30,5 +30,4 @@ jobs:
   yarn-tester:
     needs: yarn-install
     uses: ./.github/workflows/dev_on_workflow_tester.yml
-    secrets:
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    secrets: inherit
