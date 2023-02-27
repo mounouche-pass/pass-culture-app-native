@@ -1,0 +1,50 @@
+name: Increase Yarn version and set a git tag
+
+on:
+  workflow_call:
+    inputs:
+      TAG_PREFIX:
+        required: true
+        type: string
+jobs:
+  yarn_version_set:
+    runs-on: [self-hosted, linux, X64]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: Setup yarn
+        run: npm install -g yarn
+      - uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            ~/.cache/yarn
+          key: v1-yarn-dependency-cache-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            v1-yarn-dependency-cache-${{ hashFiles('**/yarn.lock') }}
+      - name: 'Increase yarn version'
+        run: yarn version --patch --no-git-tag-version
+      - name: 'Get current version'
+        run: |
+          YARN_VERSION=$(yarn --silent json -f package.json version )
+          echo "YARN_VERSION=$YARN_VERSION" >> $GITHUB_OUTPUT 
+        id: current_version
+      - name: 'Split the current version and build build number'
+        run: |
+          IFS=. read -r MAJOR MINOR PATCH <<< ${{ steps.current_version.outputs.YARN_VERSION }}
+          BUILD_NUMBER=$((10000000 * MAJOR + 1000 * MINOR + PATCH))
+          echo "BUILD_NUMBER=$BUILD_NUMBER" >> "$GITHUB_OUTPUT"
+        id: build_number
+      - name: 'Push build number in package.json'
+        run: yarn json --in-place -f package.json -e "this.build=${{ steps.build_number.outputs.BUILD_NUMBER }}"
+      - name: "Setup git before annotate"
+        run: |
+          git config user.name "CI"
+          git config user.email "ci@passculture.team"
+      - name: "Add a git tag base on Prefix and Version"
+        run: git tag --annotate "${{ inputs.TAG_PREFIX}}${{ steps.current_version.outputs.YARN_VERSION }}" --message "v${{ steps.current_version.outputs.YARN_VERSION }}"
+      - name: "Push the new tag created"
+        run: echo "${{ inputs.TAG_PREFIX }}${{ steps.current_version.outputs.YARN_VERSION }}"
+        #run: git push origin "${{ inputs.TAG_PREFIX }}${{ steps.current_version.outputs.YARN_VERSION }}"

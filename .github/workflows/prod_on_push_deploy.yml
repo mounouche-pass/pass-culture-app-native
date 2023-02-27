@@ -1,9 +1,12 @@
 name: Deploy a new version
 
 on:
-  push:
-      #    branches:
-      #      - master
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: 'Test scenario tags'
+        required: true
+        type: string
 
 jobs:
   yarn-install:
@@ -25,8 +28,8 @@ jobs:
           restore-keys: |
             v1-yarn-dependency-cache-${{ hashFiles('**/yarn.lock') }}
       - run: yarn install --immutable
-        if: steps.yarn-modules-cache.outputs.cache-hit != 'true'
-   bundle-install:
+        #        if: steps.yarn-modules-cache.outputs.cache-hit != 'true'
+  bundle-install:
     runs-on: [self-hosted, linux, X64]
     steps:
       - uses: actions/checkout@v3
@@ -35,20 +38,19 @@ jobs:
           bundler-cache: true
       - name: Install Gem dependencies
         run: bundle install --path=vendor/bundle
-  yarn-linter:
-    needs: yarn-install
-    uses:  ./.github/workflows/dev_on_workflow_linter_ts.yml
-  yarn-tester:
-    needs: yarn-linter
-    uses: ./.github/workflows/dev_on_workflow_tester.yml
-  deploy_for_given_environment:
+  get_input_for_setting_tag_soft:
     needs:
       - yarn-install
       - bundle-install
-    uses: ./.github/workflows/prod_on_workflow_deploy_on_plateform.yml
-    if: github.ref == 'refs/heads/PC-19088-deploy-soft-on-testing' && startsWith(github.event.ref, 'refs/tags/v') != true
+    if: github.ref == 'refs/heads/master'
+    uses: ./.github/workflows/prod_on_workflow_set_git_tag.yml
     with:
-      ENV: testing
-    secrets:
-      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-
+      TAG_PREFIX: v
+  get_input_for_setting_tag_hard:
+    needs: 
+      - yarn-install
+      - bundle-install
+    if: github.ref == 'refs/heads/PC-20512-deploy-web-proxy-testing'
+    uses: ./.github/workflows/prod_on_workflow_set_git_tag.yml
+    with:
+      TAG_PREFIX: toto

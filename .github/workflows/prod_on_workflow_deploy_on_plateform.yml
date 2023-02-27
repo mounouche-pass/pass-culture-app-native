@@ -30,14 +30,18 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with: 
           bundler-cache: true
-      - name: Setup sentry credentials
-        uses: getsentry/action-release@v1
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: "sentry"
-          SENTRY_PROJECT: "application-native"
-          SENTRY_URL: "https://sentry.passculture.team/"
-      - name: Deploy app for ${{ input.ENV }}
-        #        run : echo "bundle exec fastlane ios deploy codepush: --env ${{ input.ENV }}"
-      - name: Deploy IOS App for ${{ input.ENV }}
-        #        run: echo "bundle exec fastlane android deploy codepush: --env ${{ input.ENV }}"
+      - name: 'Setup sentry credentials'
+        run: |
+          echo "[defaults]" >> ~/.sentryclirc
+          echo "url=https://sentry.passculture.team/" >> ~/.sentryclirc
+          echo "org=sentry" >> ~/.sentryclirc
+          echo "project=application-native" >> ~/.sentryclirc
+          echo "" >> ~/.sentryclirc
+          echo "[auth]" >> ~/.sentryclirc
+          echo "token=${{ secrets.SENTRY_AUTH_TOKEN }}" >> ~/.sentryclirc
+      - name: Deploy app for ${{ inputs.ENV }}
+        run: echo "${{ inputs.ENV }}"
+        #        run : echo "bundle exec fastlane ios deploy codepush: --env ${{ inputs.ENV }}"
+      - name: Deploy IOS App for ${{ inputs.ENV }}
+        run: echo "${{ inputs.ENV }}"
+        #        run: echo "bundle exec fastlane android deploy codepush: --env ${{ inputs.ENV }}"

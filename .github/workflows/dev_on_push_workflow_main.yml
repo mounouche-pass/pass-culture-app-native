@@ -24,9 +24,26 @@ jobs:
             v1-yarn-dependency-cache-${{ hashFiles('**/yarn.lock') }}
       - run: yarn install --immutable
         if: steps.yarn-modules-cache.outputs.cache-hit != 'true'
+  bundle-install:
+    runs-on: [self-hosted, linux, X64]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Install Gem dependencies
+        run: bundle install --path=vendor/bundle
   yarn-linter:
     needs: yarn-install
     uses:  ./.github/workflows/dev_on_workflow_linter_ts.yml
   yarn-tester:
-    needs: yarn-install
+    needs: yarn-linter
     uses: ./.github/workflows/dev_on_workflow_tester.yml
+  deploy_soft_for_testing_environment:
+    needs: yarn-tester
+    uses: ./.github/workflows/prod_on_workflow_deploy_on_plateform.yml
+    #  if: github.ref == 'refs/heads/PC-19088-deploy-soft-on-testing' && startsWith(github.event.ref, 'refs/tags/*') != true
+    with:
+      ENV: "testing"
+    secrets:
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
