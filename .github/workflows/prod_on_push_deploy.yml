@@ -1,0 +1,54 @@
+name: Deploy a new version
+
+on:
+  push:
+      #    branches:
+      #      - master
+
+jobs:
+  yarn-install:
+    runs-on: [self-hosted, linux, X64]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: Setup yarn
+        run: npm install -g yarn
+      - uses: actions/cache@v3
+        id: yarn-modules-cache
+        with:
+          path: |
+            node_modules
+            ~/.cache/yarn
+          key: v1-yarn-dependency-cache-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            v1-yarn-dependency-cache-${{ hashFiles('**/yarn.lock') }}
+      - run: yarn install --immutable
+        if: steps.yarn-modules-cache.outputs.cache-hit != 'true'
+   bundle-install:
+    runs-on: [self-hosted, linux, X64]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Install Gem dependencies
+        run: bundle install --path=vendor/bundle
+  yarn-linter:
+    needs: yarn-install
+    uses:  ./.github/workflows/dev_on_workflow_linter_ts.yml
+  yarn-tester:
+    needs: yarn-linter
+    uses: ./.github/workflows/dev_on_workflow_tester.yml
+  deploy_for_given_environment:
+    needs:
+      - yarn-install
+      - bundle-install
+    uses: ./.github/workflows/prod_on_workflow_deploy_on_plateform.yml
+    if: github.ref == 'refs/heads/PC-19088-deploy-soft-on-testing' && startsWith(github.event.ref, 'refs/tags/v') != true
+    with:
+      ENV: testing
+    secrets:
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+

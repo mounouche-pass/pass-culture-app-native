@@ -1,0 +1,43 @@
+name: Push to ios and android
+
+on:
+  workflow_call:
+    inputs:
+      ENV:
+        type: string
+        required: true
+    secrets:
+      SENTRY_AUTH_TOKEN:
+        required: true
+jobs:
+  Deploy_to_wanted_plateform:
+    runs-on: [self-hosted, linux, X64]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: Setup yarn
+        run: npm install -g yarn
+      - uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            ~/.cache/yarn
+          key: v1-yarn-dependency-cache-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            v1-yarn-dependency-cache-${{ hashFiles('**/yarn.lock') }}
+      - uses: ruby/setup-ruby@v1
+        with: 
+          bundler-cache: true
+      - name: Setup sentry credentials
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: "sentry"
+          SENTRY_PROJECT: "application-native"
+          SENTRY_URL: "https://sentry.passculture.team/"
+      - name: Deploy app for ${{ input.ENV }}
+        #        run : echo "bundle exec fastlane ios deploy codepush: --env ${{ input.ENV }}"
+      - name: Deploy IOS App for ${{ input.ENV }}
+        #        run: echo "bundle exec fastlane android deploy codepush: --env ${{ input.ENV }}"
