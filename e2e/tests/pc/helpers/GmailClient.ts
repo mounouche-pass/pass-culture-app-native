@@ -101,11 +101,14 @@ export default class GmailClient {
   }
 
   private static async getEmailParams(email: Email | undefined, regEx: RegExp) {
+    console.log({ hasEmail: !!email })
     if (!email?.text) {
       return
     }
+    console.log({ emailText: email.text, emailId: email.id, emailDate: email.date, emailTo: email.to })
 
     const res = regEx.exec(email.text)
+    console.log('res', res)
     try {
       if (res) {
         const auth = await GmailClient.authorize()
@@ -279,9 +282,11 @@ export default class GmailClient {
   }
 
   public getRegistrationConfirmationEmail = async (gmailFetchOptions: GmailFetchOptions) => {
+    console.log('fetchOptions',gmailFetchOptions)
     const email = await this.findOneWithRetries(gmailFetchOptions, 'Confirme ton email')
     const matches = await GmailClient.getEmailParams(email, GmailClient.CONFIRM_EMAIL_RE)
     if (!matches) {
+      console.log('no matches found')
       return
     }
     return { ...email, params: { CONFIRMATION_LINK: matches[1] } }
