@@ -53,7 +53,7 @@ jobs:
       - name: Deploy soft android for ${{ inputs.ENV }}
         if:  ${{ inputs.TYPE == 'soft' }}
         run: echo ${{ inputs.TYPE }}
-      - name: Deploy hard androi for ${{ inputs.ENV }}
+      - name: Deploy hard android for ${{ inputs.ENV }}
         if: ${{ inputs.TYPE == 'hard'}}
         run: echo ${{ inputs.TYPE }}
           #    run: |
