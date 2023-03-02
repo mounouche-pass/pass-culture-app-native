@@ -15,7 +15,7 @@ concurrency:
 env:
   JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
 jobs:
-  yarn_tester_web:
+  yarn_test_web:
     runs-on: [self-hosted, linux, X64]
     container:
       image: node:16
