@@ -6,6 +6,9 @@ on:
       ENV:
         type: string
         required: true
+      TYPE:
+        type: string
+        required: true
     secrets:
       SENTRY_AUTH_TOKEN:
         required: true
@@ -47,12 +50,17 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-          #  - name: Deploy android for ${{ inputs.ENV }}
+      - name: Deploy soft android for ${{ inputs.ENV }}
+        if:  ${{ inputs.TYPE == 'soft' }}
+        run: echo ${{ inputs.TYPE }}
+      - name: Deploy hard androi for ${{ inputs.ENV }}
+        if: ${{ inputs.TYPE == 'hard'}}
+        run: echo ${{ inputs.TYPE }}
           #    run: |
           #      bundle exec fastlane android deploy codepush: --env ${{ inputs.ENV }}
           #    env:
           #      ANDROID_APPCENTER_API_TOKEN: ${{ secrets.ANDROID_APPCENTER_API_TOKEN }}
-          #  - name: Deploy ios App for ${{ inputs.ENV }}
+          #  - name: Deploy soft ios App for ${{ inputs.ENV }}
           #    run: |
           #      bundle exec fastlane ios deploy codepush: --env ${{ inputs.ENV }}
           #    env:
