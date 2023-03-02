@@ -263,6 +263,7 @@ export default class GmailClient {
 
   private findOne = async (gmailFetchOptions: GmailFetchOptions, subject: string) => {
     const emails: Email[] = await this.fetch()
+    console.log('email', {to: emails[0].to, date:emails[0].date})
     let filteredEmails = emails.filter(this.makeFilterOnSubject(subject))
     return filteredEmails.find(this.makeFindOne(gmailFetchOptions))
   }
