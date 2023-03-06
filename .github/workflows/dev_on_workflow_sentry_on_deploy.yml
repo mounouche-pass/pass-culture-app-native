@@ -35,15 +35,13 @@ jobs:
           key: v1-yarn-dependency-cache-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             v1-yarn-dependency-cache-${{ hashFiles('**/yarn.lock') }}
-      - name: 'Setup sentry credentials'
-        run: |
-          echo "[defaults]" >> ~/.sentryclirc
-          echo "url=https://sentry.passculture.team/" >> ~/.sentryclirc
-          echo "org=sentry" >> ~/.sentryclirc
-          echo "project=application-native" >> ~/.sentryclirc
-          echo "" >> ~/.sentryclirc
-          echo "[auth]" >> ~/.sentryclirc
-          echo "token=${{ secrets.SENTRY_AUTH_TOKEN }}" >> ~/.sentryclirc
+      - name: Render template
+        id: render_template
+        uses: chuhlomin/render-template@v1.6
+        with:
+          template: .sentrylirc
+          vars: |
+            token: ${{ secrets.SENTRY_AUTH_TOKEN }}
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
@@ -64,6 +62,7 @@ jobs:
         if: ${{ env.WORKFLOW_CONCLUSION == 'failure' }}
         uses: slackapi/slack-github-action@v1.23.0
         with:
+          #channel #alertes-deploiement-native
           channel-id: "C0309RP8K42"
           payload: |
             {

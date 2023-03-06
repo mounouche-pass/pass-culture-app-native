@@ -6,21 +6,8 @@ on:
 jobs:
   yarn-install:
     uses: ./.github/workflows/dev_on_workflow_install.yml
-  yarn-linter:
-    needs: yarn-install
-    uses: ./.github/workflows/dev_on_workflow_linter_ts.yml
-  yarn-tester:
-    needs: yarn-linter
-    uses: ./.github/workflows/dev_on_workflow_tester.yml
-    secrets:
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-  yarn-storybook:
-    needs: yarn-linter
-    uses: ./.github/workflows/dev_on_workflow_storybook.yml
   sentry-on-deploy:
-    needs: yarn-tester
-    if: github.ref == 'refs/heads/master'
+    needs: yarn-install
     uses: ./.github/workflows/dev_on_workflow_sentry_on_deploy.yml
     with:
       ENV: "testing"

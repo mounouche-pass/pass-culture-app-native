@@ -109,6 +109,7 @@ jobs:
         if: ${{ env.WORKFLOW_CONCLUSION == 'failure' }}
         uses: slackapi/slack-github-action@v1.23.0
         with:
+          # channel #alertes-deploiement-native
           channel-id: "C0309RP8K42"
           payload: |
             {
