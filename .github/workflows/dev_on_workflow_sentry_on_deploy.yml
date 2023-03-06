@@ -39,7 +39,7 @@ jobs:
         id: render_template
         uses: chuhlomin/render-template@v1.6
         with:
-          template: ~/.sentrylirc
+          template: ~/.sentryclirc
           vars: |
             token: ${{ secrets.SENTRY_AUTH_TOKEN }}
       - uses: ruby/setup-ruby@v1
