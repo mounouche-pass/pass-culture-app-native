@@ -18,6 +18,10 @@ on:
         required: true
       SLACK_BOT_TOKEN:
         required: true
+      ANDROID_KEYSTORE:
+      ANDROID_KEYSTORE_STORE_PASSWORD: 
+      ANDROID_KEYSTORE_KEY_PASSWORD:
+      ANDROID_GOOGLE_SERVICES_JSON:
 
 jobs:
   sentry_and_deploy:
@@ -62,11 +66,26 @@ jobs:
           #      bundle exec fastlane ios deploy codepush: --env ${{ inputs.ENV }}
           #    env:
           #      IOS_APPCENTER_API_TOKEN: ${{ secrets.IOS_APPCENTER_API_TOKEN }}
+      - name: Setup android keystore for ${{ inputs.ENV }} environment
+        if: ${{ inputs.TYPE == 'hard'}}
+        run: |
+          mkdir -p android/keystores
+          echo ${{ secrets.ANDROID_KEYSTORE }} | base64 -di > android/keystores/${{ inputs.ENV }}.keystore
+          echo "keyAlias=passculture" >> android/keystores/${{ inputs.ENV }}.keystore.properties
+          echo "storeFile=${{ inputs.ENV }}.keystore" >> android/keystores/${{ inputs.ENV }}.keystore.properties
+          echo "storePassword=${{ secrets.ANDROID_KEYSTORE_STORE_PASSWORD }}" >> android/keystores/${{ inputs.ENV }}.keystore.properties
+          echo "keyPassword=${{ secrets.ANDROID_KEYSTORE_KEY_PASSWORD }}" >>  android/keystores/${{ inputs.ENV }}.keystore.properties
+      - name: Setup android Google services config
+        if: ${{ inputs.TYPE == 'hard'}}
+        run:  echo ${{ ANDROID_GOOGLE_SERVICES_JSON }} > android/app/google-services.json
       - name: Deploy hard android for ${{ inputs.ENV }}
         if: ${{ inputs.TYPE == 'hard'}}
         run: echo ${{ inputs.TYPE }}
         #     run: |
         #       bundle exec fastlane android deploy --env "${APP_ENV}" --verbose
+      - name: Setup iOS Google services config
+        if: ${{ inputs.TYPE == 'hard'}}
+        run: echo ${{ IOS_GOOGLE_SERVICES_PLIST }} > ios/GoogleService-Info.plist
       - name: Deploy hard ios for ${{ inputs.ENV }}
         if: ${{ inputs.TYPE == 'hard'}}
         run: echo ${{ inputs.TYPE }}
