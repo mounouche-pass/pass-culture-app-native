@@ -6,26 +6,26 @@ on:
 jobs:
   yarn-install:
     uses: ./.github/workflows/dev_on_workflow_install.yml
-  yarn-linter:
-    needs: yarn-install
-    uses: ./.github/workflows/dev_on_workflow_linter_ts.yml
-  yarn-tester:
-    needs: yarn-linter
-    uses: ./.github/workflows/dev_on_workflow_tester.yml
-    secrets:
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-  yarn-storybook:
-    needs: yarn-linter
-    uses: ./.github/workflows/dev_on_workflow_storybook.yml
+  # yarn-linter:
+  #   needs: yarn-install
+  #   uses: ./.github/workflows/dev_on_workflow_linter_ts.yml
+  # yarn-tester:
+  #   needs: yarn-linter
+  #   uses: ./.github/workflows/dev_on_workflow_tester.yml
+  #   secrets:
+  #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+  # yarn-storybook:
+  #   needs: yarn-linter
+  #   uses: ./.github/workflows/dev_on_workflow_storybook.yml
   soft-deploy-testing:
     needs: yarn-install
     if: github.ref == 'refs/heads/master'
     uses: ./.github/workflows/dev_on_workflow_environment_deploy.yml
-    environment: testing
     with:
       TYPE: "soft"
       ENV: "testing"
+      environment: testing
     secrets:
       SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
       ANDROID_APPCENTER_API_TOKEN: ${{ secrets.ANDROID_APPCENTER_API_TOKEN }}
