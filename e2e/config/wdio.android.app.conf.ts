@@ -13,7 +13,6 @@ const ciCapability = {
 const capabilityPackage = {
   'appium:app': env.APPIUM_APP,
   'appium:appWaitActivity': env.APPIUM_APP_WAIT_ACTIVITY,
-  'appium:appWaitForLaunch': false,
   ...(env.CI ? ciCapability : {}),
 }
 
