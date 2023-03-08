@@ -55,7 +55,7 @@ jobs:
           #      bundle exec fastlane android deploy codepush: --env ${{ inputs.ENV }}
           #    env:
           #      ANDROID_APPCENTER_API_TOKEN: ${{ secrets.ANDROID_APPCENTER_API_TOKEN }}
-      - name: Deploy soft ios App for ${{ inputs.ENV }}
+      - name: Deploy sof ios App for ${{ inputs.ENV }}
         if:  ${{ inputs.TYPE == 'soft' }}
         run: echo ${{ inputs.TYPE }}
           #    run: |
