@@ -65,11 +65,11 @@ jobs:
       - name: Deploy hard android for ${{ inputs.ENV }}
         if: ${{ inputs.TYPE == 'hard'}}
         run: |
-          bundle exec fastlane android deploy --env "${APP_ENV}" --verbose
+          bundle exec fastlane android deploy --env ${{ inputs.ENV }} --verbose
       - name: Deploy hard ios for ${{ inputs.ENV }}
         if: ${{ inputs.TYPE == 'hard'}}
         run: |
-          bundle exec fastlane ios deploy --env "${APP_ENV}" --verbose
+          bundle exec fastlane ios deploy --env ${{ inputs.ENV }} --verbose
       - uses: technote-space/workflow-conclusion-action@v3
         if: ${{ always() }}
       - name: Post to a Slack channel
