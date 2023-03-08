@@ -21,7 +21,7 @@ on:
 
 jobs:
   sentry_and_deploy:
-    runs-on: [self-hosted, linux, X64]
+    runs-on: [self-hosted, linux, x64]
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -29,6 +29,10 @@ jobs:
           node-version: 18
       - name: Setup yarn
         run: npm install -g yarn
+      - uses: actions/setup-java@v3
+        with:
+          java-version: '16'
+          distribution: 'temurin'
       - uses: actions/cache@v3
         id: yarn-modules-cache
         with:
