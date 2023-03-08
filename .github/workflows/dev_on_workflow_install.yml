@@ -7,9 +7,16 @@ jobs:
   yarn-install:
     runs-on: [self-hosted, linux, x64]
     container:
-      image: node:18
+      image: node:16
     steps:
       - uses: actions/checkout@v3
+      - name: Setup java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
       - uses: actions/cache@v3
         id: yarn-modules-cache
         with:
@@ -19,10 +26,11 @@ jobs:
           key: v1-yarn-dependency-cache-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             v1-yarn-dependency-cache-${{ hashFiles('**/yarn.lock') }}
-      - run: yarn install --immutable
+      - run: yarn install 
         if: steps.yarn-modules-cache.outputs.cache-hit != 'true'
   bundle-install:
     runs-on: [self-hosted, linux, x64]
+    container:
     steps:
       - uses: actions/checkout@v3
       - uses: ruby/setup-ruby@v1
