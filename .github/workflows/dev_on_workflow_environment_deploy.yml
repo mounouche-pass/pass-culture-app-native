@@ -9,6 +9,8 @@ on:
       TYPE:
         type: string
         required: true
+      environment:
+        type: string
     secrets:
       SENTRY_AUTH_TOKEN:
         required: true
