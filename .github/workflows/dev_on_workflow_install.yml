@@ -8,6 +8,7 @@ jobs:
     runs-on: [self-hosted, linux, x64]
     container:
       image: node:18
+      options: "-u 1000:1000"
     steps:
       - uses: actions/checkout@v3
       - uses: actions/cache@v3
