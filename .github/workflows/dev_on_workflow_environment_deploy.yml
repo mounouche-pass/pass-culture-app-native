@@ -10,14 +10,12 @@ on:
         type: string
         required: true
     secrets:
-      SENTRY_AUTH_TOKEN:
+      GCP_EHP_SERVICE_ACCOUNT:
         required: true
-      ANDROID_APPCENTER_API_TOKEN:
+      GCP_EHP_WORKLOAD_IDENTITY_PROVIDER:
         required: true
-      IOS_APPCENTER_API_TOKEN:
-        required: true
-      SLACK_BOT_TOKEN:
-        required: true
+      ANDROID_GOOGLE_SERVICES_JSON:
+      IOS_GOOGLE_SERVICES_JSON:
 
 jobs:
   sentry_and_deploy:
@@ -29,7 +27,8 @@ jobs:
           node-version: 18
       - name: Setup yarn
         run: npm install -g yarn
-      - uses: actions/setup-java@v3
+      - name: Setup java
+        uses: actions/setup-java@v3
         with:
           java-version: '16'
           distribution: 'temurin'
@@ -42,38 +41,84 @@ jobs:
           key: v1-yarn-dependency-cache-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             v1-yarn-dependency-cache-${{ hashFiles('**/yarn.lock') }}
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Authentification to Google
+        uses: 'google-github-actions/auth@v1'
+        with:
+          workload_identity_provider: ${{ secrets.GCP_EHP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_EHP_SERVICE_ACCOUNT }}
+      - name: Get Secret
+        id: 'secrets'
+        uses: 'google-github-actions/get-secretmanager-secrets@v1'
+        with:
+          secrets: |-
+            SLACK_BOT_TOKEN:passculture-metier-ehp/passculture-app-native-slack-token
+            SENTRY_AUTH_TOKEN:passculture-metier-ehp/passculture-app-native-sentry-token
+            ANDROID_APPCENTER_API_TOKEN:passculture-metier-ehp/passculture-app-native-android-${{ inputs.ENV }}-token
+            IOS_APPCENTER_API_TOKEN:passculture-metier-ehp/passculture-app-native-ios-${{ inputs.ENV }}-token
+            ANDROID_KEYSTORE_STORE_PASSWORD:passculture-metier-ehp/passculture-app-native-android-${{ inputs.ENV }}-keystore-store-password
+            ANDROID_KEYSTORE_KEY_PASSWORD:passculture-metier-ehp/passculture-app-native-android-${{ inputs.ENV }}-keystore-key-password
+            ANDROID_KEYSTORE:passculture-metier-ehp/passculture-app-native-${{ inputs.ENV }}-keystore
+
       - name: 'Render Template'
         id: render_template
         uses: chuhlomin/render-template@v1.6
         with:
           template: .sentryclirc
           vars: |
-            token: ${{ secrets.SENTRY_AUTH_TOKEN }}
-      - uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
+            token: ${{ steps.secrets.outputs.SENTRY_AUTH_TOKEN }}
       - name: Deploy soft android for ${{ inputs.ENV }}
         if:  ${{ inputs.TYPE == 'soft' }}
         run: echo ${{ inputs.TYPE }}
           #    run: |
           #      bundle exec fastlane android deploy codepush: --env ${{ inputs.ENV }}
           #    env:
-          #      ANDROID_APPCENTER_API_TOKEN: ${{ secrets.ANDROID_APPCENTER_API_TOKEN }}
+          #      ANDROID_APPCENTER_API_TOKEN: ${{ steps.secrets.output.ANDROID_APPCENTER_API_TOKEN }}
       - name: Deploy sof ios App for ${{ inputs.ENV }}
         if:  ${{ inputs.TYPE == 'soft' }}
         run: echo ${{ inputs.TYPE }}
           #    run: |
           #      bundle exec fastlane ios deploy codepush: --env ${{ inputs.ENV }}
           #    env:
-          #      IOS_APPCENTER_API_TOKEN: ${{ secrets.IOS_APPCENTER_API_TOKEN }}
+          #      IOS_APPCENTER_API_TOKEN: ${{ steps.secrets.output.IOS_APPCENTER_API_TOKEN }}
+      - name: Setup android keystore for ${{ inputs.ENV }} environment
+        if: ${{ inputs.TYPE == 'hard'}}
+        uses: chuhlomin/render-template@v1.6
+        with:
+          template: android/keystores/${{ inputs.ENV }}.keystore
+          vars: |
+            ANDROID_KEYSTORE: ${{ steps.secrets.outputs.ANDROID_KEYSTORE }}
+      - name: Setup android keystore properties for ${{ inputs.ENV }} environment
+        if: ${{ inputs.TYPE == 'hard'}}
+        uses: chuhlomin/render-template@v1.6
+        with:
+          template: android/keystores/${{ inputs.ENV }}.keystore.properties
+          vars: |
+            ENVIRONMENT: ${{ inputs.ENV }}
+            ANDROID_KEYSTORE_STORE_PASSWORD: ${{ steps.secrets.outputs.ANDROID_KEYSTORE_STORE_PASSWORD }}
+            ANDROID_KEYSTORE_KEY_PASSWORD: ${{ steps.secrets.outputs.ANDROID_KEYSTORE_KEY_PASSWORD }}
+      - name: Setup android Google services config
+        if: ${{ inputs.TYPE == 'hard'}}
+        run: echo ${{ secrets.ANDROID_GOOGLE_SERVICES_JSON }} > android/app/google-services.json
+      - name: Setup iOS Google services config
+        if: ${{ inputs.TYPE == 'hard'}}
+        run: echo ${{ secrets.IOS_GOOGLE_SERVICES_PLIST }} > ios/GoogleService-Info.plist
       - name: Deploy hard android for ${{ inputs.ENV }}
         if: ${{ inputs.TYPE == 'hard'}}
-        run: |
-          bundle exec fastlane android deploy --env ${{ inputs.ENV }} --verbose
+        run: echo ${{ inputs.TYPE }}
+        #  run: |
+        #  bundle exec fastlane android deploy --env ${{ inputs.ENV }} --verbose
+        env:
+          ANDROID_APPCENTER_API_TOKEN: ${{ steps.secrets.output.ANDROID_APPCENTER_API_TOKEN }}
       - name: Deploy hard ios for ${{ inputs.ENV }}
         if: ${{ inputs.TYPE == 'hard'}}
-        run: |
-          bundle exec fastlane ios deploy --env ${{ inputs.ENV }} --verbose
+        run: echo ${{ inputs.TYPE }}
+        #run: |
+         #bundle exec fastlane ios deploy --env ${{ inputs.ENV }} --verbose
+        env:
+          IOS_APPCENTER_API_TOKEN: ${{ steps.secrets.output.IOS_APPCENTER_API_TOKEN }}
       - uses: technote-space/workflow-conclusion-action@v3
         if: ${{ always() }}
       - name: Post to a Slack channel
@@ -101,5 +146,5 @@ jobs:
               "unfurl_media": false
             }
         env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          SLACK_BOT_TOKEN: ${{ steps.secrets.output.SLACK_BOT_TOKEN }}
 
