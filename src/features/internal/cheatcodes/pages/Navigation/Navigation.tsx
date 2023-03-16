@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Alert } from 'react-native'
+import { addScreenshotListener } from 'react-native-detector'
 import styled from 'styled-components/native'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -16,6 +17,7 @@ import { env } from 'libs/environment'
 import { useDistance } from 'libs/geolocation/hooks/useDistance'
 import { eventMonitoring } from 'libs/monitoring'
 import { ScreenError } from 'libs/monitoring/errors'
+import { requestScreenshotPermission } from 'libs/screenshots/requestScreenshotPermission.android'
 import { ButtonPrimary } from 'ui/components/buttons/ButtonPrimary'
 import { PageHeaderSecondary } from 'ui/components/headers/PageHeaderSecondary'
 import { useModal } from 'ui/components/modals/useModal'
@@ -30,6 +32,16 @@ export function Navigation(): JSX.Element {
   const distanceToEiffelTower = useDistance(EIFFEL_TOWER_COORDINATES)
   const venueId = useSomeVenueId()
   const { showInfoSnackBar } = useSnackBarContext()
+
+  useEffect(() => {
+    const userDidScreenshot = () => {
+      console.log('User took screenshot')
+    }
+    const unsubscribe = addScreenshotListener(userDidScreenshot)
+    return () => {
+      unsubscribe()
+    }
+  }, [])
 
   const {
     visible: cookiesConsentModalVisible,
@@ -206,6 +218,12 @@ export function Navigation(): JSX.Element {
             <ButtonPrimary
               wording="🦔 Spike réseaux sociaux dynamiques"
               onPress={() => navigate('DynamicSocials')}
+            />
+          </Row>
+          <Row half>
+            <ButtonPrimary
+              wording="Request permission for screenshot"
+              onPress={requestScreenshotPermission}
             />
           </Row>
         </StyledContainer>
