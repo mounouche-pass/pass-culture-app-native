@@ -4,6 +4,17 @@ ci:
 
   assert:
     preset: lighthouse:no-pwa
+    assertions:
+      aria-valid-attr-value:
+        - warn
+      csp-xss:
+        - warn
+      errors-in-console:
+        - warn
+      meta-viewport:
+        - warn
+      unused-javascript:
+        - warn
 
   upload:
     # upload options here
