@@ -8,6 +8,15 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
+      - uses: actions/cache@v3
+        id: yarn-modules-cache
+        with:
+          path: |
+            node_modules
+            ~/.cache/yarn
+          key: v1-yarn-dependency-lighthouse-cache-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            v1-yarn-dependency-lighthouse-cache-${{ hashFiles('**/yarn.lock') }}
       - name: Install dependencies
         run: yarn install
       - run: yarn install && yarn global add @lhci/cli@0.11.x
