@@ -1,6 +1,7 @@
 ci:
   collect:
-    staticDistDir: build
+    # staticDistDir: build
+    startServerCommand: yarn start:web:testing
 
   assert:
     preset: lighthouse:no-pwa
