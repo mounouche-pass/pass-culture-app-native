@@ -9,15 +9,13 @@ ci:
   assert:
     preset: lighthouse:no-pwa
     assertions:
-      aria-valid-attr-value:
+      categories:best-practices:
         - warn
-      csp-xss:
+      categories:pwa:
         - warn
-      errors-in-console:
+      categories:seo:
         - warn
-      meta-viewport:
-        - warn
-      unused-javascript:
+      categories:accessibility:
         - warn
 
   upload:
