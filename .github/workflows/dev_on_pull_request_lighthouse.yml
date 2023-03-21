@@ -21,7 +21,7 @@ jobs:
             v1-yarn-dependency-lighthouse-cache-${{ hashFiles('**/yarn.lock') }}
       - name: Install dependencies
         run: yarn install
-      - run: NODE_OPTIONS=--openssl-legacy-provider yarn run build
+      - run: NODE_OPTIONS=--openssl-legacy-provider yarn run build:testing
       - name: run Lighthouse CI
         run: |
           yarn global add @lhci/cli@0.11.x
