@@ -11,7 +11,7 @@
 
 - [ ] vérifier que lighthouse test une page correcte qui se charge réellement
 - [ ] faire fonctionner dans la pipeline
-- [ ] on push -> on PR
+- [ ] on push -> une fois par jour
 
 ---
 
