@@ -43,6 +43,7 @@
     "build:production": "ENV=production yarn build",
     "build:staging": "ENV=staging yarn build",
     "build:testing": "ENV=testing yarn build",
+    "build:lighthouse": "NODE_OPTIONS=--openssl-legacy-provider ENV=lighthouse yarn build",
     "chromatic": "chromatic --exit-zero-on-changes --exit-once-uploaded",
     "fix:lint": "eslint . --ext .js,.ts,.tsx,.mjs --fix",
     "generate:api:client": "SWAGGER_CODEGEN_CLI_VERSION=3.0.30 ./scripts/generate_api_client.sh",
