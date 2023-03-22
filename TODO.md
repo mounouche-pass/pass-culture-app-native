@@ -10,8 +10,11 @@
 ## Tasks
 
 - [ ] vérifier que lighthouse test une page correcte qui se charge réellement
+- [ ] vérifier que l'indicateur de performance est réel
+  - si les perfs sont dégradées -> l'indicateur doit etre dégradé
 - [ ] faire fonctionner dans la pipeline
-- [ ] on push -> une fois par jour
+- [ ] à la place de on push -> une fois par jour et on vérifie testing ?
+- [ ] à la place de on push -> trigger à définir et on vérifie prod ?
 
 ---
 
