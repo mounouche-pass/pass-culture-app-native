@@ -14,10 +14,9 @@
   - si les perfs sont dégradées -> l'indicateur doit etre dégradé
 - [ ] faire fonctionner dans la pipeline
 - [ ] à la place de on push -> une fois par jour et on vérifie testing ?
-- [ ] à la place de on push -> trigger à définir et on vérifie prod ?
 
 ---
 
 ## Tasks for another US
 
-- [ ] 
+- [ ] à la place de on push -> trigger à définir et on vérifie prod ?
