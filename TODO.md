@@ -20,3 +20,5 @@
 ## Tasks for another US
 
 - [ ] à la place de on push -> trigger à définir et on vérifie prod ?
+- [ ] accélérer la pipeline
+- [ ] refactorer la pipeline
