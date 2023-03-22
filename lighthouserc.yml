@@ -14,6 +14,9 @@ ci:
         - error
         - maxNumericValue: 25_000
 
+      cumulative-layout-shift:
+        - error
+
       categories:best-practices:
         - warn
       categories:pwa:
