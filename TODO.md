@@ -9,7 +9,7 @@
 
 ## Tasks
 
-- [ ] vérifier que lighthouse test une page correcte qui se charge réellement
+- [x] vérifier que lighthouse test une page correcte qui se charge réellement
 - [ ] vérifier que l'indicateur de performance est réel
   - si les perfs sont dégradées -> l'indicateur doit etre dégradé
 - [ ] faire fonctionner dans la pipeline
