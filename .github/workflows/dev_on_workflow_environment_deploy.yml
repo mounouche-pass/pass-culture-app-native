@@ -79,7 +79,7 @@ jobs:
       - name: Setup android keystore for ${{ inputs.ENV }} environment
         if: ${{ inputs.TYPE == 'hard'}}
         run: |
-            echo '${{ steps.secrets.outputs.ANDROID_KEYSTORE }}' |  base64 --decode --input > android/keystores/${{ inputs.ENV }}.keystore
+            echo '${{ steps.secrets.outputs.ANDROID_KEYSTORE }}' |  base64 --decode  > android/keystores/${{ inputs.ENV }}.keystore
       - name: Setup android keystore properties for ${{ inputs.ENV }} environment
         if: ${{ inputs.TYPE == 'hard'}}
         uses: chuhlomin/render-template@v1.6
