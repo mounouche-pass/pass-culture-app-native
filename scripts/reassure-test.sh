@@ -2,7 +2,7 @@
 set -e
 
 # Test on branch PC-20631-duplicate
-BASELINE_BRANCH=${BASELINE_BRANCH:="master"}
+BASELINE_BRANCH=${BASELINE_BRANCH:="PC-20631-without-test"}
 
 # Required for `git switch` on CI
 git fetch origin
@@ -10,7 +10,6 @@ git fetch origin
 # Gather baseline perf measurements
 git switch "$BASELINE_BRANCH"
 yarn install --force
-yarn add --dev reassure
 yarn test:perf --baseline
 
 # Gather current perf measurements & compare results
