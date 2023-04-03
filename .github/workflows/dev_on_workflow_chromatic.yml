@@ -1,10 +1,7 @@
-name: 'Chromatic'
+name: 'Build, test and deploy storybook with Chromatic'
 
 on:
-  push:
-    paths:
-      - '.storybook/**'
-      - 'src/**'
+  workflow_call:
 
 env:
   BUILD_DIR: /tmp/${{ github.sha }}
@@ -28,7 +25,7 @@ jobs:
       - name: Install dependencies
         run: yarn install
       - name: Build Storybook 🔧
-        run: yarn build-storybook --output-dir $BUILD_DIR
+        run: yarn build-storybook --webpack-stats-json --output-dir $BUILD_DIR
       - name: Publish to Chromatic 🚀
         uses: chromaui/action@v1
         with:

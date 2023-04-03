@@ -14,6 +14,13 @@ jobs:
     uses: ./.github/workflows/dev_on_workflow_check_folder_change.yml
     with:
       folder: server
+  check-storybook-folder-changes:
+    name: Check storybook folder changes
+    uses: ./.github/workflows/dev_on_workflow_check_folder_change.yml
+    with:
+      folder: |
+        .storybook/**
+        src/**'
   yarn-linter:
     needs: yarn-install
     uses: ./.github/workflows/dev_on_workflow_linter_ts.yml
@@ -26,6 +33,10 @@ jobs:
   yarn-storybook:
     needs: yarn-linter
     uses: ./.github/workflows/dev_on_workflow_storybook.yml
+  yarn-chromatic:
+    needs: [yarn-linter, check-storybook-folder-changes]
+    uses: ./.github/workflows/dev_on_workflow_chromatic.yml
+    if: needs.check-storybook-folder-changes.outputs.folder_changed == 'true'
   soft-deploy-testing:
     needs: yarn-tester
     if: github.ref == 'refs/heads/master'
@@ -70,8 +81,8 @@ jobs:
     needs: soft-deploy-testing
     uses: ./.github/workflows/dev_on_workflow_web_deploy.yml
     with:
-      ENV: "testing"
-      BUCKET_NAME: "passculture-metier-ehp-testing-decliweb"
+      ENV: 'testing'
+      BUCKET_NAME: 'passculture-metier-ehp-testing-decliweb'
     secrets:
       GCP_EHP_SERVICE_ACCOUNT: ${{ secrets.GCP_EHP_SERVICE_ACCOUNT }}
       GCP_EHP_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.GCP_EHP_WORKLOAD_IDENTITY_PROVIDER }}
@@ -79,8 +90,8 @@ jobs:
     needs: [hard-deploy-android-staging, hard-deploy-ios-staging]
     uses: ./.github/workflows/dev_on_workflow_web_deploy.yml
     with:
-      ENV: "staging"
-      BUCKET_NAME: "passculture-metier-ehp-staging-decliweb"
+      ENV: 'staging'
+      BUCKET_NAME: 'passculture-metier-ehp-staging-decliweb'
     secrets:
       GCP_EHP_SERVICE_ACCOUNT: ${{ secrets.GCP_EHP_SERVICE_ACCOUNT }}
       GCP_EHP_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.GCP_EHP_WORKLOAD_IDENTITY_PROVIDER }}
@@ -89,7 +100,7 @@ jobs:
     if: needs.check-server-folder-changes.outputs.folder_changed == 'true'
     uses: ./.github/workflows/dev_on_workflow_web_proxy_deploy.yml
     with:
-      ENV: "testing"
+      ENV: 'testing'
     secrets:
       GCP_EHP_SERVICE_ACCOUNT: ${{ secrets.GCP_EHP_SERVICE_ACCOUNT }}
       GCP_EHP_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.GCP_EHP_WORKLOAD_IDENTITY_PROVIDER }}
@@ -98,7 +109,7 @@ jobs:
     if: needs.check-server-folder-changes.outputs.folder_changed == 'true'
     uses: ./.github/workflows/dev_on_workflow_web_proxy_deploy.yml
     with:
-      ENV: "staging"
+      ENV: 'staging'
     secrets:
       GCP_EHP_SERVICE_ACCOUNT: ${{ secrets.GCP_EHP_SERVICE_ACCOUNT }}
       GCP_EHP_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.GCP_EHP_WORKLOAD_IDENTITY_PROVIDER }}
