@@ -4,6 +4,7 @@ import 'react-native-gesture-handler' // @react-navigation
 import 'react-native-get-random-values' // required for `uuid` module to work
 import { LogBox, Platform, StatusBar } from 'react-native'
 import CodePush from 'react-native-code-push'
+// import { getUniqueId } from 'react-native-device-info'
 
 // if __DEV__ import if you want to debug
 // import './why-did-you-render'
@@ -64,6 +65,10 @@ const App: FunctionComponent = function () {
 
   useEffect(() => {
     eventMonitoring.init({ enabled: !__DEV__ })
+    eventMonitoring.configureScope((scope) => {
+      scope.setExtra('Platform', Platform.OS)
+      // scope.setExtra('DeviceID', getUniqueId())
+    })
   }, [])
 
   useEffect(() => {
