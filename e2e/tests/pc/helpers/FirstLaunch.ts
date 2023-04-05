@@ -7,7 +7,7 @@ import AgeInformation from '../features/onboarding/AgeInformation'
 import OnboardingWelcome from '../features/onboarding/OnboardingWelcome'
 import OnboardingGeolocation from '../features/onboarding/OnboardingGeolocation'
 import Browser from './Browser'
-import {timeout} from "./utils/time";
+import { timeout } from './utils/time'
 
 class FirstLaunch {
   async allowIOSAlert() {
@@ -36,7 +36,7 @@ class FirstLaunch {
       // Notification Alert
       await this.allowIOSAlert()
     }
-    await timeout(flags.isWeb ? 8000 : 4000)
+    await timeout(flags.isWeb ? 1000 : 4000)
     await CookiesConsent.acceptCookies()
     if (!flags.isWeb && flags.isIOS) {
       // ATT Alert

@@ -10,6 +10,10 @@ type IRegistrationScreens = {
   birthDate: RegistrationBirthDate
   acceptCgu: RegistrationAcceptCgu
   signupConfirmationEmailSent: SignupConfirmationEmailSent
+  verifyEligibility: VerifyEligibility
+  stepper: Stepper
+  setName: SetName
+  setCity: SetCity
 }
 
 class SignupScreens extends AppScreen {
@@ -18,6 +22,10 @@ class SignupScreens extends AppScreen {
   birthDateScreen: RegistrationBirthDate
   acceptCguScreen: RegistrationAcceptCgu
   signupConfirmationEmailSentScreen: SignupConfirmationEmailSent
+  verifyEligibilityScreen: VerifyEligibility
+  stepperScreen: Stepper
+  setNameScreen: SetName
+  setCityScreen: SetCity
 
   constructor(screens: IRegistrationScreens) {
     super('SignupForm', true)
@@ -26,6 +34,70 @@ class SignupScreens extends AppScreen {
     this.birthDateScreen = screens.birthDate
     this.acceptCguScreen = screens.acceptCgu
     this.signupConfirmationEmailSentScreen = screens.signupConfirmationEmailSent
+    this.verifyEligibilityScreen = screens.verifyEligibility
+    this.stepperScreen = screens.stepper
+    this.setNameScreen = screens.setName
+    this.setCityScreen = screens.setCity
+  }
+}
+
+class VerifyEligibility extends AppScreen {
+  constructor() {
+    super('VerifyEligibility', true)
+  }
+
+  get startVerificationButton() {
+    return $$$('Commencer la vérification')
+  }
+}
+
+class Stepper extends AppScreen {
+  constructor() {
+    super('IdentityCheckStepper', true)
+  }
+
+  get profileLink() {
+    return $$$('Profil non complété')
+  }
+}
+
+class SetName extends AppScreen {
+  constructor() {
+    super('SetName', true)
+  }
+
+  get firstName() {
+    return $$$('Entrée pour le prénom')
+  }
+
+  get lastName() {
+    return $$$('Entrée pour le nom')
+  }
+
+  get continueButton() {
+    return $$$('Continuer vers l’étape suivante')
+  }
+}
+
+class SetCity extends AppScreen {
+  constructor() {
+    super('IdentityCheckCity', true)
+  }
+
+  get zipCode() {
+    return $$$('searchInput')
+  }
+
+  get citySuggestion() {
+    return $$$('Proposition de ville 1 : Paris')
+  }
+
+  get continueButton() {
+    const identityCheckCityScreen = $$$('IdentityCheckCity')
+    console.log({ identityCheckCityScreen })
+    const toto = identityCheckCityScreen.$$("[data-testid='Continuer vers l’étape suivante']")
+    console.log({ toto })
+    return toto[0]
   }
 }
 
@@ -192,14 +264,14 @@ export class RegistrationBirthDate extends AppScreen {
 class RegistrationAcceptCgu extends AppScreen {
   constructor() {
     super(
-      "Accepter les conditions générales d’utilisation et la politique de confidentialité pour s’inscrire",
+      'Accepter les conditions générales d’utilisation et la politique de confidentialité pour s’inscrire',
       true
     )
   }
 
   get submit() {
     return $$$(
-      "Accepter les conditions générales d’utilisation et la politique de confidentialité pour s’inscrire"
+      'Accepter les conditions générales d’utilisation et la politique de confidentialité pour s’inscrire'
     )
   }
 }
@@ -228,10 +300,22 @@ export const acceptCgu = new RegistrationAcceptCgu()
 
 export const signupConfirmationEmailSent = new SignupConfirmationEmailSent()
 
+export const verifyEligibility = new VerifyEligibility()
+
+export const stepper = new Stepper()
+
+export const setName = new SetName()
+
+export const setCity = new SetCity()
+
 export default new SignupScreens({
   email,
   password,
   birthDate,
   acceptCgu,
   signupConfirmationEmailSent,
+  verifyEligibility,
+  stepper,
+  setName,
+  setCity,
 })

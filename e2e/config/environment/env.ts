@@ -15,10 +15,8 @@ export const env: Environment = {
   CI: systemEnv.CI || false,
   ENVIRONMENT: systemEnv.ENVIRONMENT || 'staging',
   WDIO_BASE_URL: systemEnv.WDIO_BASE_URL || 'http://localhost:3000',
-  ANDROID_DEVICE_NAME: systemEnv.ANDROID_DEVICE_NAME || 'pixel_xl',
-  ANDROID_PLATFORM_VERSION: systemEnv.ANDROID_PLATFORM_VERSION
-    ? String(systemEnv.ANDROID_PLATFORM_VERSION)
-    : '10.0',
+  ANDROID_DEVICE_NAME: 'Pixel 5 API 31',
+  ANDROID_PLATFORM_VERSION: '12.0',
   IOS_DEVICE_NAME: systemEnv.IOS_DEVICE_NAME || 'iPhone 13',
   IOS_PLATFORM_VERSION: systemEnv.IOS_PLATFORM_VERSION
     ? String(systemEnv.IOS_PLATFORM_VERSION)

@@ -15,7 +15,7 @@ type RegistrationConfirmationEmail = Omit<Email, 'params'> & {
   }
 }
 
-describe.skip('18YearsRegistration', () => {
+describe('17YearsRegistration', () => {
   let ok = false
   let tabBar: TabBar
   let theme: DefaultTheme
@@ -71,10 +71,10 @@ describe.skip('18YearsRegistration', () => {
       await SignupScreens.passwordScreen.waitForIsShown(false)
     })
 
-    it('should set birthdate to 18 years old', async () => {
+    it('should set birthdate to 17 years old', async () => {
       didFirstLaunch(ok)
       const birthDate = new Date(
-        new Date().getFullYear() - 18, // year (18 year's old)
+        new Date().getFullYear() - 17, // year (17 year's old)
         getRandomInt(0, new Date().getMonth()), // monthIndex
         getRandomInt(1, new Date().getDay()) // day
       )
@@ -113,6 +113,38 @@ describe.skip('18YearsRegistration', () => {
       const url = new URL(registrationConfirmationEmail.params.CONFIRMATION_LINK)
       await openDeepLinkUrl(url.href)
       await SignupScreens.signupConfirmationEmailSentScreen.waitForIsShown(false)
+    })
+
+    it('should open VerifyEligibility page and click on startVerificationButton', async () => {
+      didFirstLaunch(ok)
+      await SignupScreens.verifyEligibilityScreen.waitForIsShown(true)
+      await SignupScreens.verifyEligibilityScreen.startVerificationButton.click()
+      await SignupScreens.verifyEligibilityScreen.waitForIsShown(false)
+    })
+
+    it('should open stepper page and click on profile step', async () => {
+      didFirstLaunch(ok)
+      await SignupScreens.stepperScreen.waitForIsShown(true)
+      await SignupScreens.stepperScreen.profileLink.click()
+      await SignupScreens.stepperScreen.waitForIsShown(false)
+    })
+
+    it('should fill set name page', async () => {
+      didFirstLaunch(ok)
+      await SignupScreens.setNameScreen.waitForIsShown(true)
+      await SignupScreens.setNameScreen.firstName.setValue('Anouk')
+      await SignupScreens.setNameScreen.lastName.setValue('Hello')
+      await SignupScreens.setNameScreen.continueButton.click()
+      await SignupScreens.setNameScreen.waitForIsShown(false)
+    })
+
+    it('should fill city', async () => {
+      didFirstLaunch(ok)
+      await SignupScreens.setCityScreen.waitForIsShown(true)
+      await SignupScreens.setCityScreen.zipCode.setValue('75008')
+      await SignupScreens.setCityScreen.citySuggestion.click()
+      await SignupScreens.setCityScreen.continueButton.click()
+      await SignupScreens.setCityScreen.waitForIsShown(false)
     })
   })
 })
