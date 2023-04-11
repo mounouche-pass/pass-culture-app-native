@@ -5,9 +5,9 @@ import styled from 'styled-components/native'
 import { AccessibleSvg } from 'ui/svg/AccessibleSvg'
 import { svgIdentifier } from 'ui/svg/utils'
 
-import { AccessibleBicolorIconInterface } from './types'
+import { AccessibleIcon } from './types'
 
-const BicolorUnlockSvg: React.FC<AccessibleBicolorIconInterface> = ({
+const BicolorUnlockSvg: React.FC<AccessibleIcon> = ({
   size,
   color,
   color2,
