@@ -42,7 +42,7 @@ const BicolorBirthdayCakeSvg: React.FunctionComponent<AccessibleIcon> = ({
 export const BicolorBirthdayCake = styled(BicolorBirthdayCakeSvg).attrs(
   ({ color, color2, size, theme }) => ({
     color: color ?? theme.colors.primary,
-    color2: color2 ?? color ?? theme.colors.secondary,
+    color2: color2 ?? theme.colors.secondary,
     size: size ?? theme.illustrations.sizes.medium,
   })
 )``
