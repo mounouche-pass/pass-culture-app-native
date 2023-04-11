@@ -7,11 +7,11 @@
 
 ## svg VS react-native-svg
 
-:warning: SVG attributes use hyphen (e.g. `fill-rule` and `clip-rule`) while react-native-svg use camelCase props. 
+:warning: SVG attributes use hyphen (e.g. `fill-rule` and `clip-rule`) while react-native-svg use camelCase props.
 
-Since react-native-svg use camelCase props, use `fillRule` and `clipRule`. 
+Since react-native-svg use camelCase props, use `fillRule` and `clipRule`.
 
-> TypeScript will not throw if you use `fill-rule` and `clip-rule`, although it will fail at compilation and throw warnings on the Web. 
+> TypeScript will not throw if you use `fill-rule` and `clip-rule`, although it will fail at compilation and throw warnings on the Web.
 
 ### Illustrations
 
@@ -26,12 +26,11 @@ Pictograms can be linear or filled.
 
 If you don't download icons from the [Fondations file](https://www.figma.com/file/jswn3bl2Sy7hm4XDyOLWE9/Fondations), make sure to use the viewbox values from your import, rather than the default "48 48 0 0" used in Fondations. The Path and the ViewBox are related to maintain a consistent ratio.
 
-
-# Importing new icons
+## Importing new icons
 
 All types of icons should be imported the same way to enforce consistency in use throughout the codebase. Follow the given templates (or existing icons) to import your icons correctly.
 
-## Illustrations
+### Illustration
 
 Illustrations should be imported with a fixed ratio of 156/200, a black color, and the standard icon size as follows:
 
@@ -70,7 +69,7 @@ export const MyIllustration = styled(MyIllustrationSvg).attrs(({ color, size, th
 
 > Do not import constants to style your SVG, instead, use `theme` API from styled-components
 
-## Linear pictograms
+### Linear pictogram
 
 Regular linear pictograms should be imported as follows:
 
@@ -104,7 +103,7 @@ export const MyRegularPictogram = styled(MyRegularPictogramSvg).attrs(({ color, 
 
 Filled (tertiary and quaternary) pictograms should be imported with a default size of `theme.icons.sizes.smaller`.
 
-## Bicolor pictograms
+### Bicolor pictogram
 
 The offset value of the Stop component should always be specified (for valid HTML) and should be in percentage for uniformity.
 
@@ -152,4 +151,5 @@ export const MyBicolorPictogram = styled(MyBicolorPictogramSvg).attrs(({ color, 
 ```
 
 ## Accessibility
+
 By using `AccessibleSvg`, all the accessibility attributes are automatically handled, by hiding the element from screen readers if there is no accessibility label attached, and adding the correct accessibility role when there is one.
