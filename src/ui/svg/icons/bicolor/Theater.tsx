@@ -1,6 +1,6 @@
 import React from 'react'
 import { Defs, LinearGradient, Path, Stop } from 'react-native-svg'
-import styled, { useTheme } from 'styled-components/native'
+import styled from 'styled-components/native'
 
 import { AccessibleSvg } from 'ui/svg/AccessibleSvg'
 import { svgIdentifier } from 'ui/svg/utils'
@@ -15,9 +15,7 @@ const TheaterSvg: React.FunctionComponent<AccessibleIcon> = ({
   testID,
 }) => {
   const { id: gradientId, fill: gradientFill } = svgIdentifier()
-  const {
-    colors: { primary, secondary },
-  } = useTheme()
+
   return (
     <AccessibleSvg
       width={size}
@@ -27,8 +25,8 @@ const TheaterSvg: React.FunctionComponent<AccessibleIcon> = ({
       testID={testID}>
       <Defs>
         <LinearGradient id={gradientId} x1="28.841%" x2="71.159%" y1="0%" y2="100%">
-          <Stop offset="0%" stopColor={color ?? primary} />
-          <Stop offset="100%" stopColor={color2 ?? color ?? secondary} />
+          <Stop offset="0%" stopColor={color} />
+          <Stop offset="100%" stopColor={color2} />
         </LinearGradient>
       </Defs>
       <Path
@@ -41,7 +39,8 @@ const TheaterSvg: React.FunctionComponent<AccessibleIcon> = ({
   )
 }
 
-export const Theater = styled(TheaterSvg).attrs(({ color, size, theme }) => ({
-  color: color ?? theme.colors.black,
+export const Theater = styled(TheaterSvg).attrs(({ color, color2, size, theme }) => ({
+  color: color ?? theme.colors.primary,
+  color2: color2 ?? theme.colors.secondary,
   size: size ?? theme.icons.sizes.standard,
 }))``
