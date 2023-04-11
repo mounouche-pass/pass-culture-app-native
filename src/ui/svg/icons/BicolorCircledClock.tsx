@@ -46,7 +46,7 @@ const BicolorCircledClockSvg: React.FC<AccessibleIcon> = ({
 export const BicolorCircledClock = styled(BicolorCircledClockSvg).attrs(
   ({ color, color2, size, theme }) => ({
     color: color ?? theme.colors.primary,
-    color2: color2 ?? color ?? theme.colors.secondary,
+    color2: color2 ?? theme.colors.secondary,
     size: size ?? theme.illustrations.sizes.medium,
   })
 )``
