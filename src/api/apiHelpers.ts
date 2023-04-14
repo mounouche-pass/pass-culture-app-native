@@ -70,7 +70,7 @@ export const safeFetch = async (
   // @ts-expect-error
   const authorizationHeader: string = options.headers?.['Authorization'] || ''
   const token = authorizationHeader.replace('Bearer ', '')
-  const accessTokenStatus = getAccessTokenStatus(token)
+  const accessTokenStatus = 'unknown'
 
   if (accessTokenStatus === 'unknown') {
     return NeedsAuthenticationResponse
@@ -105,7 +105,9 @@ export const safeFetch = async (
     }
   }
 
-  return await fetch(url, runtimeOptions)
+  const response = await fetch(url, runtimeOptions)
+  console.log(response)
+  return response
 }
 
 const FAILED_TO_GET_REFRESH_TOKEN_ERROR = 'Erreur lors de la récupération du refresh token'
@@ -197,7 +199,11 @@ export async function handleGeneratedApiResponse(response: Response): Promise<an
     response.statusText === NeedsAuthenticationResponse.statusText
   ) {
     try {
-      const json = await response.json()
+      if (response.bodyUsed || !response) return
+      console.log('try', response, response.toString())
+
+      const json = await response.json() // Ne sert à rien, autant ne pas faire ce check là et renvoyer directement vers la page de login
+      console.log('try', json)
       eventMonitoring.captureException(new Error(NeedsAuthenticationResponse.statusText), {
         extra: {
           url: response.url,
@@ -207,6 +213,7 @@ export async function handleGeneratedApiResponse(response: Response): Promise<an
         },
       })
     } catch (error) {
+      console.log('catch', error)
       eventMonitoring.captureException(
         new Error(NeedsAuthenticationResponse.statusText, { cause: error }),
         {
