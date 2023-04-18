@@ -79,7 +79,7 @@ jobs:
     # No hardware acceleration is available for emulators on Ubuntu:
     # https://github.com/marketplace/actions/android-emulator-runner#can-i-use-this-action-on-linux-vms
     runs-on: macos-latest
-    environment: ${{ inputs.environment || 'staging' }}
+        # environment: ${{ inputs.environment || 'staging' }}
     permissions:
       id-token: write
       contents: read
