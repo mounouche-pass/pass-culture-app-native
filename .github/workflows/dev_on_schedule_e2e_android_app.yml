@@ -1,13 +1,12 @@
 name: Tests e2e Android App
 
 on:
-  schedule:
-    - cron: '0 4 * * 1-5' # “At 4AM everyday from Monday through Friday.
+  push:
 
   workflow_dispatch:
     inputs:
       environment:
-        type: environment
+        type: string
         description: Select the environment
         required: true
         default: staging
