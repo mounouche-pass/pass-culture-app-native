@@ -1,6 +1,4 @@
 import { LinkingOptions } from '@react-navigation/native'
-import { Platform } from 'react-native'
-
 import { Bookings } from 'features/bookings/pages/Bookings/Bookings'
 import { withAsyncErrorBoundary } from 'features/errors/hocs/withAsyncErrorBoundary'
 import { Favorites } from 'features/favorites/pages/Favorites'
@@ -8,17 +6,26 @@ import { Home as HomeComponent } from 'features/home/pages/Home'
 import { getScreensAndConfig } from 'features/navigation/RootNavigator/linking/getScreensConfig'
 import { ScreenNames } from 'features/navigation/RootNavigator/types'
 import { screenParamsParser, screenParamsStringifier } from 'features/navigation/screenParamsUtils'
+import { Test } from 'features/navigation/TabBar/Test'
 import { Profile } from 'features/profile/pages/Profile'
 import { Search } from 'features/search/pages/Search/Search'
+import { Platform } from 'react-native'
 
 import { TabStack } from './Stack'
 import { TabParamList, TabRoute, TabRouteName } from './types'
 
-export const initialRouteName = 'Home'
+export const initialRouteName = 'Test'
 
 const Home = withAsyncErrorBoundary(HomeComponent)
 
 const routes: TabRoute[] = [
+  {
+    name: 'Test',
+    component: Test,
+    path: 'test',
+    options: { title: 'Page d’accueil' },
+  },
+
   {
     name: 'Home',
     component: Home,
@@ -72,6 +79,8 @@ export const menu: Record<TabRouteName, { displayName: string; accessibilityLabe
   Bookings: { displayName: 'Réservations', accessibilityLabel: 'Mes réservations' },
   Favorites: { displayName: 'Favoris', accessibilityLabel: isWeb ? undefined : 'Mes favoris' },
   Profile: { displayName: 'Profil', accessibilityLabel: 'Mon profil' },
+  Test: { displayName: 'Test', accessibilityLabel: 'Mon Test' },
+  ScreenOne: { displayName: 'ScreenOne', accessibilityLabel: 'Mon ScreenOne' },
 }
 
 const { screensConfig: tabScreensConfig, Screens: TabScreens } = getScreensAndConfig(

@@ -131,6 +131,9 @@ export type SubscriptionRootStackParamList = {
  * please update the deeplink handler in consequence.
  */
 export type RootStackParamList = {
+  ScreenOne: undefined
+  ScreenTwo: undefined
+  Test: undefined
   SignupForm: { preventCancellation?: boolean; offerId?: number } | undefined
   Maintenance: undefined
   ABTestingPOC: undefined

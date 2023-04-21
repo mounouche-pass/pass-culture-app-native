@@ -47,7 +47,10 @@ import { onboardingRoutes } from 'features/navigation/RootNavigator/onboardingRo
 import { subscriptionRoutes } from 'features/navigation/RootNavigator/subscriptionRoutes'
 import { screenParamsParser, screenParamsStringifier } from 'features/navigation/screenParamsUtils'
 import { tabNavigatorPathConfig } from 'features/navigation/TabBar/routes'
+import { ScreenOne } from 'features/navigation/TabBar/ScreenOne'
+import { ScreenTwo } from 'features/navigation/TabBar/ScreenTwo'
 import { TabNavigator } from 'features/navigation/TabBar/TabNavigator'
+import { Test } from 'features/navigation/TabBar/Test'
 import { Offer } from 'features/offer/pages/Offer/Offer'
 import { OfferDescription } from 'features/offer/pages/OfferDescription/OfferDescription'
 import { AfterChangeEmailValidationBuffer } from 'features/profile/pages/AfterChangeEmailValidationBuffer/AfterChangeEmailValidationBuffer'
@@ -70,6 +73,24 @@ export const routes: Route[] = [
   ...culturalSurveyRoutes,
   ...onboardingRoutes,
   ...subscriptionRoutes,
+  {
+    name: 'ScreenOne',
+    component: ScreenOne,
+    path: 'ScreenOne',
+    options: { title: 'Page d’accueil' },
+  },
+  {
+    name: 'ScreenTwo',
+    component: ScreenTwo,
+    path: 'ScreenTwo',
+    options: { title: 'Page d’accueil' },
+  },
+  {
+    name: 'Test',
+    component: Test,
+    path: 'test',
+    options: { title: 'Page d’accueil' },
+  },
   {
     name: 'Offer',
     component: Offer,
