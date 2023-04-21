@@ -53,6 +53,10 @@ const VideoTest_YoutubePlayer: FunctionComponent = () => {
   )
 }
 
+// Composant qui se place au dessus du player à la fin de la vidéo
+// Le but est :
+// - d'empêcher l'utilisateur de cliquer sur les vidéos recommendées par Youtube (car pas forcément celle du pass)
+// - de placer des boutons custom de replay, de partage, d'accès à l'offre,...
 const EndView: FunctionComponent<{ onPressReplay: () => void; onPressShare: () => void }> = ({
   onPressReplay,
   onPressShare,
