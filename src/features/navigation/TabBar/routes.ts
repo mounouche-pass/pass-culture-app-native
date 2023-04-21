@@ -1,6 +1,5 @@
 import { LinkingOptions } from '@react-navigation/native'
-import { Platform } from 'react-native'
-
+import { AcceuilVideo } from 'features/AccueilVideo'
 import { Bookings } from 'features/bookings/pages/Bookings/Bookings'
 import { withAsyncErrorBoundary } from 'features/errors/hocs/withAsyncErrorBoundary'
 import { Favorites } from 'features/favorites/pages/Favorites'
@@ -10,15 +9,21 @@ import { ScreenNames } from 'features/navigation/RootNavigator/types'
 import { screenParamsParser, screenParamsStringifier } from 'features/navigation/screenParamsUtils'
 import { Profile } from 'features/profile/pages/Profile'
 import { Search } from 'features/search/pages/Search/Search'
+import { Platform } from 'react-native'
 
 import { TabStack } from './Stack'
 import { TabParamList, TabRoute, TabRouteName } from './types'
 
-export const initialRouteName = 'Home'
+export const initialRouteName = 'AccueilVideo'
 
 const Home = withAsyncErrorBoundary(HomeComponent)
 
 const routes: TabRoute[] = [
+  {
+    name: 'AccueilVideo',
+    path: 'AccueilVideo',
+    component: AcceuilVideo,
+  },
   {
     name: 'Home',
     component: Home,
@@ -35,26 +40,26 @@ const routes: TabRoute[] = [
     },
     options: { title: 'Recherche des offres' },
   },
-  {
-    name: 'Bookings',
-    component: Bookings,
-    path: 'reservations',
-    deeplinkPaths: ['bookings'],
-    options: { title: 'Mes réservations' },
-    secure: true,
-  },
-  {
-    name: 'Favorites',
-    component: Favorites,
-    path: 'favoris',
-    options: { title: 'Mes favoris' },
-  },
-  {
-    name: 'Profile',
-    component: Profile,
-    path: 'profil',
-    options: { title: 'Mon profil' },
-  },
+  // {
+  //   name: 'Bookings',
+  //   component: Bookings,
+  //   path: 'reservations',
+  //   deeplinkPaths: ['bookings'],
+  //   options: { title: 'Mes réservations' },
+  //   secure: true,
+  // },
+  // {
+  //   name: 'Favorites',
+  //   component: Favorites,
+  //   path: 'favoris',
+  //   options: { title: 'Mes favoris' },
+  // },
+  // {
+  //   name: 'Profile',
+  //   component: Profile,
+  //   path: 'profil',
+  //   options: { title: 'Mon profil' },
+  // },
 ]
 
 const tabRouteNames = routes.map((route) => route.name)
@@ -72,6 +77,7 @@ export const menu: Record<TabRouteName, { displayName: string; accessibilityLabe
   Bookings: { displayName: 'Réservations', accessibilityLabel: 'Mes réservations' },
   Favorites: { displayName: 'Favoris', accessibilityLabel: isWeb ? undefined : 'Mes favoris' },
   Profile: { displayName: 'Profil', accessibilityLabel: 'Mon profil' },
+  AccueilVideo: { displayName: 'AccueilVideo', accessibilityLabel: 'AccueilVideo' },
 }
 
 const { screensConfig: tabScreensConfig, Screens: TabScreens } = getScreensAndConfig(

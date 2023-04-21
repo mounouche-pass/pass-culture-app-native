@@ -61,6 +61,7 @@ import { NotificationSettings } from 'features/profile/pages/NotificationSetting
 import { PersonalData } from 'features/profile/pages/PersonalData/PersonalData'
 import { SearchFilter } from 'features/search/pages/SearchFilter/SearchFilter'
 import { Venue } from 'features/venue/pages/Venue/Venue'
+import { VideoTest } from 'features/VideoTest'
 import { ABTestingPOC } from 'libs/firebase/remoteConfig/ABTestingPOC'
 
 import { Route } from './types'
@@ -70,6 +71,11 @@ export const routes: Route[] = [
   ...culturalSurveyRoutes,
   ...onboardingRoutes,
   ...subscriptionRoutes,
+  {
+    name: 'VideoTest',
+    path: 'videoTest',
+    component: VideoTest,
+  },
   {
     name: 'Offer',
     component: Offer,

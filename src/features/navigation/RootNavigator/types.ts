@@ -1,12 +1,11 @@
 import { getStateFromPath, ParamListBase, PathConfig, RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import { ComponentType } from 'react'
-
 import { CulturalSurveyQuestionEnum } from 'api/gen/api'
 import { From } from 'features/offer/components/AuthenticationModal/fromEnum'
 import { SearchState } from 'features/search/types'
 import { Venue } from 'features/venue/types'
 import { SuggestedPlace } from 'libs/place'
+import { ComponentType } from 'react'
 
 import { TabParamList, TabRouteName } from '../TabBar/types'
 
@@ -109,6 +108,8 @@ export type SubscriptionRootStackParamList = {
  * please update the deeplink handler in consequence.
  */
 export type RootStackParamList = {
+  VideoTest: undefined
+  AccueilVideo: undefined
   SignupForm: { preventCancellation?: boolean; offerId?: number } | undefined
   Maintenance: undefined
   ABTestingPOC: undefined
