@@ -18,12 +18,20 @@ export const AcceuilVideo: FunctionComponent = () => {
     thumbnail: { height, url, width },
   } = useGetVideoMetadata('qE7xwEZnFP0')
 
+  const { hideModal, showModal, visible } = useModal()
   return (
     <HomeContainer>
       <Spacer.Column numberOfSpaces={10} />
       <Typo.Title1>Salut Agathe&nbsp;!</Typo.Title1>
       <Spacer.Column numberOfSpaces={6} />
       <OffrePlaylist title="Playlist 1" />
+      <OffreVideo
+        title="Waouh, Une offre avec une vidéo qui va s’ouvrir dans une modale&nbsp;!"
+        url={url}
+        height={height}
+        width={width}
+        onPress={showModal}
+      />
       <OffreVideo
         title="Waouh, Une offre avec une vidéo qui va s’ouvrir dans une page&nbsp;!"
         url={url}
@@ -32,6 +40,9 @@ export const AcceuilVideo: FunctionComponent = () => {
         onPress={() => navigate('VideoTest')}
       />
       <OffrePlaylist title="Playlist 2" />
+      <AppModal title="Modal Video" visible={visible} onBackdropPress={hideModal}>
+        <VideoTest />
+      </AppModal>
     </HomeContainer>
   )
 }
