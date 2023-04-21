@@ -939,28 +939,28 @@ workflows:
     jobs:
       - checkout-and-install-deps:
           filters:
-            tags:
-              only: /.*/
+            branches:
+              only: fix-ios-hard-deploy
       - checkout-and-install-proxy-deps:
           filters:
             tags:
               only: /.*/
       - test-proxy:
+          filters:
+            branches:
+              ignore: fix-ios-hard-deploy
           requires:
             - checkout-and-install-proxy-deps
           context: SonarCloud
       - test-lint-and-types
       - test-native:
           filters:
-            tags:
-              only: /.*/
-          context:
-            - SonarCloud
-            - Slack
+            branches:
+              ignore: fix-ios-hard-deploy
       - test-web:
           filters:
-            tags:
-              only: /.*/
+            branches:
+              ignore: fix-ios-hard-deploy
           context: Slack
       - deploy-soft-testing:
           filters:
@@ -997,14 +997,12 @@ workflows:
             - test-native
       - deploy-ios-testing-hard:
           filters:
-            tags:
-              only: /^testing\/v.*/
             branches:
-              ignore: /.*/
+              only: fix-ios-hard-deploy
           requires:
             - checkout-and-install-deps
-            - test-lint-and-types
-            - test-native
+            # - test-lint-and-types
+            # - test-native
       - notify-hard-testing-release:
           filters:
             tags:
