@@ -1,0 +1,49 @@
+name: Launch a pod to add a notification on slack
+
+on:
+  workflow_call:
+    secrets:
+      GCP_EHP_SERVICE_ACCOUNT:
+        required: true
+      GCP_EHP_WORKLOAD_IDENTITY_PROVIDER:
+        required: true
+
+jobs:
+  notification_bot:
+    runs-on: [self-hosted, linux, x64]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Authentification to Google
+        uses: 'google-github-actions/auth@v1'
+        with:
+          workload_identity_provider: ${{ secrets.GCP_EHP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_EHP_SERVICE_ACCOUNT }}
+      - name: Get Secret
+        id: 'secrets'
+        uses: 'google-github-actions/get-secretmanager-secrets@v1'
+        with:
+          secrets: |-
+            SLACK_CHANNEL_ID_NOTIFICATION:passculture-metier-ehp/slack_native_bot_ehp_channel
+            SLACK_AUTH_TOKEN_NOTIFICATION:passculture-metier-ehp/slack_native_bot_ehp_token
+            SLACK_BOT_IMAGE_VERSION:passculture-metier-ehp/slack_native_bot_ehp_artifact
+      - name: 'Render Yaml Template'
+        id: render_template
+        uses: chuhlomin/render-template@v1.6
+        with:
+          template: templates_github_ci/jobs.yaml
+          vars: |
+            SLACK_AUTH_TOKEN_NOTIFICATION: ${{ steps.secrets.outputs.SLACK_AUTH_TOKEN_NOTIFICATION }}
+            SLACK_BOT_IMAGE_VERSION: ${{ steps.secrets.outputs.SLACK_BOT_IMAGE_VERSION }}
+            SLACK_CHANNEL_ID_NOTIFICATION: ${{ steps.secrets.outputs.SLACK_CHANNEL_ID_NOTIFICATION }}
+          result_path: jobs.yaml
+      - uses: google-github-actions/setup-gcloud@v1
+
+      - name: Setup kubectl
+        run: gcloud components install kubectl
+      - name: Use ehp cluster context
+        run: gcloud container clusters get-credentials cluster-metier-ehp --region=europe-west1 --project=passculture-metier-ehp
+      - name: "Test list pod"
+        run: "kubectl get pods --namespace default"
+      - name: 'Launch a job'
+        run: "sleep 3600"
+

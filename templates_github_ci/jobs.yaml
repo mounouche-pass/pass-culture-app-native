@@ -1,0 +1,26 @@
+apiVersion: v1
+data:
+  SLACK_AUTH_TOKEN: {{.SLACK_AUTH_TOKEN_NOTIFICATION}}
+  SLACK_CHANNEL_ID: {{.SLACK_CHANNEL_ID_NOTIFICATION}}
+kind: Secret
+metadata:
+  name: slack_bot_secret
+  namespace: default
+type: Opaque
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: slack-bot
+spec:
+  ttlSecondsAfterFinished: 100
+  template:
+    spec:
+      containers:
+      - name: slack-notification-bot
+        image: {{.SLACK_BOT_IMAGE_VERSION}}
+        envFrom:
+        - secretRef:
+            name: slack_bot_secret
+      restartPolicy: Never
+  backoffLimit: 4
