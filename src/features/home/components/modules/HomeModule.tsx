@@ -70,22 +70,6 @@ const UnmemoizedModule = ({
       />
     )
   }
-  if (isExclusivityModule(item)) {
-    return (
-      <ExclusivityModule
-        moduleId={item.id}
-        title={item.title}
-        alt={item.alt}
-        image={item.image}
-        offerId={item.offerId}
-        displayParameters={item.displayParameters}
-        homeEntryId={homeEntryId}
-        index={index}
-        url={item.url}
-      />
-    )
-  }
-
   if (isThematicHighlightModule(item)) {
     return <ThematicHighlightModule {...item} homeEntryId={homeEntryId} index={index} />
   }
@@ -93,6 +77,7 @@ const UnmemoizedModule = ({
   const toto = {
     [HomepageModuleType.BusinessModule]: BusinessModule,
     [HomepageModuleType.CategoryListModule]: CategoryListModule,
+    [HomepageModuleType.ExclusivityModule]: ExclusivityModule,
   }
 
   const Component = toto[item.type]
