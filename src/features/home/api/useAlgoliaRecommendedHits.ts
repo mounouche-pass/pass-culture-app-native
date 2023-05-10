@@ -18,7 +18,9 @@ export const useAlgoliaRecommendedHits = (ids: string[], moduleId: string): Offe
     () => fetchOfferHits({ objectIds: ids, isUserUnderage }),
     { enabled: ids.length > 0 }
   )
+  // const hits = ['102280', '102272']
 
+  console.log({ hits })
   return useMemo(() => {
     if (!hits || hits.length === 0) return
 

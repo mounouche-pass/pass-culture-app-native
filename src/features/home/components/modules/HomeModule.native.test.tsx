@@ -1,16 +1,32 @@
+import { Position } from 'geojson'
 import { rest } from 'msw'
 import React from 'react'
+import { GeoCoordinates } from 'react-native-geolocation-service'
 
 import { HomeModule } from 'features/home/components/modules/HomeModule'
 import {
   formattedBusinessModule,
   formattedCategoryListModule,
   formattedExclusivityModule,
+  formattedRecommendedOffersModule,
 } from 'features/home/fixtures/homepage.fixture'
 import { env } from 'libs/environment'
 import { reactQueryProviderHOC } from 'tests/reactQueryProviderHOC'
 import { server } from 'tests/server'
 import { render, screen } from 'tests/utils'
+
+jest.mock('features/auth/context/AuthContext')
+
+const DEFAULT_POSITION: GeoCoordinates = { latitude: 2, longitude: 40 }
+const mockPosition: Position = DEFAULT_POSITION
+
+jest.mock('libs/geolocation/GeolocationWrapper', () => ({
+  useGeolocation: () => ({
+    userPosition: mockPosition,
+  }),
+}))
+
+// jest.mock('algoliasearch')
 
 describe('HomeModule', () => {
   it('should display business module', async () => {
@@ -33,6 +49,38 @@ describe('HomeModule', () => {
     )
 
     expect(await screen.findByText('Cette semaine sur le pass')).toBeTruthy()
+  })
+
+  it('should display RecommendationModule', async () => {
+    const prout = {
+      params: {
+        call_id: 'c2b19286-a4e9-4aef-9bab-3dcbbd631f0c',
+        filtered: true,
+        geo_located: true,
+        model_endpoint: 'default',
+        model_name: 'similar_offers_default_prod',
+        model_version: 'similar_offers_clicks_v2_1_prod_v_20230428T220000',
+        reco_origin: 'default',
+      },
+      results: ['102280', '102272'],
+    }
+
+    server.use(
+      rest.post(
+        env.RECOMMENDATION_ENDPOINT + '/playlist_recommendation/1234',
+        async (_, res, ctx) => res.once(ctx.status(200), ctx.json(prout))
+      )
+    )
+
+    render(
+      // eslint-disable-next-line local-rules/no-react-query-provider-hoc
+      reactQueryProviderHOC(
+        <HomeModule item={formattedRecommendedOffersModule} index={0} homeEntryId={'aléatoire'} />
+      )
+    )
+
+    screen.debug()
+    expect(await screen.findByText('Tes évènements en ligne')).toBeTruthy()
   })
 
   it('should display ExclusivityModule', async () => {

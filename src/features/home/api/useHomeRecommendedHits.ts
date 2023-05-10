@@ -78,5 +78,6 @@ export const useHomeRecommendedHits = (
     )
   }, [getRecommendedIds, recommendationParameters, recommendationEndpoint, subcategoryLabelMapping])
 
+  console.log({recommendedIds, moduleId})
   return useAlgoliaRecommendedHits(recommendedIds ?? [], moduleId)
 }

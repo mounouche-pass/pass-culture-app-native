@@ -33,6 +33,7 @@ export const RecommendationModule = (props: RecommendationModuleProps) => {
   const labelMapping = useCategoryHomeLabelMapping()
 
   const hits = useHomeRecommendedHits(profile?.id, position, moduleId, recommendationParameters)
+  console.log({ hits })
   const nbHits = hits?.length || 0
   const shouldModuleBeDisplayed = nbHits > displayParameters.minOffers
 
