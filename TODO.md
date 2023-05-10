@@ -20,7 +20,8 @@
   - [ ] ThematicHighlightModule
     - [ ] pourquoi il affiche rien ?
 - [ ] refactorer les modules dans HomeModule les mettre dans le dictionnaire
-- [ ] sortir le dictionnaire du composant   
+- [ ] sortir le dictionnaire du composant
+- [ ] améliorer le typage des props de UnmemoizedModule pour qu'il ne mente pas : data est lié au type de test
 
 ---
 
