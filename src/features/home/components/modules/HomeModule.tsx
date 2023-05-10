@@ -11,6 +11,7 @@ import { RecommendationModule } from 'features/home/components/modules/Recommend
 import { ThematicHighlightModule } from 'features/home/components/modules/ThematicHighlightModule'
 import {
   HomepageModule,
+  HomepageModuleType,
   isBusinessModule,
   isCategoryListModule,
   isExclusivityModule,
@@ -84,16 +85,18 @@ const UnmemoizedModule = ({
       />
     )
   }
-  if (isBusinessModule(item)) {
-    return <BusinessModule {...item} homeEntryId={homeEntryId} index={index} moduleId={item.id} />
-  }
+
   if (isThematicHighlightModule(item)) {
     return <ThematicHighlightModule {...item} homeEntryId={homeEntryId} index={index} />
   }
-  if (isCategoryListModule(item)) {
-    return <CategoryListModule {...item} homeEntryId={homeEntryId} index={index} />
+
+  const toto = {
+    [HomepageModuleType.BusinessModule]: BusinessModule,
+    [HomepageModuleType.CategoryListModule]: CategoryListModule,
   }
-  return <React.Fragment></React.Fragment>
+
+  const Component = toto[item.type]
+  return <Component {...item} homeEntryId={homeEntryId} index={index} moduleId={item.id} />
 }
 
 export const HomeModule = memo(UnmemoizedModule)

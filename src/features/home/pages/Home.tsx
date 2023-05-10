@@ -28,7 +28,7 @@ const Header = ({ thematicHeader }: { thematicHeader?: { title?: string; subtitl
 
 export const Home: FunctionComponent = () => {
   const { params } = useRoute<UseRouteType<'Home'>>()
-  const { modules, id, thematicHeader } = useHomepageData(params?.entryId) || {}
+  const { modules, id, thematicHeader } = useHomepageData(params?.entryId)
   const { setCustomPosition } = useGeolocation()
 
   useEffect(() => {
