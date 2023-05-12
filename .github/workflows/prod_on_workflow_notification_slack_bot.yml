@@ -40,10 +40,6 @@ jobs:
 
       - name: Setup kubectl
         run: gcloud components install kubectl
-      - name: Use ehp cluster context
-        run: gcloud container clusters get-credentials cluster-metier-ehp --region=europe-west1 --project=passculture-metier-ehp
-      - name: "Test list pod"
-        run: "kubectl get pods --namespace default"
-      - name: 'Launch a job'
-        run: "sleep 3600"
+      - name: Use Infra cluster context
+        run: gcloud container clusters get-credentials cluster-infra-prod --region=europe-west9 --project=passculture-infra-prod
 
