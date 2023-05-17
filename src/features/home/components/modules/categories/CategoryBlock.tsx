@@ -1,8 +1,11 @@
 import colorAlpha from 'color-alpha'
 import React, { FunctionComponent } from 'react'
+// eslint-disable-next-line no-restricted-imports
+import FastImage from 'react-native-fast-image'
 import styled from 'styled-components/native'
 
 import { theme } from 'theme'
+import { FastBackgroundImage } from 'ui/components/FastBackgroundImage'
 import { InternalTouchableLink } from 'ui/components/touchableLink/InternalTouchableLink'
 import { InternalNavigationProps } from 'ui/components/touchableLink/types'
 import { getSpacing, Typo } from 'ui/theme'
@@ -48,7 +51,7 @@ const StyledTitle = styled(Typo.ButtonText)({
   color: theme.colors.white,
 })
 
-const ImageBackground = styled.ImageBackground({
+const ImageBackground = styled(FastBackgroundImage)({
   //the overflow: hidden allow to add border radius to the image
   //https://stackoverflow.com/questions/49442165/how-do-you-add-borderradius-to-imagebackground/57616397
   overflow: 'hidden',

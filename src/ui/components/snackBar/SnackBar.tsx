@@ -154,9 +154,9 @@ const _SnackBar = (props: SnackBarProps) => {
 export const SnackBar = memo(_SnackBar)
 
 /*
-  Display rules :
-  - On mobile : at the very top of the screen, with a full width
-  - On tablet or desktop : below top menu on the right side of the screen, with a max width
+  Display rules:
+  - On mobile: at the very top of the screen, with a full width
+  - On tablet or desktop: below top menu on the right side of the screen, with a max width
 */
 const RootContainer = styled.View(({ theme }) => ({
   maxWidth: theme.isMobileViewport ? '100%' : getSpacing(100),
@@ -167,7 +167,7 @@ const RootContainer = styled.View(({ theme }) => ({
   zIndex: theme.zIndex.snackbar,
 }))
 
-// Troobleshoot Animated types issue with forwaded 'backgroundColor' prop
+// Troubleshoot Animated types issue with forwarded 'backgroundColor' prop
 const ColoredAnimatableView = styled(AnimatedView)<{ backgroundColor: ColorsEnum }>((props) => ({
   backgroundColor: props.backgroundColor,
 }))
